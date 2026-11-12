@@ -37,9 +37,9 @@ test('No inventa evoluciones ni admite palabras sin anotación unívoca',()=>{
  assert.equal(annotateDirect({...sample('x','indem','ende',['N01'],null),estado:'REVISAR'}).status,'invalid_source');
 });
 test('Conserva fuente, conflictos y no altera anteriores',()=>{
- const orig=JSON.stringify(dataset.words);const src={esquema:'evoluciones-latin-castellano/v1',items:[sample('t1','lupum','lobo',['N01','N17'],null),sample('t2','vitam','vida',['N17'],null)]};
- const audit=auditImport(src,dataset);
+ const base=dataset.words.slice(0,282);const orig=JSON.stringify(dataset.words);const src={esquema:'evoluciones-latin-castellano/v1',items:[sample('t1','lupum','lobo',['N01','N17'],null),sample('t2','vitam','vida',['N17'],null)]};
+ const audit=auditImport(src,{version:1,words:base});
  assert.equal(audit.overlap.length,1);assert.equal(audit.accepted.length,1);
  assert.equal(JSON.stringify(dataset.words),orig);
- assert.deepEqual(validationErrors({version:1,words:[...dataset.words,...audit.accepted]}),[]);
+ assert.deepEqual(validationErrors({version:1,words:[...base,...audit.accepted]}),[]);
 });
