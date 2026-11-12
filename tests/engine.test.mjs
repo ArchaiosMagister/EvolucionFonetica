@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { RULES } from '../src/rules.mjs';
-import { chars, normAnswer, resultMatches, requiredRules, availableWords, chooseWords, changeMatches, gradeChange, isComplete, validationErrors, coverage, newCardState, checkResult, applyChange } from '../src/engine.mjs';
+import { chars, normAnswer, resultMatches, requiredRules, availableWords, chooseWords, changeMatches, gradeChange, isComplete, validationErrors, coverage, newCardState, checkResult, applyChange, checkAllChanges } from '../src/engine.mjs';
 const dataset = JSON.parse(readFileSync(new URL('../data/pilot.json', import.meta.url),'utf8'));
 const words=dataset.words;
 const word=id=>words.find(x=>x.id===`xl-${id}`);
@@ -137,4 +137,46 @@ test('miraculum → milagro tiene subtipo -CUL- → -G- y anotación completa y 
  const state=newCardState(mir);assert.equal(checkResult(state,'milagro'),true);
  for(const item of mir.changes)assert.equal(applyChange(state,{rule:item.rule,spans:item.spans}).correct,true);
  assert.equal(state.phase,3);
+});
+
+test('Comprobar todo no evalúa cada desplegable al elegirlo y no avanza con respuestas incompletas',()=>{
+ const poena=word(245);
+ const state=newCardState(poena);
+ assert.equal(checkResult(state,'pena'),true);
+ const initial=[{id:'g1',targetId:poena.changes[0].id,...poena.changes[0],rule:''},
+                {id:'g2',targetId:poena.changes[1].id,...poena.changes[1],rule:''}];
+ const a=checkAllChanges(state,initial);
+ assert.equal(a.complete,false);assert.equal(a.correct,0);
+ assert.deepEqual(a.results.map(r=>r.status),['missing','missing']);
+ assert.equal(state.phase,2);
+ initial[0].rule=poena.changes[0].rule;
+ const b=checkAllChanges(state,initial);
+ assert.equal(b.correct,1);assert.equal(b.remaining,1);assert.equal(state.phase,2);
+ initial[1].rule=poena.changes[1].rule;
+ const c=checkAllChanges(state,initial);
+ assert.equal(c.complete,true);assert.equal(state.phase,3);
+});
+test('Comprobación conjunta mantiene asociaciones exactas con solapamientos guiados',()=>{
+ const w=word(502),state=newCardState(w);checkResult(state,w.answers[0]);
+ const drafts=w.changes.map((c,i)=>({id:`g${i}`,targetId:c.id,spans:c.spans,anchor:c.anchor,rule:c.rule}));
+ const overlap=drafts.filter(d=>JSON.stringify(d.spans)===JSON.stringify(w.changes.find(c=>c.rule==='ASMIL').spans));
+ assert.ok(overlap.length>=2);
+ const wrong=structuredClone(drafts);
+ const x=wrong.find(d=>d.targetId===w.changes.find(c=>c.rule==='ASMIL').id);
+ x.rule='SIMPL';
+ const result=checkAllChanges(state,wrong);
+ assert.equal(result.complete,false);assert.equal(result.results.find(r=>r.id===x.id).status,'incorrect');
+ assert.equal(state.phase,2);
+ x.rule='ASMIL';
+ const correct=checkAllChanges(state,wrong);
+ assert.equal(correct.complete,true);assert.equal(state.phase,3);
+});
+test('Comprobar todo en modo a ciegas admite tramos discontinuos e inserciones, pero no extras',()=>{
+ const w=word(614);const state=newCardState(w);checkResult(state,w.answers[0]);
+ const drafts=w.changes.map((c,i)=>({id:`b${i}`,rule:c.rule,spans:c.spans,anchor:c.anchor}));
+ const withExtra=[...drafts,{id:'extra',rule:drafts[0].rule,spans:drafts[0].spans,anchor:drafts[0].anchor}];
+ const first=checkAllChanges(state,withExtra);
+ assert.equal(first.complete,false);assert.equal(first.results.at(-1).status,'incorrect');assert.equal(state.phase,2);
+ const second=checkAllChanges(state,drafts);
+ assert.equal(second.complete,true);assert.equal(state.phase,3);
 });

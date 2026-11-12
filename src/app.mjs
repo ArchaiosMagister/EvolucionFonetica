@@ -1,12 +1,22 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
-import { chars, availableWords, chooseWords, coverage, validationErrors, newCardState, checkResult, applyChange, requiredRules } from './engine.mjs';
+import { chars, availableWords, chooseWords, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const themeBtn=document.querySelector('#theme-toggle');
-const initialTheme = localStorage.getItem('ev_theme') || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-function theme(mode){document.documentElement.dataset.theme=mode;themeBtn.textContent=mode==='dark'?'☼':'☾';localStorage.setItem('ev_theme',mode)}
-theme(initialTheme);themeBtn.onclick=()=>theme(document.documentElement.dataset.theme==='dark'?'light':'dark');
-let words=[], selected=new Set(RULES.map(r=>r.id)), mode='guided', requested=10, session=null, cardState=null, feedback='', choice='', selectedTarget=null;
+const themePicker=document.querySelector('#theme-select');
+const themeValues=new Set(['light','dark','oled']);
+const storedTheme=localStorage.getItem('ev_theme');
+const initialTheme=themeValues.has(storedTheme)?storedTheme:(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+function theme(value){
+ const mode=themeValues.has(value)?value:'light';
+ document.documentElement.dataset.theme=mode;
+ themePicker.value=mode;
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',mode==='oled'?'#000000':mode==='dark'?'#101b1d':'#0a555b');
+ localStorage.setItem('ev_theme',mode);
+}
+theme(initialTheme);
+themePicker.addEventListener('change',event=>theme(event.target.value));
+let words=[], selected=new Set(RULES.map(r=>r.id)), mode='guided', requested=10, session=null, cardState=null, feedback='';
+let drafts=[], draftSerial=0, batchFeedback='';
 let blindSpans=[], pendingStart=null, insertion=null;
 const phaseTitle={1:'Fase 1 · Resultado castellano',2:'Fase 2 · Identifica los cambios',3:'Explicación de la evolución'};
 const currentWord=()=>session?.cards[session.index];
@@ -31,7 +41,12 @@ function startSession(){
  session={cards:chooseWords(words,selected,n),index:0,done:[],selected:[...selected],mode};
  initCard();
 }
-function initCard(){cardState=newCardState(currentWord());feedback='';choice='';selectedTarget=null;blindSpans=[];pendingStart=null;insertion=null;renderCard();}
+function initCard(){
+ cardState=newCardState(currentWord());feedback='';batchFeedback='';draftSerial=0;
+ const w=currentWord();
+ drafts=session.mode==='guided'?w.changes.map(t=>({id:`g-${t.id}`,targetId:t.id,spans:t.spans.map(r=>[...r]),anchor:t.anchor,rule:'',status:null})):[];
+ blindSpans=[];pendingStart=null;insertion=null;renderCard();
+}
 function renderCard(){
  const w=currentWord();if(!w){renderFinal();return;}
  const stage=cardState.phase;
@@ -45,10 +60,20 @@ function renderGuidedWord(word){
  for(let i=0;i<letters.length;i++)html+=`<span class="guided-char" ${set.has(i)?'data-mark="true"':''}>${esc(letters[i])}</span>`;
  return `<div class="guided-word" lang="la" aria-label="${esc(word.latin)}">${html}</div>`;
 }
-function guidedTargets(word){return `<div class="analysis-targets">${word.changes.map(t=>{
- const solved=cardState.solved.has(t.id);
- return `<button type="button" class="target ${solved?'done':''} ${selectedTarget===t.id?'active':''}" data-target="${t.id}" ${solved?'disabled':''}><span class="fragment">${solved?'✓ ':''}${esc(labelFragment(word,t))}</span><span class="target-text">${solved?'Fenómeno identificado':t.rule==='FIX_M'?'Norma fija · identifica la regla':'Selecciona su norma'}</span></button>`;
- }).join('')}</div>`;}
+function renderDraft(word,draft,index) {
+ const status=draft.status||'';
+ const stateLabel={correct:'✓ Correcto',incorrect:'Revisar',missing:'Sin respuesta'}[status]||'Sin comprobar';
+ const label=labelFragment(word,draft);
+ const fragment=draft.anchor!==undefined?`<span class="analysis-fragment-small">${esc(label)}</span>`:`<mark>${esc(label)}</mark>`;
+ return `<div class="analysis-item ${status==='correct'?'is-correct':status==='incorrect'?'is-wrong':status==='missing'?'is-missing':''}" data-draft-card="${esc(draft.id)}">
+  <div class="analysis-item-head"><span class="analysis-number">Cambio ${index+1}</span><span class="analysis-status">${stateLabel}</span></div>
+  <div class="analysis-fragment" lang="la">${fragment}</div>
+  <label for="draft-${esc(draft.id)}">¿Qué norma corresponde?</label>
+  <select id="draft-${esc(draft.id)}" data-draft-rule="${esc(draft.id)}"><option value="">Selecciona una norma…</option>${choiceOptions(word,draft.rule)}</select>
+  ${status==='incorrect'?'<p class="analysis-feedback">Revisa esta asociación de fragmento y norma.</p>':status==='missing'?'<p class="analysis-feedback">Selecciona una norma antes de comprobar.</p>':''}
+  ${session.mode==='blind'?`<button type="button" class="analysis-remove" data-remove-draft="${esc(draft.id)}" aria-label="Eliminar cambio ${index+1}">Quitar este cambio</button>`:''}
+ </div>`;
+}
 function blindWord(word){
  const letters=chars(word.latin);let pieces='';
  for(let i=0;i<=letters.length;i++){
@@ -58,17 +83,30 @@ function blindWord(word){
  }
  return `<div class="latin-interactive" lang="la" aria-label="Selecciona los fragmentos en ${esc(word.latin)}">${pieces}</div>
  <p class="selection-summary">${pendingStart!==null?'Ahora pulsa la última letra del grupo (puede ser la misma).':blindSpans.length?`Grupos: ${esc(blindSpans.map(([s,e])=>letters.slice(s,e).join('')).join(' + '))}`:insertion!==null?`Inserción en el punto ${insertion}`:'Selecciona un fragmento o el símbolo + de inserción.'}</p>
- <div class="selection-actions"><button type="button" class="button-secondary" data-action="clear-selection">Borrar selección</button></div>`;
+ `;
 }
-function choiceOptions(word){let ids=[...session.selected];if(word.changes.some(t=>t.rule===FIXED_RULE.id))ids.push(FIXED_RULE.id);return ids.map(id=>`<option value="${id}" ${choice===id?'selected':''}>${esc(ruleName(id))}${id==='FIX_M'?' (fija)':''}</option>`).join('');}
+function choiceOptions(word,value=''){
+ const ids=[...session.selected];
+ if(word.changes.some(t=>t.rule===FIXED_RULE.id))ids.push(FIXED_RULE.id);
+ return ids.map(id=>`<option value="${id}" ${value===id?'selected':''}>${esc(ruleName(id))}${id==='FIX_M'?' (fija)':''}</option>`).join('');
+}
 function renderSecond(w){
- const total=w.changes.length,done=cardState.solved.size;
- const showSelector=session.mode==='blind' || selectedTarget;
- return `<h2 class="latin-word" style="font-size:clamp(36px,7vw,63px)" lang="la">${esc(w.latin)}</h2><p class="prompt">Resultado correcto: <strong>${esc(w.answers[0])}</strong>. Identifica los fenómenos y asócialos con sus letras o puntos de inserción.</p>
- <div class="hint-box">${session.mode==='guided'?'<strong>Modo guiado.</strong> Pulsa uno de los fragmentos resaltados en la lista y asígnale su norma. Hay grupos que se superponen porque intervienen en más de un fenómeno.':'<strong>Modo a ciegas.</strong> Pulsa la primera y la última letra de un grupo (dos veces la misma si es una sola). Puedes añadir tramos no contiguos. Para sonidos añadidos, pulsa <strong>+</strong> en el lugar de inserción.'} <br><strong>${done}/${total}</strong> cambios identificados.</div>
- ${session.mode==='guided'?renderGuidedWord(w)+guidedTargets(w):blindWord(w)}
- ${showSelector?`<div class="answer-box"><label for="phenomenon">Norma aplicable</label><select id="phenomenon"><option value="">Elige una norma…</option>${choiceOptions(w)}</select><button type="button" class="button-primary" data-action="check-change" ${!choice?'disabled':''}>Comprobar fenómeno →</button></div>`:''}
- ${feedback?`<div class="feedback ${feedback.startsWith('Correcto')?'success':'error'}" role="status">${esc(feedback)}</div>`:''}`;
+ const guided=session.mode==='guided',count=drafts.length;
+ const description=guided
+   ? 'Los fragmentos están señalados. Elige la norma en el desplegable de cada tarjeta; puedes cambiar cualquier respuesta antes de comprobar.'
+   : 'Marca la primera y la última letra de un grupo y pulsa «Añadir cambio». Puedes seleccionar varios grupos separados. Usa + para indicar un sonido añadido.';
+ const builder=guided?renderGuidedWord(w):`<div class="analysis-builder"><h3>1 · Selecciona las letras</h3><p>Pulsa dos letras para señalar un tramo; repite para añadir otro tramo del mismo fenómeno. También puedes usar + para una inserción. Desliza la palabra horizontalmente si no cabe.</p>
+ ${blindWord(w)}<div class="builder-actions"><button type="button" class="button-primary" data-action="add-selection" ${!blindSpans.length && insertion===null?'disabled':''}>Añadir cambio +</button><button type="button" class="button-secondary" data-action="clear-selection">Borrar selección</button></div></div>`;
+ return `<h2 class="latin-word" style="font-size:clamp(36px,7vw,63px)" lang="la">${esc(w.latin)}</h2>
+  <p class="prompt">Resultado correcto: <strong>${esc(w.answers[0])}</strong>. Identifica los fenómenos y asócialos con sus letras o puntos de inserción.</p>
+  <p class="hint-box"><strong>${guided?'Modo guiado':'Modo a ciegas'}.</strong> ${esc(description)}<br>Las respuestas se guardan y sólo se corrigen al pulsar <strong>«Comprobar todo»</strong>.</p>
+  ${builder}
+  <p class="analysis-help">${guided?'Asigna una norma a cada fragmento. Si dos cambios se superponen, aparecen como tarjetas independientes.':'2 · Asigna una norma a cada cambio añadido. Puedes añadir, modificar o quitar tarjetas antes de comprobar.'}</p>
+  ${count?`<div class="analysis-grid">${drafts.map((d,i)=>renderDraft(w,d,i)).join('')}</div>`:'<p class="helper" style="text-align:center">Todavía no has añadido ningún cambio.</p>'}
+  <div class="analysis-footer"><button type="button" class="button-primary" data-action="check-all">Comprobar todo <span aria-hidden="true">→</span></button>
+  <p class="analysis-progress">${count} ${count===1?'elección guardada':'elecciones guardadas'} · ${cardState.solved.size} de ${w.changes.length} cambios identificados en la última comprobación</p>
+  ${batchFeedback?`<div class="feedback ${batchFeedback.startsWith('Todos')?'success':'error'}" role="status">${esc(batchFeedback)}</div>`:''}
+  </div>`;
 }
 function renderComplete(w){
  return `<div class="completion"><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div><h3>Explicación de los cambios</h3>
@@ -80,7 +118,18 @@ function renderComplete(w){
 function next(){if(cardState.phase!==3)return;session.done.push({latin:currentWord().latin,spanish:currentWord().answers[0],mistakes:cardState.mistakes,attempts:cardState.attempts});session.index++;if(session.index<session.cards.length)initCard();else renderFinal();}
 function renderFinal(){const total=session.done.length;const perfect=session.done.filter(d=>d.mistakes===0).length;const mistakes=session.done.reduce((n,d)=>n+d.mistakes,0);
  app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">Repaso completado</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Palabras completadas sin errores · ${mistakes} errores durante la práctica.</p><div class="summary-list">${session.done.map(d=>`<div class="summary-line"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${d.mistakes===0?'✓ Sin errores':d.mistakes+' errores'}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;}
-app.addEventListener('change',event=>{const e=event.target;if(e.matches('[data-rule]')){if(e.checked)selected.add(e.dataset.rule);else selected.delete(e.dataset.rule);updateAvailable();}if(e.matches('input[name="mode"]')){mode=e.value;const hint=e.closest('.field').querySelector('.helper');if(hint)hint.textContent=mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.';}if(e.id==='phenomenon'){choice=e.value;const btn=app.querySelector('[data-action="check-change"]');if(btn)btn.disabled=!choice;}});
+app.addEventListener('change',event=>{
+ const e=event.target;
+ if(e.matches('[data-rule]')){if(e.checked)selected.add(e.dataset.rule);else selected.delete(e.dataset.rule);updateAvailable();}
+ if(e.matches('input[name="mode"]')){mode=e.value;const hint=e.closest('.field').querySelector('.helper');if(hint)hint.textContent=mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.';}
+ if(e.matches('[data-draft-rule]')){
+   const draft=drafts.find(d=>d.id===e.dataset.draftRule);
+   if(draft){draft.rule=e.value;drafts.forEach(d=>d.status=null);batchFeedback='';
+    app.querySelectorAll('.analysis-item').forEach(node=>{node.classList.remove('is-correct','is-wrong','is-missing');node.querySelector('.analysis-status').textContent='Sin comprobar';node.querySelector('.analysis-feedback')?.remove();});
+    const previous=app.querySelector('.analysis-footer .feedback');if(previous)previous.remove();
+   }
+ }
+});
 app.addEventListener('input',event=>{if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
 app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;event.preventDefault();const answer=document.querySelector('#castellano').value;if(checkResult(cardState,answer)){feedback='';renderCard();}else{feedback='Incorrecto. Revisa el resultado e inténtalo de nuevo.';renderCard();document.querySelector('#castellano')?.focus();}});
 app.addEventListener('click',event=>{
@@ -91,16 +140,28 @@ app.addEventListener('click',event=>{
  if(t.dataset.action==='back'||t.dataset.action==='home'){setUp();return;}
  if(t.dataset.action==='next'){next();return;}
  if(!cardState || cardState.phase!==2)return;
- if(t.dataset.target){selectedTarget=t.dataset.target;choice='';feedback='';renderCard();return;}
- if(t.dataset.action==='clear-selection'){blindSpans=[];pendingStart=null;insertion=null;feedback='';renderCard();return;}
- if(t.dataset.letter!==undefined){const i=Number(t.dataset.letter);insertion=null;if(pendingStart===null){pendingStart=i;}else{const start=Math.min(pendingStart,i),end=Math.max(pendingStart,i)+1;blindSpans.push([start,end]);pendingStart=null;}feedback='';renderCard();return;}
- if(t.dataset.insert!==undefined){const i=Number(t.dataset.insert);insertion=i;pendingStart=null;blindSpans=[];feedback='';renderCard();return;}
- if(t.dataset.action==='check-change'){
-  const w=currentWord();const original=w.changes.find(x=>x.id===selectedTarget);
-  const guess=session.mode==='guided'?{rule:choice,spans:original?.spans??[],anchor:original?.anchor}:{rule:choice,spans:blindSpans,anchor:insertion??undefined};
-  const outcome=applyChange(cardState,guess);
-  feedback=outcome.correct?'Correcto. '+outcome.note:outcome.note;
-  choice='';selectedTarget=null;blindSpans=[];pendingStart=null;insertion=null;renderCard();
+ if(t.dataset.action==='clear-selection'){blindSpans=[];pendingStart=null;insertion=null;renderCard();return;}
+ if(t.dataset.letter!==undefined){
+  const i=Number(t.dataset.letter);insertion=null;
+  if(pendingStart===null){pendingStart=i;}else{const start=Math.min(pendingStart,i),end=Math.max(pendingStart,i)+1;blindSpans.push([start,end]);pendingStart=null;}
+  renderCard();return;
+ }
+ if(t.dataset.insert!==undefined){insertion=Number(t.dataset.insert);pendingStart=null;blindSpans=[];renderCard();return;}
+ if(t.dataset.action==='add-selection'){
+  if(pendingStart!==null || (!blindSpans.length && insertion===null))return;
+  drafts.push({id:`b-${++draftSerial}`,spans:blindSpans.map(span=>[...span]),anchor:insertion??undefined,rule:'',status:null});
+  drafts.forEach(d=>d.status=null);batchFeedback='';blindSpans=[];pendingStart=null;insertion=null;renderCard();
+  app.querySelector(`[data-draft-rule="b-${draftSerial}"]`)?.focus();return;
+ }
+ if(t.dataset.removeDraft){drafts=drafts.filter(d=>d.id!==t.dataset.removeDraft);drafts.forEach(d=>d.status=null);batchFeedback='';renderCard();return;}
+ if(t.dataset.action==='check-all'){
+  const checked=checkAllChanges(cardState,drafts);
+  const byId=new Map(checked.results.map(x=>[x.id,x.status]));
+  drafts.forEach(d=>{d.status=byId.get(d.id)||null});
+  batchFeedback=checked.message;
+  if(!drafts.length)batchFeedback='Añade al menos un cambio antes de comprobar.';
+  renderCard();
+  if(cardState.phase===2)app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
 });
 async function load(){try{const response=await fetch('./data/pilot.json',{cache:'no-cache'});if(!response.ok)throw new Error('No se pudo obtener el banco de palabras.');const data=await response.json();const errors=validationErrors(data);if(errors.length)throw new Error('El banco no supera la validación: '+errors.slice(0,3).join(' · '));words=data.words;const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}

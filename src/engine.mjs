@@ -84,3 +84,31 @@ export function applyChange(state,guess) {
  else state.mistakes++;
  return outcome;
 }
+
+// Evaluación conjunta: se guardan todas las respuestas antes de corregir.
+// En el modo guiado targetId vincula cada selector a SU fragmento; esto evita
+// asignar accidentalmente el acierto a otro cambio solapado con el mismo tramo.
+// En modo a ciegas no se proporcionan targetId: se buscan coincidencias únicas.
+export function checkAllChanges(state, guesses) {
+ if (state.phase !== 2) return {complete:false,correct:0,remaining:state.word.changes.length,results:[],message:'Primero debes acertar el resultado castellano.'};
+ if (!Array.isArray(guesses)) return {complete:false,correct:0,remaining:state.word.changes.length,results:[],message:'Lista de respuestas inválida.'};
+ const found=new Set(), used=new Set();
+ const results=guesses.map((guess,index)=>{
+  const id=guess.id??String(index);
+  if(used.has(id))return {id,status:'incorrect',message:'Respuesta repetida.'};
+  used.add(id);
+  if (!guess.rule) return {id,status:'missing',message:'Elige una norma.'};
+  const candidates=guess.targetId
+    ? state.word.changes.filter(t=>t.id===guess.targetId)
+    : state.word.changes;
+  const target=candidates.find(t=>!found.has(t.id)&&changeMatches(guess,t));
+  if (target){found.add(target.id);return {id,status:'correct',message:'Identificación correcta.'};}
+  return {id,status:'incorrect',message:'Revisa la norma y el fragmento seleccionado.'};
+ });
+ const correct=found.size,remaining=state.word.changes.length-correct;
+ const complete=remaining===0 && results.length===state.word.changes.length && results.every(x=>x.status==='correct');
+ state.solved=found;
+ state.mistakes+=results.filter(x=>x.status==='incorrect').length;
+ if (complete)state.phase=3;
+ return {complete,correct,remaining,results,message:complete?'Todos los cambios son correctos.':'Revisa las tarjetas señaladas; tus elecciones se conservan.'};
+}
