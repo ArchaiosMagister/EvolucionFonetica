@@ -56,7 +56,7 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-study-multiselect-20261112/);
+ assert.match(text('sw.js'),/evolutio-refresh-ticks-20261112/);
 });
 
 test('Estudiar usa botones accesibles para seleccionar niveles independientes',()=>{
@@ -69,7 +69,27 @@ test('Estudiar usa botones accesibles para seleccionar niveles independientes',(
  assert.match(js,/filterWordsByDifficultyLevels/);
  assert.doesNotMatch(js,/id="study-difficulty"/);
  assert.doesNotMatch(js,/id="study-rule-difficulty"/);
- assert.match(js,/id="practice-difficulty"/);
+ assert.doesNotMatch(js,/id="practice-difficulty"/);
+ assert.match(js,/difficultyButtons\('practice'\)/);
+ assert.match(js,/changeDifficulty\(t,'practice'\)/);
+ assert.match(js,/difficulty-tick/);
+ assert.match(js,/difficulty:\[\.\.\.practiceDifficulty\]/);
  assert.match(css,/study-difficulty-button\.is-selected/);
  assert.match(css,/@media\(max-width:620px\)/);
+});
+
+test('Actualizar aparece junto al selector de aspecto y comprueba el SW antes de recargar',()=>{
+ const html=text('index.html'),js=text('src/app.mjs'),sw=text('sw.js'),css=text('style.css');
+ assert.match(html,/<select id="theme-select"/);
+ assert.match(html,/id="refresh-app"/);
+ assert.match(html,/id="refresh-app-status"/);
+ assert.ok(html.indexOf('id="refresh-app"')>html.indexOf('id="theme-select"'));
+ assert.match(js,/checkForWebappUpdates\(navigator\.serviceWorker\)/);
+ assert.match(js,/window\.location\.reload\(\)/);
+ assert.match(js,/window\.confirm\('Actualizar recargará Evolutio/);
+ assert.match(js,/navigator\.onLine===false/);
+ assert.match(sw,/\.\/src\/update\.mjs/);
+ assert.match(css,/\.update-app-button/);
+ assert.match(css,/\.difficulty-tick/);
+ assert.match(css,/data-theme/);
 });
