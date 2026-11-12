@@ -1,7 +1,7 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
 import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
 import { DIFFICULTY_LEVELS, difficultyErrors, difficultyLabel, filterWordsByDifficultyLevels } from './difficulty.mjs';
-import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
+import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, revealCard, requiredRules, optionRuleIds } from './engine.mjs';
 import { checkForWebappUpdates } from './update.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -31,6 +31,9 @@ const focusedName = () => ruleName(focusRule);
 let drafts=[], draftSerial=0, batchFeedback='', focusHintShown=false;
 let blindSpans=[], pendingStart=null, insertion=null;
 const phaseTitle={1:'Fase 1 · Resultado castellano',2:'Fase 2 · Identifica los cambios',3:'Explicación de la evolución'};
+const MAX_PRACTICE_ATTEMPTS=3;
+const attemptsLeft=used=>Math.max(0,MAX_PRACTICE_ATTEMPTS-used);
+const revealButton=()=>'<button type="button" class="button-secondary practice-reveal-button" data-action="reveal">No lo sé · Ver solución</button>';
 const currentWord=()=>session?.cards[session.index];
 const progress=()=>session? Math.round((session.index/session.cards.length)*100):0;
 // Indica la vía de transmisión sin presentar una adaptación culta como evolución patrimonial.
@@ -82,7 +85,8 @@ function renderCard(){
  app.innerHTML=`<div class="practice-shell"><div class="topline"><button type="button" class="back-button" data-action="back">← Cambiar normas</button><span class="tiny">Tarjeta ${session.index+1} de ${session.cards.length} · ${session.focusRule?'Una norma: '+esc(ruleName(session.focusRule))+' · ':''}${session.mode==='guided'?'Guiado':'A ciegas'} · ${esc(wordDifficulty(w))}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${progress()}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso"><div class="progress-value" style="width:${progress()}%"></div></div><article class="panel practice-card"><p class="eyebrow">${phaseTitle[stage]}</p>${stage===1?renderFirst(w):stage===2?renderSecond(w):renderComplete(w)}</article></div>`;
  app.setAttribute('aria-busy','false');
 }
-function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1>${transmissionNote(w)}<p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}${session.focusRule?`<div class="focus-hint-box"><button type="button" class="text-button" data-action="focus-hint" aria-controls="focus-hint" aria-expanded="${focusHintShown}">${focusHintShown?'Ocultar pista':'Pista: otras normas de esta palabra'}</button>${focusHintShown?`<p id="focus-hint" class="helper" role="status">${(()=>{const others=[...new Set(w.changes.filter(t=>t.rule!==session.focusRule&&t.rule!==FIXED_RULE.id).map(t=>ruleName(t.rule)))];const fixed=w.changes.some(t=>t.rule===FIXED_RULE.id);return esc([...(others.length?others:['No hay otras normas seleccionables']),...(fixed?['Pérdida fija de -m final']:[])].join(' · '));})()}</p>`:''}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
+function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1>${transmissionNote(w)}<p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button>${revealButton()}</div>
+ <p class="practice-attempts">Resultado castellano · ${attemptsLeft(cardState.attempts)} de ${MAX_PRACTICE_ATTEMPTS} intentos disponibles</p>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}${session.focusRule?`<div class="focus-hint-box"><button type="button" class="text-button" data-action="focus-hint" aria-controls="focus-hint" aria-expanded="${focusHintShown}">${focusHintShown?'Ocultar pista':'Pista: otras normas de esta palabra'}</button>${focusHintShown?`<p id="focus-hint" class="helper" role="status">${(()=>{const others=[...new Set(w.changes.filter(t=>t.rule!==session.focusRule&&t.rule!==FIXED_RULE.id).map(t=>ruleName(t.rule)))];const fixed=w.changes.some(t=>t.rule===FIXED_RULE.id);return esc([...(others.length?others:['No hay otras normas seleccionables']),...(fixed?['Pérdida fija de -m final']:[])].join(' · '));})()}</p>`:''}</div>`:''}<p class="helper">Puedes intentarlo hasta tres veces o consultar la solución cuando lo necesites. Las soluciones mostradas no cuentan como aciertos.</p></form>`;}
 function renderGuidedWord(word){
  const targets=assessedChanges(word,session.focusRule);
  const set=new Set(targets.flatMap(x=>x.spans.flatMap(([s,e])=>Array.from({length:e-s},(_,j)=>s+j))));
@@ -139,6 +143,8 @@ function renderSecond(w){
   <p class="analysis-help">${guided?'Asigna una norma a cada fragmento. Si dos cambios se superponen, aparecen como tarjetas independientes.':'2 · Asigna una norma a cada cambio añadido. Puedes añadir, modificar o quitar tarjetas antes de comprobar.'}</p>
   ${count?`<div class="analysis-grid">${drafts.map((d,i)=>renderDraft(w,d,i)).join('')}</div>`:'<p class="helper" style="text-align:center">Todavía no has añadido ningún cambio.</p>'}
   <div class="analysis-footer"><button type="button" class="button-primary" data-action="check-all">Comprobar todo <span aria-hidden="true">→</span></button>
+   ${revealButton()}
+   <p class="practice-attempts">Normas fonéticas · ${attemptsLeft(cardState.analysisAttempts)} de ${MAX_PRACTICE_ATTEMPTS} comprobaciones disponibles</p>
   <p class="analysis-progress">${count} ${count===1?'elección guardada':'elecciones guardadas'} · ${cardState.solved.size} de ${targets.length} cambios evaluables identificados en la última comprobación</p>
   ${batchFeedback?`<div class="feedback ${batchFeedback.startsWith('Todos')?'success':'error'}" role="status">${esc(batchFeedback)}</div>`:''}
   </div>`;
@@ -176,7 +182,13 @@ function celebrateCompletion(){
  document.body.appendChild(layer);
  window.setTimeout(()=>layer.remove(),1550);
 }
-function next(){if(cardState.phase!==3)return;session.done.push({latin:currentWord().latin,spanish:currentWord().answers[0],mistakes:cardState.mistakes,attempts:cardState.attempts});session.index++;if(session.index<session.cards.length)initCard();else renderFinal();}
+function next(){
+ if(cardState.phase!==3)return;
+ session.done.push({latin:currentWord().latin,spanish:currentWord().answers[0],
+  mistakes:cardState.mistakes,attempts:cardState.attempts,analysisAttempts:cardState.analysisAttempts,
+  revealed:cardState.revealed,revealPhase:cardState.revealPhase});
+ session.index++;if(session.index<session.cards.length)initCard();else renderFinal();
+}
 function renderFinal(){const total=session.done.length;const perfect=session.done.filter(d=>d.mistakes===0).length;const mistakes=session.done.reduce((n,d)=>n+d.mistakes,0);
  app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">${session.focusRule?'Repaso de '+esc(ruleName(session.focusRule))+' completado':'Repaso completado'}</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Palabras completadas sin errores · ${mistakes} errores durante la práctica.</p><div class="summary-list">${session.done.map(d=>`<div class="summary-line"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${d.mistakes===0?'✓ Sin errores':d.mistakes+' errores'}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;}
 // ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
@@ -386,7 +398,16 @@ app.addEventListener('change',event=>{
  }
 });
 app.addEventListener('input',event=>{if(section==='study'&&event.target.id==='study-search'){study.query=event.target.value;shuffleSearchResults=false;study.visible=24;renderStudyResults();return;}if(event.target.id==='castellano'){resultDraft=event.target.value;}if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
-app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;event.preventDefault();const answer=document.querySelector('#castellano').value;resultDraft=answer;if(checkResult(cardState,answer)){resultDraft='';feedback='';renderCard();}else{feedback='Incorrecto. Revisa el resultado e inténtalo de nuevo.';renderCard();document.querySelector('#castellano')?.focus();}});
+app.addEventListener('submit',event=>{
+ if(event.target.id!=='result-form')return;
+ event.preventDefault();
+ if(cardState?.phase!==1)return;
+ const answer=document.querySelector('#castellano').value;resultDraft=answer;
+ if(checkResult(cardState,answer)){resultDraft='';feedback='';renderCard();return;}
+ if(cardState.attempts>=MAX_PRACTICE_ATTEMPTS){revealCard(cardState,'limit');renderCard();return;}
+ feedback='Incorrecto. Quedan '+attemptsLeft(cardState.attempts)+' intentos para el resultado castellano.';
+ renderCard();document.querySelector('#castellano')?.focus();
+});
 app.addEventListener('click',event=>{
  const t=event.target.closest('button');if(!t)return;
  if(section==='study'){handleStudyClick(t);return;}
@@ -397,6 +418,9 @@ app.addEventListener('click',event=>{
  if(t.dataset.action==='focus-hint' && session?.focusRule && cardState?.phase===1){focusHintShown=!focusHintShown;renderCard();return;}
  if(t.dataset.action==='back'||t.dataset.action==='home'){setUp();return;}
  if(t.dataset.action==='next'){next();return;}
+ if(t.dataset.action==='reveal' && cardState && [1,2].includes(cardState.phase)){
+  revealCard(cardState,'manual');renderCard();return;
+ }
  if(!cardState || cardState.phase!==2)return;
  if(t.dataset.action==='clear-selection'){blindSpans=[];pendingStart=null;insertion=null;renderCard();return;}
  if(t.dataset.letter!==undefined){
@@ -413,14 +437,19 @@ app.addEventListener('click',event=>{
  }
  if(t.dataset.removeDraft){drafts=drafts.filter(d=>d.id!==t.dataset.removeDraft);drafts.forEach(d=>d.status=null);batchFeedback='';renderCard();return;}
  if(t.dataset.action==='check-all'){
+  if(!drafts.some(d=>d.rule)){
+   batchFeedback='Elige una norma para comprobar o pulsa «No lo sé · Ver solución». No se descuenta ningún intento.';
+   renderCard();return;
+  }
   const checked=checkAllChanges(cardState,drafts);
   const byId=new Map(checked.results.map(x=>[x.id,x.status]));
   drafts.forEach(d=>{d.status=byId.get(d.id)||null});
   batchFeedback=checked.message;
-  if(!drafts.length)batchFeedback='Añade al menos un cambio antes de comprobar.';
+  if(checked.complete){renderCard();celebrateCompletion();return;}
+  if(cardState.analysisAttempts>=MAX_PRACTICE_ATTEMPTS){revealCard(cardState,'limit');renderCard();return;}
+  batchFeedback+=' Quedan '+attemptsLeft(cardState.analysisAttempts)+' comprobaciones.';
   renderCard();
-  if(checked.complete)celebrateCompletion();
-  if(cardState.phase===2)app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
+  app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
 });
 async function load(){try{
