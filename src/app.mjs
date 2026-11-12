@@ -1,6 +1,6 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
 import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
-import { DIFFICULTY_FILTERS, difficultyErrors, difficultyLabel, filterWordsByDifficulty } from './difficulty.mjs';
+import { DIFFICULTY_LEVELS, DIFFICULTY_FILTERS, difficultyErrors, difficultyLabel, filterWordsByDifficulty, filterWordsByDifficultyLevels } from './difficulty.mjs';
 import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -17,7 +17,7 @@ function theme(value){
 }
 theme(initialTheme);
 themePicker.addEventListener('change',event=>theme(event.target.value));
-let words=[], difficultyAssignments={}, practiceDifficulty='all', studyDifficulty='all',
+let words=[], difficultyAssignments={}, practiceDifficulty='all', studyDifficulty=new Set(DIFFICULTY_LEVELS.map(x=>x.level)),
  selected=new Set(RULES.map(r=>r.id)), practiceScope='general', focusRule='PALAT', mode='guided', requested=10, session=null, cardState=null, feedback='';
 const difficultyOptions=selectedValue=>DIFFICULTY_FILTERS.map(item=>`<option value="${item.value}" ${item.value===selectedValue?'selected':''}>${esc(item.label)}</option>`).join('');
 const wordDifficulty=word=>difficultyLabel(difficultyAssignments[word.id]?.level);
@@ -181,6 +181,23 @@ function renderFinal(){const total=session.done.length;const perfect=session.don
 // ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
 const study={screen:'home',query:'',visible:8,ruleId:null,subtype:'',wordId:null,changeIndex:0,origin:'home',contextIds:[]};
 let studyDeck=[], shuffleSearchResults=false;
+function studyDifficultyButtons(){
+ const allSelected=studyDifficulty.size===DIFFICULTY_LEVELS.length;
+ return `<div class="study-difficulty-filter" role="group" aria-label="Seleccionar niveles de dificultad">
+  <div class="study-difficulty-heading"><span class="field-label">Dificultad</span>
+   <span class="study-difficulty-actions">
+    <button type="button" class="text-button" data-study-difficulty-all="true" ${allSelected?'disabled':''}>Todas</button>
+    <button type="button" class="text-button" data-study-difficulty-none="true" ${studyDifficulty.size===0?'disabled':''}>Ninguna</button>
+   </span></div>
+  <div class="study-difficulty-buttons">${DIFFICULTY_LEVELS.map(x=>`<button type="button"
+    class="study-difficulty-button ${studyDifficulty.has(x.level)?'is-selected':''}"
+    data-study-difficulty-level="${x.level}" aria-pressed="${studyDifficulty.has(x.level)}">
+    <span class="study-difficulty-number">${x.level}</span>
+    <span>${esc(x.label)}</span>
+   </button>`).join('')}</div>
+  <p class="helper">Selecciona uno o varios niveles. ${studyDifficulty.size===0?'No hay niveles seleccionados.':'Puedes combinarlos libremente.'}</p>
+ </div>`;
+}
 // La consulta vacía y el catálogo de normas utilizan el orden aleatorio estable.
 // Una búsqueda escrita conserva la prioridad de coincidencias exactas, salvo
 // cuando el usuario decide barajar explícitamente sus resultados.
@@ -188,7 +205,7 @@ function studyPool(){
  const found=study.screen==='rule'
   ? studyWordsForRule(words,study.ruleId,study.subtype)
   : (!study.query.trim()?studyDeck:findStudyWords(words,study.query));
- const filtered=filterWordsByDifficulty(found,difficultyAssignments,studyDifficulty);
+ const filtered=filterWordsByDifficultyLevels(found,difficultyAssignments,studyDifficulty);
  if(study.screen!=='rule'&&study.query.trim()&&!shuffleSearchResults)return filtered;
  const allowed=new Set(filtered.map(w=>w.id));
  return studyDeck.filter(w=>allowed.has(w.id));
@@ -223,10 +240,10 @@ function studyList(wordsList,visible){
  : '<p class="study-empty">No hay fichas compatibles con la búsqueda, la norma y la dificultad seleccionadas. Modifica los filtros.</p>';
 }
 function studyHome(){
- const counts=studyRuleCounts(filterWordsByDifficulty(words,difficultyAssignments,studyDifficulty));
+ const counts=studyRuleCounts(filterWordsByDifficultyLevels(words,difficultyAssignments,studyDifficulty));
  return `<div class="study-shell"><header class="study-hero"><p class="eyebrow">Biblioteca de evolución fonética</p><h1>Estudia cada palabra, <em>paso a paso</em>.</h1><p class="intro">Consulta las palabras revisadas o una de las 20 normas oficiales. Las soluciones y explicaciones se muestran directamente, sin ejercicios ni puntuación.</p></header>
  <section class="panel study-panel" aria-labelledby="study-search-title"><div class="study-panel-heading"><div><p class="eyebrow">01 · Palabras</p><h2 id="study-search-title">Buscar en el banco</h2></div><span class="tiny">${words.length} fichas revisadas</span><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
- <label for="study-difficulty" class="field-label">Dificultad</label><select id="study-difficulty">${difficultyOptions(studyDifficulty)}</select><p class="helper">Cuatro niveles provisionales; los filtros se aplican también al catálogo de normas.</p>
+ ${studyDifficultyButtons()}
   <label for="study-search" class="field-label">Forma latina o resultado castellano</label><input id="study-search" class="study-search" type="search" value="${esc(study.query)}" autocomplete="off" spellcheck="false" placeholder="Ej.: poenam, pœnam, noche, milagro…"><p class="helper">Admite variantes æ/ae, œ/oe, mayúsculas y vocales latinas con diacríticos.</p>
  <div id="study-results" aria-live="polite">${studyList(studyPool(),study.visible)}</div></section>
  <section class="study-catalog" aria-labelledby="study-rules-title"><div class="study-section-heading"><p class="eyebrow">02 · Normas fonéticas</p><h2 id="study-rules-title">Catálogo de las 20 normas</h2><p class="intro">Abre una norma para consultar su definición oficial, sus ejemplos y todas las fichas en las que interviene, aunque contengan otras transformaciones.</p></div>
@@ -238,12 +255,13 @@ function studyRule(){
  if(!r){study.screen='home';return studyHome();}
  const all=studyWordsForRule(words,r.id);
  const filtered=studyPool();
- const variants=studySubtypes(words,r.id);
+ const variants=studySubtypes(filterWordsByDifficultyLevels(words,difficultyAssignments,studyDifficulty),r.id);
  return `<div class="study-shell"><button type="button" class="back-button" data-study-back="home">← Todas las normas y buscador</button>
  <div class="panel study-panel"><p class="eyebrow">Norma oficial de las PAU</p><h1 class="study-title">${esc(r.name)}</h1><p class="study-rule-description">${esc(r.description)}</p>
  <h2 class="study-small-title">Ejemplos oficiales</h2><p class="study-official-examples">${r.examples.map(v=>`<span>${esc(v)}</span>`).join('')}</p>
  <p class="study-note">Los ejemplos oficiales se presentan como referencia didáctica; solo las palabras ya incorporadas al banco pueden abrirse como tarjetas.</p><button type="button" class="button-secondary study-start-practice" data-study-practice="${esc(r.id)}">Practicar esta norma →</button></div>
- <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div><div class="study-difficulty-chooser"><label for="study-rule-difficulty" class="field-label">Dificultad</label><select id="study-rule-difficulty">${difficultyOptions(studyDifficulty)}</select></div><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
+ <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${filtered.length} ${filtered.length===1?'ficha':'fichas'} según filtros <small class="study-count-total">de ${all.length} en esta norma</small></h2></div><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
+  ${studyDifficultyButtons()}
  ${variants.length?`<div class="study-subtypes" aria-label="Filtrar subtipos documentados"><button type="button" class="study-subtype ${study.subtype===''?'is-selected':''}" aria-pressed="${study.subtype===''}" data-study-subtype="">Todos (${all.length})</button>${variants.map(v=>`<button type="button" class="study-subtype ${study.subtype===v.name?'is-selected':''}" aria-pressed="${study.subtype===v.name}" data-study-subtype="${esc(v.name)}">${esc(v.name)} (${v.count})</button>`).join('')}</div>`:''}
  <div id="study-rule-results">${studyList(filtered,study.visible)}</div></section></div>`;
 }
@@ -291,6 +309,25 @@ function renderStudyResults(){
  node.innerHTML=studyList(studyPool(),study.visible);
 }
 function handleStudyClick(button){
+ if(button.dataset.studyDifficultyLevel!==undefined||button.dataset.studyDifficultyAll!==undefined||button.dataset.studyDifficultyNone!==undefined){
+  if(button.dataset.studyDifficultyLevel!==undefined){
+   const level=Number(button.dataset.studyDifficultyLevel);
+   if(!DIFFICULTY_LEVELS.some(item=>item.level===level))return;
+   if(studyDifficulty.has(level))studyDifficulty.delete(level);
+   else studyDifficulty.add(level);
+  }else if(button.dataset.studyDifficultyAll!==undefined){
+   studyDifficulty=new Set(DIFFICULTY_LEVELS.map(item=>item.level));
+  }else{
+   studyDifficulty.clear();
+  }
+  study.visible=study.screen==='rule'?24:8;
+  const focusSelector=button.dataset.studyDifficultyLevel!==undefined
+   ? '[data-study-difficulty-level="'+button.dataset.studyDifficultyLevel+'"]'
+   : button.dataset.studyDifficultyAll!==undefined?'[data-study-difficulty-all]':'[data-study-difficulty-none]';
+  renderStudy();
+  app.querySelector(focusSelector)?.focus({preventScroll:true});
+  return;
+ }
  if(button.dataset.studyShuffle!==undefined){
   studyDeck=shuffleStudyWords(words);shuffleSearchResults=true;
   study.visible=study.screen==='rule'?24:8;renderStudyResults();return;
@@ -328,12 +365,6 @@ app.addEventListener('change',event=>{
  const e=event.target;
  if(e.id==='practice-difficulty'){
   if(DIFFICULTY_FILTERS.some(x=>x.value===e.value)){practiceDifficulty=e.value;setUp();}
-  return;
- }
- if(e.id==='study-difficulty'||e.id==='study-rule-difficulty'){
-  if(DIFFICULTY_FILTERS.some(x=>x.value===e.value)){
-   studyDifficulty=e.value;study.visible=study.screen==='rule'?24:8;renderStudy();
-  }
   return;
  }
  if(e.matches('input[name="practice-scope"]')){practiceScope=e.value==='focus'?'focus':'general';setUp();return;}

@@ -41,7 +41,7 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 ## Cuatro niveles de dificultad didáctica (12/11/2026)
 
-**522 fichas clasificadas provisionalmente**, sin modificar las anotaciones de `data/pilot.json`. La clasificación vive en `data/difficulty.json` y se carga tanto en **Practicar** como en **Estudiar**. Los filtros permiten «Todos», «Solo nivel 1–4» y «Hasta nivel 1–3». Se combinan con las normas del repaso general, el repaso focalizado por una norma, la búsqueda y los subtipos del catálogo. Las fichas muestran su nivel.
+**522 fichas clasificadas provisionalmente**, sin modificar las anotaciones de `data/pilot.json`. La clasificación vive en `data/difficulty.json` y se carga tanto en **Practicar** como en **Estudiar**. En **Practicar**, el desplegable permite «Todos», «Solo nivel 1–4» y «Hasta nivel 1–3». En **Estudiar**, cuatro botones independientes permiten seleccionar cualquier combinación de niveles, con accesos rápidos «Todas» y «Ninguna». Ambos sistemas se combinan con las normas correspondientes, la búsqueda y los subtipos del catálogo. Las fichas muestran su nivel.
 
 | Nivel | Etiqueta | Fichas |
 |---|---|---:|
