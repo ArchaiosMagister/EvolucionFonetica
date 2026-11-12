@@ -168,7 +168,7 @@
  .study-word-button{align-items:start}
 }
 
-/* Botones de selección múltiple en Estudiar (independientes de Practicar). */
+/* Botones de dificultad compartidos entre Estudiar y Practicar. */
 .study-difficulty-filter{margin:8px 0 22px;max-width:100%}
 .study-difficulty-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
 .study-difficulty-heading .field-label{margin:0}
