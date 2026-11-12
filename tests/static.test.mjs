@@ -13,7 +13,7 @@ test('GitHub Pages tiene página de inicio, módulos, banco, manifiesto y modo o
 test('Despliegue condicionado a validación y ámbito offline relativo',()=>{
  const workflow=text('.github/workflows/pages.yml');const sw=text('sw.js');
  assert.match(workflow,/needs: validate/);assert.match(workflow,/npm test/);
- assert.match(sw,/data\/pilot.json/);assert.match(sw,/VERSION=/);assert.match(sw,/caches\.match/);
+ assert.match(sw,/data\/pilot.json/);assert.match(sw,/data\/difficulty.json/);assert.match(sw,/VERSION=/);assert.match(sw,/caches\.match/);
 });
 
 
@@ -45,7 +45,8 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(js,/name="practice-scope"/);
  assert.match(js,/id="focus-rule"/);
  assert.match(js,/availableFocusedWords/);
- assert.match(js,/chooseFocusedWords/);
+ assert.match(js,/chooseFromPool\(pool,n\)/);
+ assert.match(js,/filterWordsByDifficulty/);
  assert.match(js,/assessedChanges/);
  assert.match(js,/renderStudy\(\)/);
  assert.match(js,/data-study-rule/);
@@ -55,5 +56,5 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-focus-practice-20261112/);
+ assert.match(text('sw.js'),/evolutio-difficulty-levels-20261112/);
 });

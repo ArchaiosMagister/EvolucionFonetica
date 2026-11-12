@@ -38,6 +38,22 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 **Comprobaciones:** `tests/focus-practice.test.mjs` valida el filtrado de las 20 categorías, el bloqueo entre fases, la separación de las normas fijas, los grupos, las inserciones, las respuestas extra, las apariciones múltiples (`lupum`, dos aberturas), y la preservación del repaso general. Se han ejercitado los recorridos completos en Chromium con una simulación DOM a 320, 375, 768 y 1280 píxeles; esto no sustituye a una prueba en iOS físico.
 
+
+## Cuatro niveles de dificultad didáctica (12/11/2026)
+
+**522 fichas clasificadas provisionalmente**, sin modificar las anotaciones de `data/pilot.json`. La clasificación vive en `data/difficulty.json` y se carga tanto en **Practicar** como en **Estudiar**. Los filtros permiten «Todos», «Solo nivel 1–4» y «Hasta nivel 1–3». Se combinan con las normas del repaso general, el repaso focalizado por una norma, la búsqueda y los subtipos del catálogo. Las fichas muestran su nivel.
+
+| Nivel | Etiqueta | Fichas |
+|---|---|---:|
+| 1 | Fácil | 101 |
+| 2 | Medio | 282 |
+| 3 | Difícil | 115 |
+| 4 | Muy difícil | 24 |
+
+**Criterio inicial automatizado, pendiente de revisión docente**: número de transformaciones seleccionables, diversidad y rareza de fenómenos, reiteraciones e interacción de fragmentos. La pérdida fija de `-m` final **no incrementa** la dificultad. Es un indicador pedagógico, no una certificación filológica ni una reconstrucción adicional. Entre los ejemplos reales del banco, `bŏnam → buena` queda en el nivel 1 y `annuculum → añojo` en el 4.
+
+Para regenerar: `npm run difficulty:build`; para verificar coherencia: `npm run difficulty:check`. La generación conserva los registros marcados explícitamente con `origin: "docente"`, permitiendo revisiones manuales persistentes sin alterar el banco. Los registros generados tienen `origin: "automatico"`. Las pruebas incluyen integridad de 522 asignaciones, filtros exactos y acumulativos y su interacción con ambas modalidades de práctica. El nuevo JSON y su módulo están incluidos en el precaché offline de la PWA.
+
 ## Barajado de tarjetas de estudio (12/11/2026)
 
 Al abrir **Estudiar**, las fichas disponibles aparecen en orden aleatorio, no alfabético. El orden de la tanda permanece estable al pulsar «Mostrar más», consultar una tarjeta o regresar al listado; la navegación anterior/siguiente utiliza exactamente ese orden. En el buscador, cuando se escribe una consulta, se mantiene la prioridad de coincidencias exactas; el botón **«Barajar tarjetas»** permite mezclar también los resultados de esa consulta. El catálogo por normas y subtipos utiliza igualmente el barajado. No se modifican el banco, las explicaciones, los filtros ni la corrección de **Practicar**. El nuevo comportamiento se incluye en la caché offline.
