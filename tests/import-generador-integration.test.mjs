@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { auditImport,reconcileDecisions,key } from '../tools/import-generador.mjs';
+import { auditImport,reconcileDecisions } from '../tools/import-generador.mjs';
+import { latinKey } from '../src/latin.mjs';
 import { validationErrors, newCardState, checkResult, checkAllChanges, availableFocusedWords, requiredRules } from '../src/engine.mjs';
 const load=p=>JSON.parse(readFileSync(new URL(`../${p}`,import.meta.url),'utf8'));
 const bank=load('data/pilot.json');
@@ -10,16 +11,17 @@ const source=load('data/imports/generador-655.json');
 const review=load('data/imports/revision-generador.json');
 const approvals=load('data/imports/decisiones-docentes.json');
 const BASE_COUNT=282;
-const ORIGINAL_SHA='6327df2d4df3ffc23d1372fcfa1e189450bf3ebc5549dfca3891a00dc91c3fc3';
+// Hash de las 282 fichas anteriores tras la normalización ortográfica docente.
+const BASE_SHA_LATIN_U='8a1306aceb922a5d9623ea3ce92302732bf72ed3819ed20429d329dedd7a15dd';
 const base=bank.words.slice(0,BASE_COUNT);
 const imported=bank.words.slice(BASE_COUNT);
-const sourceNames=new Set(source.items.map(x=>key(x.latin)));
+const sourceNames=new Set(source.items.map(x=>latinKey(x.latin)));
 test('Importación trazable: 655 fuentes, 273 coincidencias, 240 altas y 142 pendientes',()=>{
  assert.equal(source.esquema,'evoluciones-latin-castellano/v1');
  assert.equal(source.items.length,655);
  assert.equal(base.length,282);assert.equal(imported.length,240);
  assert.equal(bank.words.length,522);
- assert.equal(createHash('sha256').update(JSON.stringify(base)).digest('hex'),ORIGINAL_SHA);
+ assert.equal(createHash('sha256').update(JSON.stringify(base)).digest('hex'),BASE_SHA_LATIN_U);
  const audit=auditImport(source,{version:1,words:base});
  assert.equal(audit.overlap.length,273);
  assert.equal(audit.accepted.length,240);
@@ -37,11 +39,11 @@ test('Importación trazable: 655 fuentes, 273 coincidencias, 240 altas y 142 pen
 });
 test('Ningún original se sobrescribe ni se admite un duplicado o fuente excluida',()=>{
  assert.deepEqual(validationErrors(bank),[]);
- assert.equal(new Set(bank.words.map(w=>key(w.latin))).size,522);
- assert.ok(imported.every(w=>sourceNames.has(key(w.latin))));
+ assert.equal(new Set(bank.words.map(w=>latinKey(w.latin))).size,522);
+ assert.ok(imported.every(w=>sourceNames.has(latinKey(w.latin))));
  assert.ok(imported.every(w=>w.source?.generatorId&&w.source?.sourceStatus==='APTO_PROPUESTO'));
  const prohibited=['inde','pirum','scrinium','quinionem','chœrilum','œagrum','œnomaum','œtam'];
- for(const name of prohibited) assert.equal(imported.some(w=>key(w.latin)===key(name)),false,name);
+ for(const name of prohibited) assert.equal(imported.some(w=>latinKey(w.latin)===latinKey(name)),false,name);
 });
 test('Todas las 240 tarjetas importadas tienen corrección guiada y ciega funcional',()=>{
  for(const w of imported){
