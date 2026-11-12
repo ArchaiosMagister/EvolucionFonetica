@@ -216,7 +216,7 @@
     },
     {
       "id": "xl-61",
-      "latin": "clavem",
+      "latin": "clauem",
       "answers": [
         "llave"
       ],
@@ -259,7 +259,7 @@
           "note": "La -m final del acusativo desaparece (norma fija)."
         }
       ],
-      "explanation": "clavem > llave: cl- inicial > ll- por palatalización. -m final cae; v intervocálica se conserva con reajustes fonológicos normales."
+      "explanation": "clauem > llave: cl- inicial > ll- por palatalización. -m final cae; la u consonántica latina se representa con v en castellano."
     },
     {
       "id": "xl-64",
@@ -1771,7 +1771,7 @@
     },
     {
       "id": "xl-342",
-      "latin": "vittam",
+      "latin": "uittam",
       "answers": [
         "veta"
       ],
@@ -1827,7 +1827,7 @@
           "note": "La -m final del acusativo desaparece (norma fija)."
         }
       ],
-      "explanation": "Ĭ tónica > e y la geminada -tt- se simplifica en -t-: vittam > veta."
+      "explanation": "Ĭ tónica > e y la geminada -tt- se simplifica en -t-: uittam > veta."
     },
     {
       "id": "xl-354",
@@ -6711,7 +6711,7 @@
     },
     {
       "id": "xl-223",
-      "latin": "ovicŭlam",
+      "latin": "ouicŭlam",
       "answers": [
         "oveja"
       ],
@@ -6780,7 +6780,7 @@
           "note": "Desaparece la -m final del acusativo (norma fija, no apócope)."
         }
       ],
-      "explanation": "ovicŭlam > oveja: ĭ breve de la base > e, síncopa de ŭ postónica y evolución especial del grupo -cul- > j. Es un diminutivo latino."
+      "explanation": "ouicŭlam > oveja: ĭ breve de la base > e, síncopa de ŭ postónica y evolución especial del grupo -cul- > j. Es un diminutivo latino."
     },
     {
       "id": "xl-226",
@@ -9753,7 +9753,7 @@
     },
     {
       "id": "xl-117",
-      "latin": "fervorem",
+      "latin": "feruorem",
       "answers": [
         "hervor"
       ],
@@ -9807,7 +9807,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "fervorem > hervor: f- inicial > h-; se mantiene la secuencia -vor y la vocal tónica o. «Fervor» es el doblete culto."
+      "explanation": "feruorem > hervor: f- inicial > h-; se mantiene la secuencia -uor latina, escrita -vor en castellano, y la vocal tónica o. «Fervor» es el doblete culto."
     },
     {
       "id": "xl-130",
@@ -10663,7 +10663,7 @@
     },
     {
       "id": "xl-217",
-      "latin": "octavum",
+      "latin": "octauum",
       "answers": [
         "ochavo"
       ],
@@ -10718,7 +10718,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "octavum > ochavo: -ct- > -ch-; v latina se mantiene como v romance."
+      "explanation": "octauum > ochavo: -ct- > -ch-; la u consonántica latina se representa con v en castellano."
     },
     {
       "id": "xl-221",
@@ -10902,7 +10902,7 @@
     },
     {
       "id": "xl-243",
-      "latin": "pluviam",
+      "latin": "pluuiam",
       "answers": [
         "lluvia"
       ],
@@ -10945,7 +10945,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "pluviam > lluvia: grupo inicial pl- > ll-; la -v- original se conserva en la grafía y pronunciación romance."
+      "explanation": "pluuiam > lluvia: grupo inicial pl- > ll-; la u consonántica latina se representa con v en castellano."
     },
     {
       "id": "xl-244",
@@ -12523,7 +12523,7 @@
     },
     {
       "id": "xl-341",
-      "latin": "vitium",
+      "latin": "uitium",
       "answers": [
         "vicio"
       ],
@@ -12641,7 +12641,7 @@
     },
     {
       "id": "xl-433",
-      "latin": "silvam",
+      "latin": "siluam",
       "answers": [
         "selva"
       ],
@@ -12683,7 +12683,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "Sĭlvam > selva: ĭ > e."
+      "explanation": "Sĭluam > selva: ĭ > e."
     },
     {
       "id": "xl-449",
@@ -12864,7 +12864,7 @@
     },
     {
       "id": "xl-458",
-      "latin": "viridem",
+      "latin": "uiridem",
       "answers": [
         "verde"
       ],
@@ -12919,7 +12919,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "Vĭrĭdem > verde: ĭ tónica > e y pérdida de la vocal postónica interior."
+      "explanation": "Uĭrĭdem > verde: ĭ tónica > e y pérdida de la vocal postónica interior."
     },
     {
       "id": "xl-489",
@@ -13255,7 +13255,7 @@
     },
     {
       "id": "xl-548",
-      "latin": "vallem",
+      "latin": "uallem",
       "answers": [
         "valle"
       ],
@@ -13298,7 +13298,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "Vallem > valle: -ll- geminada evoluciona a lateral palatal tradicional (hoy yeísta para muchos hablantes)."
+      "explanation": "Uallem > valle: -ll- geminada evoluciona a lateral palatal tradicional (hoy yeísta para muchos hablantes)."
     },
     {
       "id": "xl-570",
@@ -13584,7 +13584,7 @@
     },
     {
       "id": "xl-582",
-      "latin": "novem",
+      "latin": "nouem",
       "answers": [
         "nueve"
       ],
@@ -13626,7 +13626,7 @@
           "note": "Pérdida de la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "Nŏvem > nueve: ŏ tónica > ue."
+      "explanation": "Nŏuem > nueve: ŏ tónica > ue."
     },
     {
       "id": "xl-583",
@@ -15172,7 +15172,7 @@
     },
     {
       "id": "xl-164",
-      "latin": "iuventutem",
+      "latin": "iuuentutem",
       "answers": [
         "juventud"
       ],
@@ -15239,7 +15239,7 @@
           "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
         }
       ],
-      "explanation": "iuventutem > juventud: i- consonántica se representa j- y el sufijo -tūtem evoluciona hacia -tud con sonorización; hay también reajuste morfológico de la palabra."
+      "explanation": "iuuentutem > juventud: i- consonántica se representa j- y el sufijo -tūtem evoluciona hacia -tud con sonorización; hay también reajuste morfológico de la palabra."
     },
     {
       "id": "xl-219",
@@ -15395,7 +15395,7 @@
     },
     {
       "id": "xl-343",
-      "latin": "vivite",
+      "latin": "uiuite",
       "answers": [
         "vivid"
       ],
@@ -15437,7 +15437,7 @@
           "id": "t2"
         }
       ],
-      "explanation": "Vivite > vivid: la -t- de la terminación se sonoriza en -d- y se pierde la -e final."
+      "explanation": "Uiuite > vivid: la -t- de la terminación se sonoriza en -d- y se pierde la -e final."
     },
     {
       "id": "xl-520",
@@ -16007,7 +16007,7 @@
     },
     {
       "id": "xl-736",
-      "latin": "viduam",
+      "latin": "uiduam",
       "answers": [
         "viuda"
       ],
@@ -16049,7 +16049,7 @@
           "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
         }
       ],
-      "explanation": "Viduam > viuda: cambio de orden de los segmentos en -dua- > -uda-; no confundir con viudedad, derivado castellano."
+      "explanation": "Uiduam > viuda: cambio de orden de los segmentos en -dua- > -uda-; no confundir con viudedad, derivado castellano."
     },
     {
       "id": "xl-748",
@@ -16907,7 +16907,7 @@
     },
     {
       "id": "xl-1055",
-      "latin": "vinciculum",
+      "latin": "uinciculum",
       "answers": [
         "vencejo"
       ],
@@ -16999,7 +16999,7 @@
           "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
         }
       ],
-      "explanation": "Vincicŭlum > vencejo (cordel para atar gavillas): apertura de las vocales breves ĭ y evolución de -cŭl- > j. No confundir esta acepción con el ave llamada «vencejo»."
+      "explanation": "Uincicŭlum > vencejo (cordel para atar gavillas): apertura de las vocales breves ĭ y evolución de -cŭl- > j. No confundir esta acepción con el ave llamada «vencejo»."
     },
     {
       "id": "ge-EVF-0001",
@@ -17996,7 +17996,7 @@
     },
     {
       "id": "ge-EVF-0285",
-      "latin": "sĕrvam",
+      "latin": "sĕruam",
       "answers": [
         "sierva"
       ],
@@ -18040,7 +18040,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "sĕrvam → sierva. Etiquetas originales: N07. La ĕ tónica de sĕrvam se diptonga en ie. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "sĕruam → sierva. Etiquetas originales: N07. La ĕ tónica de sĕruam se diptonga en ie. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0295",
@@ -18433,7 +18433,7 @@
     },
     {
       "id": "ge-EVF-0328",
-      "latin": "vaginam",
+      "latin": "uaginam",
       "answers": [
         "vaina"
       ],
@@ -18477,11 +18477,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "vaginam → vaina. Etiquetas originales: N16. Desaparece la consonante intervocálica -g- en vaginam > vaina, con reajuste vocálico. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uaginam → vaina. Etiquetas originales: N16. Desaparece la consonante intervocálica -g- en uaginam > vaina, con reajuste vocálico. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0331",
-      "latin": "vĕntrem",
+      "latin": "uĕntrem",
       "answers": [
         "vientre"
       ],
@@ -18525,11 +18525,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "vĕntrem → vientre. Etiquetas originales: N07. Ĕ tónica > ie: vĕntrem > vientre. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uĕntrem → vientre. Etiquetas originales: N07. Ĕ tónica > ie: uĕntrem > vientre. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0332",
-      "latin": "vetāre",
+      "latin": "uetāre",
       "answers": [
         "vedar"
       ],
@@ -18573,11 +18573,11 @@
           "note": "Apócope de -e final tras la caída de -m cuando corresponde."
         }
       ],
-      "explanation": "vetāre → vedar. Etiquetas originales: N17. La -t- intervocálica pasa a -d-: vetāre > vedar. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uetāre → vedar. Etiquetas originales: N17. La -t- intervocálica pasa a -d-: uetāre > vedar. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0334",
-      "latin": "villum",
+      "latin": "uillum",
       "answers": [
         "vello"
       ],
@@ -18646,11 +18646,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "villum → vello. Etiquetas originales: N01, N13. La ĭ tónica de villum pasa a e; -ll- latina evoluciona a ll palatal: vello. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uillum → vello. Etiquetas originales: N01, N13. La ĭ tónica de uillum pasa a e; -ll- latina evoluciona a ll palatal: vello. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0337",
-      "latin": "virtutem",
+      "latin": "uirtutem",
       "answers": [
         "virtud"
       ],
@@ -18706,11 +18706,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "virtutem → virtud. Etiquetas originales: N17. La -t- intervocálica de virtutem se sonoriza en -d-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uirtutem → virtud. Etiquetas originales: N17. La -t- intervocálica de uirtutem se sonoriza en -d-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0338",
-      "latin": "vitam",
+      "latin": "uitam",
       "answers": [
         "vida"
       ],
@@ -18754,11 +18754,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "vitam → vida. Etiquetas originales: N17. La -t- intervocálica de vitam se sonoriza en -d-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uitam → vida. Etiquetas originales: N17. La -t- intervocálica de uitam se sonoriza en -d-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0339",
-      "latin": "vitem",
+      "latin": "uitem",
       "answers": [
         "vid"
       ],
@@ -18814,11 +18814,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "vitem → vid. Etiquetas originales: N17. La -t- intervocálica de vitem se sonoriza en -d-, con reducción final de la palabra a vid. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uitem → vid. Etiquetas originales: N17. La -t- intervocálica de uitem se sonoriza en -d-, con reducción final de la palabra a vid. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0343",
-      "latin": "voluntatem",
+      "latin": "uoluntatem",
       "answers": [
         "voluntad"
       ],
@@ -18874,7 +18874,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "voluntatem → voluntad. Etiquetas originales: N17. La terminación -tātem evoluciona a -dad, con sonorización de -t- en contexto intervocálico. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uoluntatem → voluntad. Etiquetas originales: N17. La terminación -tātem evoluciona a -dad, con sonorización de -t- en contexto intervocálico. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0345",
@@ -20324,7 +20324,7 @@
     },
     {
       "id": "ge-EVF-0408",
-      "latin": "navigare",
+      "latin": "nauigare",
       "answers": [
         "navegar"
       ],
@@ -20368,7 +20368,7 @@
           "note": "Apócope de -e final tras la caída de -m cuando corresponde."
         }
       ],
-      "explanation": "navigare → navegar. Etiquetas originales: N01. Navigare > navegar: abertura de la i átona de la sílaba interior a e; -are > -ar. La -g- ya existía en latín. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "nauigare → navegar. Etiquetas originales: N01. Nauigare > navegar: abertura de la i átona de la sílaba interior a e; -are > -ar. La -g- ya existía en latín. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0411",
@@ -20830,7 +20830,7 @@
     },
     {
       "id": "ge-EVF-0545",
-      "latin": "verrucam",
+      "latin": "uerrucam",
       "answers": [
         "verruga"
       ],
@@ -20874,11 +20874,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "verrucam → verruga. Etiquetas originales: N17. Verrucam > verruga: -c- intervocálica > -g-; no cambia el grupo -rr-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uerrucam → verruga. Etiquetas originales: N17. Uerrucam > verruga: -c- intervocálica > -g-; no cambia el grupo -rr-. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0548",
-      "latin": "ventum",
+      "latin": "uentum",
       "answers": [
         "viento"
       ],
@@ -20934,7 +20934,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "ventum → viento. Etiquetas originales: N07. Vĕntum > viento: ĕ tónica > ie. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uentum → viento. Etiquetas originales: N07. Uĕntum > viento: ĕ tónica > ie. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0555",
@@ -21707,7 +21707,7 @@
     },
     {
       "id": "ge-EVF-0869",
-      "latin": "vallatum",
+      "latin": "uallatum",
       "answers": [
         "vallado"
       ],
@@ -21776,7 +21776,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "vallatum → vallado. Etiquetas originales: N13, N17. Vallatum > vallado: -ll- evoluciona a ll castellana y -t- intervocálica se sonoriza en d. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uallatum → vallado. Etiquetas originales: N13, N17. Uallatum > vallado: -ll- evoluciona a ll castellana y -t- intervocálica se sonoriza en d. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0882",
@@ -22560,7 +22560,7 @@
     },
     {
       "id": "ge-EVF-0352",
-      "latin": "brevitatem",
+      "latin": "breuitatem",
       "answers": [
         "brevedad"
       ],
@@ -22641,11 +22641,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "brevitatem → brevedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "breuitatem → brevedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0364",
-      "latin": "convincere",
+      "latin": "conuincere",
       "answers": [
         "convencer"
       ],
@@ -22689,11 +22689,11 @@
           "note": "Apócope de -e final tras la caída de -m cuando corresponde."
         }
       ],
-      "explanation": "convincere → convencer. Etiquetas originales: N01. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "conuincere → convencer. Etiquetas originales: N01. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0379",
-      "latin": "gravitatem",
+      "latin": "grauitatem",
       "answers": [
         "gravedad"
       ],
@@ -22774,11 +22774,11 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "gravitatem → gravedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "grauitatem → gravedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0393",
-      "latin": "levitatem",
+      "latin": "leuitatem",
       "answers": [
         "levedad"
       ],
@@ -22859,7 +22859,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "levitatem → levedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "leuitatem → levedad. Etiquetas originales: N01, N17. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0423",
@@ -23028,7 +23028,7 @@
     },
     {
       "id": "ge-EVF-0550",
-      "latin": "villam",
+      "latin": "uillam",
       "answers": [
         "villa"
       ],
@@ -23072,7 +23072,7 @@
           "note": "Se pierde la -m final del acusativo (norma fija)."
         }
       ],
-      "explanation": "villam → villa. Etiquetas originales: N13. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uillam → villa. Etiquetas originales: N13. Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-0813",
@@ -23693,7 +23693,7 @@
     },
     {
       "id": "ge-EVF-1073",
-      "latin": "virilia",
+      "latin": "uirilia",
       "answers": [
         "verija"
       ],
@@ -23738,7 +23738,7 @@
           "note": "Palatalización de li → j."
         }
       ],
-      "explanation": "virilia → verija. Etiquetas originales: N01, N13. VIRILIA, plural neutro > verija, 'región púbica': abertura de ĭ a e y evolución de -li- ante vocal a consonante palatal que acabó en j. El resultado es hoy poco frecuente o regional, pero está documentado en el castellano medieval. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
+      "explanation": "uirilia → verija. Etiquetas originales: N01, N13. UIRILIA, plural neutro > verija, 'región púbica': abertura de ĭ a e y evolución de -li- ante vocal a consonante palatal que acabó en j. El resultado es hoy poco frecuente o regional, pero está documentado en el castellano medieval. (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)"
     },
     {
       "id": "ge-EVF-1074",
