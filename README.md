@@ -1,0 +1,38 @@
+# Evolutio · Evolución fonética (Latín → castellano)
+
+Webapp autónoma para practicar las **20 normas oficiales de evolución fonética PAU** facilitadas por el docente. Repositorio distinto de VocabulaLatinaGraecaque y GeneradorExamenes.
+
+## Prueba la versión piloto
+
+Tras publicar: <https://archaiosmagister.github.io/EvolucionFonetica/> (GitHub Pages).
+
+Se seleccionan las normas, la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+
+## Inicio local y pruebas
+
+```bash
+python3 -m http.server 8000
+# Abrir http://localhost:8000
+npm test
+```
+
+No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS compatibles con GitHub Pages. El service worker almacena la web y el banco para lectura sin conexión después de la primera visita. El ámbito PWA es relativo y funciona bajo la ruta `/EvolucionFonetica/`.
+
+## Fuentes y ampliaciones
+
+- `data/pilot.json`: banco piloto anotado. 51 fichas con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
+- `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
+- `src/engine.mjs`: filtrado por inclusión total, corrección y validación de rangos; los fragmentos solapados son legítimos.
+- `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.
+- `tests/engine.test.mjs`: pruebas de integridad, corrección, progreso y regresiones.
+- `docs/COBERTURA.md`: cobertura real y palabras por norma.
+- `docs/REVISION.md`: discrepancias con el Excel y cuestiones que necesitan revisión filológica.
+
+**Importante:** el Excel original no se modifica ni se incorpora íntegramente al repositorio; se utiliza para preparar lotes pequeños con anotaciones revisadas. Para ampliar el banco, añadir registros con nuevos ID y rangos Unicode correctos, mantener todos los fenómenos exigibles y ejecutar `npm test`. La publicación automática sólo se realiza cuando el trabajo de GitHub Actions aprueba las pruebas.
+
+## Limitaciones del piloto
+
+- Cada palabra presenta los cambios indicados por las normas didácticas del corpus, no una reconstrucción histórico-fonética exhaustiva de cada etapa del latín al romance.
+- Todas las categorías tienen al menos un ejemplo piloto; algunos **subtipos** de palatalización, simplificación, grafías griegas y -CUL- → -G- quedan pendientes de incorporación segura.
+- No hay servidor, cuentas de alumnado ni estadísticas persistentes; el resumen pertenece a la sesión actual.
+- La interfaz está preparada para pantallas táctiles; las pruebas automáticas de lógica no equivalen a certificación manual en cada dispositivo físico.
