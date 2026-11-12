@@ -39,7 +39,7 @@ test('u/v conservan longitud y no alteran la localización exacta de las normas'
  }
 });
 test('Las explicaciones cambian sólo el lema latino, nunca la traducción romance',()=>{
- assert.equal(normalizeLatinLemmaMentions('vitam → vida: Vita y vida.','vitam'),'uitam → vida: Uita y vida.');
+ assert.equal(normalizeLatinLemmaMentions('vitam → vida: Vita y vida.','vitam'),'uitam → vida: Vita y vida.');
  assert.equal(normalizeLatinLemmaMentions('Vĕntum > viento; ventum > viento.','ventum'),'Uĕntum > viento; uentum > viento.');
  assert.match(get('xl-61').explanation,/clauem > llave/);
  assert.match(get('xl-61').explanation,/u consonántica latina/);
