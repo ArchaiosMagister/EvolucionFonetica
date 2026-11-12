@@ -15,11 +15,22 @@ export const availableWords = (words, selected) => words.filter(w => {
   const needed = requiredRules(w);
   return needed.length > 0 && needed.every(id => selected.has(id));
 });
-export function chooseWords(words, selected, count, rng = Math.random) {
-  const pool = [...availableWords(words,selected)];
-  for (let i=pool.length-1;i>0;i--) { const j=Math.floor(rng()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
-  return pool.slice(0,Math.min(Math.max(0,Math.floor(count)),pool.length));
+// Repaso focalizado: basta con que la palabra contenga la norma elegida,
+// aunque intervengan otras leyes. Las normas fijas nunca son un foco elegible.
+const isSelectableRule = id => RULES.some(r => r.id === id);
+export const availableFocusedWords = (words, ruleId) =>
+  isSelectableRule(ruleId) ? words.filter(w => w.changes.some(t => t.rule === ruleId)) : [];
+export const assessedChanges = (word, focusRule = null) =>
+  focusRule === null ? word.changes : word.changes.filter(t => t.rule === focusRule && isSelectableRule(focusRule));
+export function chooseFromPool(pool, count, rng = Math.random) {
+  const shuffled = [...pool];
+  for (let i=shuffled.length-1;i>0;i--) { const j=Math.floor(rng()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
+  return shuffled.slice(0,Math.min(Math.max(0,Math.floor(count)),shuffled.length));
 }
+export const chooseWords = (words, selected, count, rng = Math.random) =>
+  chooseFromPool(availableWords(words, selected),count,rng);
+export const chooseFocusedWords = (words, ruleId, count, rng = Math.random) =>
+  chooseFromPool(availableFocusedWords(words,ruleId),count,rng);
 const sameRanges = (a,b) => JSON.stringify([...a].sort((x,y)=>x[0]-y[0]||x[1]-y[1])) === JSON.stringify([...b].sort((x,y)=>x[0]-y[0]||x[1]-y[1]));
 export function changeMatches(guess, actual) {
   return guess.rule === actual.rule && (guess.anchor ?? null) === (actual.anchor ?? null) && sameRanges(guess.spans ?? [],actual.spans ?? []);
@@ -78,7 +89,11 @@ export function coverage(words) {
  for(const word of words)for(const id of requiredRules(word)) counts[id]++;
  return counts;
 }
-export function newCardState(word) {return {word,phase:1,solved:new Set(),attempts:0,mistakes:0};}
+export function newCardState(word, focusRule = null) {
+ if(focusRule !== null && !isSelectableRule(focusRule))throw new Error('Norma focal no válida.');
+ if(focusRule !== null && !availableFocusedWords([word],focusRule).length)throw new Error('La palabra no contiene la norma focal.');
+ return {word,focusRule,phase:1,solved:new Set(),attempts:0,mistakes:0};
+}
 export function checkResult(state, answer) {
   if(state.phase!==1) return false;
   state.attempts++;
@@ -87,8 +102,9 @@ export function checkResult(state, answer) {
 }
 export function applyChange(state,guess) {
  if(state.phase!==2) return {correct:false,note:'Primero debes acertar el resultado castellano.'};
- const outcome=gradeChange(state.word,guess,state.solved);
- if(outcome.correct){state.solved.add(outcome.id);if(isComplete(state.word,state.solved))state.phase=3;}
+ const targets=assessedChanges(state.word,state.focusRule);
+ const outcome=gradeChange({...state.word,changes:targets},guess,state.solved);
+ if(outcome.correct){state.solved.add(outcome.id);if(targets.every(t=>state.solved.has(t.id)))state.phase=3;}
  else state.mistakes++;
  return outcome;
 }
@@ -98,8 +114,10 @@ export function applyChange(state,guess) {
 // asignar accidentalmente el acierto a otro cambio solapado con el mismo tramo.
 // En modo a ciegas no se proporcionan targetId: se buscan coincidencias únicas.
 export function checkAllChanges(state, guesses) {
- if (state.phase !== 2) return {complete:false,correct:0,remaining:state.word.changes.length,results:[],message:'Primero debes acertar el resultado castellano.'};
- if (!Array.isArray(guesses)) return {complete:false,correct:0,remaining:state.word.changes.length,results:[],message:'Lista de respuestas inválida.'};
+ const targets=assessedChanges(state.word,state.focusRule);
+ if (state.phase !== 2) return {complete:false,correct:0,remaining:targets.length,results:[],message:'Primero debes acertar el resultado castellano.'};
+ if (!Array.isArray(guesses)) return {complete:false,correct:0,remaining:targets.length,results:[],message:'Lista de respuestas inválida.'};
+ if (!targets.length) return {complete:false,correct:0,remaining:0,results:[],message:'La palabra no contiene la norma elegida.'};
  const found=new Set(), used=new Set();
  const results=guesses.map((guess,index)=>{
   const id=guess.id??String(index);
@@ -107,14 +125,14 @@ export function checkAllChanges(state, guesses) {
   used.add(id);
   if (!guess.rule) return {id,status:'missing',message:'Elige una norma.'};
   const candidates=guess.targetId
-    ? state.word.changes.filter(t=>t.id===guess.targetId)
-    : state.word.changes;
+    ? targets.filter(t=>t.id===guess.targetId)
+    : targets;
   const target=candidates.find(t=>!found.has(t.id)&&changeMatches(guess,t));
   if (target){found.add(target.id);return {id,status:'correct',message:'Identificación correcta.'};}
   return {id,status:'incorrect',message:'Revisa la norma y el fragmento seleccionado.'};
  });
- const correct=found.size,remaining=state.word.changes.length-correct;
- const complete=remaining===0 && results.length===state.word.changes.length && results.every(x=>x.status==='correct');
+ const correct=found.size,remaining=targets.length-correct;
+ const complete=remaining===0 && results.length===targets.length && results.every(x=>x.status==='correct');
  state.solved=found;
  state.mistakes+=results.filter(x=>x.status==='incorrect').length;
  if (complete)state.phase=3;

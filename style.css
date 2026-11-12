@@ -130,3 +130,29 @@
 @media(max-width:900px){.study-rules-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.experience-tabs{width:calc(100% - 24px)}.experience-tab{flex:1;min-width:0}.study-word-list{grid-template-columns:1fr}.study-rules-grid{grid-template-columns:1fr 1fr;gap:8px}.study-rule-button{grid-template-columns:24px 1fr 11px;min-height:91px;padding:11px 8px;column-gap:5px}.study-rule-button strong{font-size:13px}.study-rule-number{font-size:11px}.study-rule-count{font-size:11px}.study-rule-chevron{font-size:18px}.study-word-card{padding:20px 15px}.study-change-detail{padding:18px 12px}.study-change-tab{flex:1 1 auto}.study-word-visual{justify-content:flex-start}.study-word-visual>:first-child{margin-left:auto}.study-word-visual>:last-child{margin-right:auto}}
 @media(max-width:370px){.study-rules-grid{grid-template-columns:1fr}.study-word-pair h1,.study-word-pair h2{font-size:36px}}
+
+/* Dos tipos de práctica: las reglas generales mantienen intacto su filtro. */
+.scope-choice{border:0;margin:0 24px 10px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.scope-option{display:flex;gap:9px;align-items:flex-start;padding:13px 12px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);cursor:pointer;min-width:0}
+.scope-option:has(input:checked){background:var(--accent2);border-color:var(--accent)}
+.scope-option input{accent-color:var(--accent);flex:0 0 auto;margin:3px 0 0;width:18px;height:18px}
+.scope-option span{min-width:0;display:grid;gap:4px}
+.scope-option strong{font-size:13px;line-height:1.25}
+.scope-option small{font-size:11px;line-height:1.45;color:var(--muted)}
+.rules-heading{padding-top:16px}
+.rules-heading h3{font-family:var(--serif);font-size:22px;font-weight:500;margin:0}
+.focus-picker{padding:12px 24px 26px}
+.focus-picker .field-label{margin:0 0 9px}
+.focus-picker select{font-size:15px}
+.focus-explanation{border-left:3px solid var(--accent);padding:10px 13px;background:var(--accent2);border-radius:0 10px 10px 0;margin:16px 0 0;color:var(--ink);font-size:13px;line-height:1.65}
+.focus-session-note{padding:12px 16px;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;background:var(--panel2);font-size:13px;line-height:1.6;color:var(--ink);margin:15px 0}
+.focus-change-detail{border-left:3px solid var(--accent);padding-left:13px;background:var(--panel2)}
+.change-eval-status{display:block;font-size:11px;font-weight:700;color:var(--muted);margin:0 0 5px}
+.focus-change-detail .change-eval-status{color:var(--accent)}
+.guided-insertion{font:24px system-ui,sans-serif;color:var(--accent);border:1px dashed var(--accent);border-radius:6px;vertical-align:middle;display:inline-block;padding:0 3px;margin:0 2px;line-height:1.4}
+@media(max-width:540px){.scope-choice{grid-template-columns:1fr;margin:0 18px 9px}.focus-picker{padding:12px 18px 21px}.scope-option{min-height:60px}}
+
+.focus-hint-box{text-align:left;margin:14px 0 6px;padding:10px 13px;border:1px solid var(--border);border-radius:11px;background:var(--panel2)}
+.focus-hint-box .helper{margin:6px 0 0}
+
+.study-start-practice{margin-top:12px;display:inline-flex;align-items:center;justify-content:center;min-height:48px}

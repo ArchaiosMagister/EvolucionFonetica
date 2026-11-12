@@ -39,3 +39,21 @@ test('Estudio tiene navegación independiente, buscador, catálogo, explicacione
  assert.match(css,/\.study-word-visual/);assert.match(css,/\.study-rules-grid/);
  assert.match(sw,/\.\/src\/study\.mjs/);
 });
+
+test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cambiar el repaso general',()=>{
+ const js=text('src/app.mjs'),engine=text('src/engine.mjs'),css=text('style.css');
+ assert.match(js,/name="practice-scope"/);
+ assert.match(js,/id="focus-rule"/);
+ assert.match(js,/availableFocusedWords/);
+ assert.match(js,/chooseFocusedWords/);
+ assert.match(js,/assessedChanges/);
+ assert.match(js,/renderStudy\(\)/);
+ assert.match(js,/data-study-rule/);
+ assert.match(js,/data-study-practice/);
+ assert.match(js,/check-all/);
+ assert.match(js,/data-draft-rule/);
+ assert.match(engine,/function checkAllChanges/);
+ assert.match(css,/\.focus-session-note/);
+ assert.match(css,/\.scope-choice/);
+ assert.match(text('sw.js'),/evolutio-focus-practice-20261112/);
+});

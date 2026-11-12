@@ -6,7 +6,21 @@ Webapp autónoma para **estudiar y practicar** las **20 normas oficiales de evol
 
 Web publicada: <https://archaiosmagister.github.io/EvolucionFonetica/> (GitHub Pages).
 
-Se seleccionan las normas, la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+En **Practicar** se puede elegir entre repaso general (filtro estricto de todas las normas necesarias) y **repaso de una sola norma** (filtrado por presencia de esa norma). Después se elige la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+
+## Repasar una sola norma
+
+En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas oficiales**. El desplegable muestra cuántas palabras del banco revisado contienen cada categoría. Si escoge una sola norma, aparecen también palabras que incluyen otros fenómenos: por ejemplo, `focum → fuego` es elegible para diptongación aunque también tenga sonorización, abertura y caída fija de `-m`. No se añaden fichas dudosas ni se modifica el banco.
+
+- **Repaso general (sin cambios):** una palabra es elegible únicamente si **todas** sus normas seleccionables están incluidas entre las marcadas. La caída fija de `-m` sigue siendo independiente de la apócope y se evalúa cuando corresponde.
+- **Repaso de una norma:** se incluyen **todas las palabras que contienen** la norma seleccionada, sin exigir la selección de otras. El límite de tarjetas se ajusta al número disponible, sin alterar el criterio ni duplicar entradas.
+- **Fase 1:** continúa siendo obligatorio acertar el resultado castellano; las respuestas erróneas pueden reintentarse y no se revela la solución. Se ofrece una **pista opcional** con los nombres de las otras normas presentes (no los resultados).
+- **Fase 2:** en guiado se marcan únicamente los grupos y puntos de inserción de la norma elegida; en a ciegas el alumno localiza los tramos por sí mismo. «Comprobar todo» **solo corrige las apariciones de esa norma**, incluidas varias dentro de una misma palabra; los cambios ajenos y la pérdida fija de `-m` no se preguntan ni cuentan como errores. Las tarjetas de respuesta y el botón de corrección conjunta se conservan.
+- **Al finalizar:** la explicación muestra **todos** los cambios de la palabra, señalando cuáles se evaluaron y cuáles se muestran solo como explicación. En el resumen de sesión se indica la norma trabajada.
+- Desde **Estudiar → Catálogo de normas** existe el botón **«Practicar esta norma»**. Respeta el estado de una práctica en curso y solicita confirmación antes de sustituirla por otra sesión.
+- El selector claro/oscuro/OLED, las funciones táctiles, la memoria de sesión al alternar Estudiar/Practicar y los recursos offline permanecen sin cambios.
+
+**Comprobaciones:** `tests/focus-practice.test.mjs` valida el filtrado de las 20 categorías, el bloqueo entre fases, la separación de las normas fijas, los grupos, las inserciones, las respuestas extra, las apariciones múltiples (`lupum`, dos aberturas), y la preservación del repaso general. Se han ejercitado los recorridos completos en Chromium con una simulación DOM a 320, 375, 768 y 1280 píxeles; esto no sustituye a una prueba en iOS físico.
 
 ## Modo Estudiar (consulta sin corrección)
 
@@ -37,7 +51,7 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 - `data/pilot.json`: banco acumulado anotado (252 fichas: 52 iniciales, 100 del segundo lote y 100 del tercero) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
 - `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
-- `src/engine.mjs`: filtrado por inclusión total, corrección y validación de rangos; los fragmentos solapados son legítimos.
+- `src/engine.mjs`: filtrado estricto y focalizado por norma, corrección y validación de rangos; los fragmentos solapados son legítimos.
 - `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.
 - `tests/engine.test.mjs`: pruebas de integridad, corrección, progreso y regresiones.
 - `docs/COBERTURA.md`: cobertura real y palabras por norma.

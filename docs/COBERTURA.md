@@ -33,6 +33,12 @@ El banco reúne **52 fichas iniciales, 100 del segundo lote y 100 del tercer lot
 
 Una ficha sólo se sortea cuando todas sus normas **seleccionables** están incluidas. La -m fija se identifica aunque no esté seleccionada. La abertura *u → o* en *-um* sí es seleccionable (criterio confirmado por el docente). Los subtipos nunca se confunden con reglas independientes: por ejemplo, la reducción interior de -MIN- queda dentro de su norma específica.
 
+## Repaso focalizado (sin modificar el banco)
+
+La selección estricta anterior se mantiene para **Repaso general**. En **Una sola norma** basta con que la ficha contenga el fenómeno escogido; sus otras normas no la excluyen, pero **tampoco se evalúan**. Si aparecen dos transformaciones de esa misma norma, ambas deben identificarse. La explicación final conserva la evolución completa y la pérdida fija de `-m`, que no cuenta como apócope ni como norma focal seleccionable.
+
+Ejemplos calculados a partir de las 252 fichas: «Diptongación» ofrece **48** palabras en el repaso focalizado, frente a **14** con el filtro general seleccionando solo esta norma; «Aféresis» ofrece **1**, frente a **0** con el filtro general. Son resultados de las anotaciones existentes, no de un reanálisis automático.
+
 ## Subtipos aún no representados
 
 La cobertura del catálogo **no** implica que estén incluidos todos los subtipos. El tercer lote añade -ni- + vocal > ñ, pl- > ll-, -di- + vocal > y, diversas palatalizaciones de -ti-, -mn-, -gn-, -nn-, -ct- y otros grupos; el segundo ya incluía fl- > ll-, -mb- > -m- e y > i. La variante -CUL- → -G- está representada por *miraculum → milagro*. **ph > f** no se fuerza al sorteo patrimonial cuando el Excel lo considera no patrimonial. Las cifras acumuladas por norma constan en [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md).
