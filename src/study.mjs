@@ -1,5 +1,6 @@
 // Utilidades puras de consulta. Reutilizan exclusivamente las fichas ya revisadas.
 import { RULES } from './rules.mjs';
+import { latinU } from './latin.mjs';
 
 // Las variantes tipográficas æ/ae y œ/oe, las cantidades vocálicas y las
 // tildes no deben impedir encontrar una ficha. No altera las respuestas
@@ -23,16 +24,23 @@ export function shuffleStudyWords(words, random=Math.random) {
 export const sortStudyWords = words => [...words].sort((a,b) =>
   normalizeStudyQuery(a.latin).localeCompare(normalizeStudyQuery(b.latin),'es') || a.id.localeCompare(b.id));
 export function findStudyWords(words, query) {
-  const q=normalizeStudyQuery(query);
-  if (!q) return sortStudyWords(words);
-  const candidates=words.filter(w => [w.latin,...(w.answers||[])].some(v => normalizeStudyQuery(v).includes(q)));
-  return candidates.sort((a,b) => {
-    const score=w => {
-      const forms=[w.latin,...(w.answers||[])].map(normalizeStudyQuery);
-      return forms.some(x=>x===q)?0:forms.some(x=>x.startsWith(q))?1:2;
-    };
-    return score(a)-score(b) || normalizeStudyQuery(a.latin).localeCompare(normalizeStudyQuery(b.latin),'es');
-  });
+ const q=normalizeStudyQuery(query),latinQuery=normalizeStudyQuery(latinU(query));
+ if (!q) return sortStudyWords(words);
+ // El alumno puede buscar «vitam» o «uitam»: solo la grafía latina
+ // admite esta equivalencia; las respuestas castellanas conservan su v.
+ const variants=w=>[
+  {form:normalizeStudyQuery(w.latin),query:latinQuery},
+  ...(w.answers||[]).map(answer=>({form:normalizeStudyQuery(answer),query:q}))
+ ];
+ const candidates=words.filter(w=>variants(w).some(({form,query})=>form.includes(query)));
+ return candidates.sort((a,b)=>{
+  const score=w=>{
+   const forms=variants(w);
+   return forms.some(({form,query})=>form===query)?0
+    :forms.some(({form,query})=>form.startsWith(query))?1:2;
+  };
+  return score(a)-score(b) || normalizeStudyQuery(a.latin).localeCompare(normalizeStudyQuery(b.latin),'es');
+ });
 }
 export function studyWordsForRule(words, ruleId, subtype='') {
   if (!RULES.some(r=>r.id===ruleId)) return [];
