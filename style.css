@@ -207,3 +207,17 @@
 .update-app-status:not(:empty){position:absolute;z-index:10;right:0;top:calc(100% + 8px);width:min(270px,calc(100vw - 24px));border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--panel);color:var(--ink);font-size:12px;line-height:1.4;box-shadow:var(--shadow)}
 @media(max-width:620px){.update-app-label{display:none}.update-app-button{min-width:42px;padding:7px 10px}.header-right{gap:8px}}
 @media(max-width:420px){.site-header{gap:6px}.brand{gap:7px}.brand-symbol{width:38px;height:38px}.brand strong{font-size:14px}.brand small{display:none}.header-right{gap:6px}.theme-picker select{min-width:94px;max-width:100px}.update-app-button{width:42px;padding:0}}
+
+/* Desbloqueo didáctico: nunca se confunde solución revelada con acierto. */
+.practice-reveal-button{display:block;width:100%;max-width:430px;margin:10px auto 0;min-height:48px;border-color:var(--border);color:var(--muted);background:var(--panel2)}
+.practice-reveal-button:hover{border-color:var(--warn);color:var(--ink)}
+.practice-attempts{font-size:12px;text-align:center;color:var(--muted);font-weight:650;margin:12px 0 8px;font-variant-numeric:tabular-nums}
+.reveal-banner{position:relative;max-width:620px;margin:0 auto 20px;padding:14px 16px 13px 52px;border:1px solid var(--bad);border-left-width:4px;border-radius:12px;background:color-mix(in srgb,var(--bad) 8%,var(--panel));color:var(--ink);animation:reveal-error-nudge .3s ease-out}
+.reveal-banner strong{display:block;color:var(--bad);font-size:15px;line-height:1.35}
+.reveal-banner p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.reveal-symbol{position:absolute;left:15px;top:13px;display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--bad);border-radius:50%;color:var(--bad);font-size:17px;font-weight:800;line-height:1}
+.summary-line.summary-revealed{border-left:3px solid var(--bad);background:color-mix(in srgb,var(--bad) 5%,var(--panel))}
+.summary-line.summary-revealed span{color:var(--bad);font-weight:750}
+@keyframes reveal-error-nudge{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.reveal-banner{animation:none}}
+@media(max-width:540px){.reveal-banner{padding:13px 12px 13px 45px}.reveal-symbol{left:11px}.summary-line.summary-revealed{flex-wrap:wrap}}
