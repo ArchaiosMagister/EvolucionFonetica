@@ -1,12 +1,27 @@
 # Evolutio · Evolución fonética (Latín → castellano)
 
-Webapp autónoma para practicar las **20 normas oficiales de evolución fonética PAU** facilitadas por el docente. Repositorio distinto de VocabulaLatinaGraecaque y GeneradorExamenes.
+Webapp autónoma para **estudiar y practicar** las **20 normas oficiales de evolución fonética PAU** facilitadas por el docente. Repositorio distinto de VocabulaLatinaGraecaque y GeneradorExamenes.
 
 ## Prueba la webapp
 
 Web publicada: <https://archaiosmagister.github.io/EvolucionFonetica/> (GitHub Pages).
 
 Se seleccionan las normas, la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+
+## Modo Estudiar (consulta sin corrección)
+
+La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas, no sortea palabras y no modifica la lógica de evaluación.
+
+- **Buscador bidireccional:** localiza las 252 fichas revisadas por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
+- **Catálogo de normas:** presenta exactamente las 20 categorías oficiales, sus definiciones y ejemplos tal como figuran en `src/rules.mjs`. Indica las fichas del banco que contienen cada norma, incluso si requieren otras transformaciones para llegar al castellano. Las normas fijas se consultan dentro de las fichas, no como categoría número 21.
+- **Subtipos documentados:** cuando el banco incluye subtipos, pueden filtrarse desde el catálogo (p. ej. `-ct- > -ch-`, `-CUL- > -J-` y `-CUL- > -G-`). Nunca se deducen ejemplos nuevos a partir de una regla.
+- **Tarjetas filológicas interactivas:** resultado visible, botones para recorrer cada transformación, letras/grupos originales resaltados según posiciones Unicode de la ficha, puntos de inserción `＋`, tramos discontinuos, nota de la transformación, etapas intermedias **solo cuando están anotadas**, definición oficial, resumen del banco y referencia a fila y lote del Excel. Navegación entre fichas de la consulta sin volver a buscar.
+- Las fichas marcadas como pendientes en `docs/REVISION.md` siguen fuera del banco y del buscador; no se generan etimologías ni explicaciones nuevas.
+- Módulo puro `src/study.mjs` separado de la evaluación; comprobaciones automáticas en `tests/study.test.mjs`. El recurso está incluido en la caché offline de la PWA.
+
+### Comprobaciones
+
+Ejecutar `npm test` (incluye búsqueda, catálogo, subtipos, resaltado, integridad del banco y ausencia de regresiones de práctica). La interfaz ha sido probada mediante una simulación DOM en Chromium para anchuras de escritorio y móvil. La navegación real a `http://localhost` y a `file://` está bloqueada en el navegador de este entorno; no equivale a una prueba en iOS físico.
 
 ## Inicio local y pruebas
 

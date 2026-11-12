@@ -1,4 +1,5 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
+import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight } from './study.mjs';
 import { chars, availableWords, chooseWords, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -33,7 +34,7 @@ function setupHTML(){
  <details class="rule-reference"><summary>Consultar las 20 normas oficiales</summary><div class="reference-list">${RULES.map((r,i)=>`<p><strong>${i+1}. ${esc(r.name)}.</strong> ${esc(r.description)}<br><em>${esc(r.examples.join('; '))}</em></p>`).join('')}<p><strong>Normas fijas.</strong> Los sustantivos y adjetivos castellanos se explican desde el acusativo latino según el criterio didáctico oficial. La -m final del acusativo se pierde y no se marca como apócope.</p></div></details>
  </aside></section>`;
 }
-function setUp(){session=null;cardState=null;feedback='';app.innerHTML=setupHTML();app.setAttribute('aria-busy','false');}
+function setUp(){session=null;cardState=null;feedback='';resultDraft='';app.innerHTML=setupHTML();app.setAttribute('aria-busy','false');}
 function updateAvailable(){const pool=availableWords(words,selected);const countEl=document.querySelector('#eligible-count');if(countEl)countEl.textContent=`${pool.length} palabras elegibles con las normas seleccionadas.${pool.length<requested?' Si solicitas más, se ajustará a las disponibles.':''}`;const start=document.querySelector('[data-action="start"]');if(start)start.disabled=!pool.length;const num=document.querySelector('#requested');if(num){num.max=String(Math.max(1,pool.length));num.value=String(pool.length?Math.min(requested,pool.length):1);}}
 function startSession(){
  const pool=availableWords(words,selected);if(!pool.length){setUp();return;}
@@ -42,7 +43,7 @@ function startSession(){
  initCard();
 }
 function initCard(){
- cardState=newCardState(currentWord());feedback='';batchFeedback='';draftSerial=0;
+ resultDraft='';cardState=newCardState(currentWord());feedback='';batchFeedback='';draftSerial=0;
  const w=currentWord();
  drafts=session.mode==='guided'?w.changes.map(t=>({id:`g-${t.id}`,targetId:t.id,spans:t.spans.map(r=>[...r]),anchor:t.anchor,rule:'',status:null})):[];
  blindSpans=[];pendingStart=null;insertion=null;renderCard();
@@ -53,7 +54,7 @@ function renderCard(){
  app.innerHTML=`<div class="practice-shell"><div class="topline"><button type="button" class="back-button" data-action="back">← Cambiar normas</button><span class="tiny">Tarjeta ${session.index+1} de ${session.cards.length} · ${session.mode==='guided'?'Guiado':'A ciegas'}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${progress()}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso"><div class="progress-value" style="width:${progress()}%"></div></div><article class="panel practice-card"><p class="eyebrow">${phaseTitle[stage]}</p>${stage===1?renderFirst(w):stage===2?renderSecond(w):renderComplete(w)}</article></div>`;
  app.setAttribute('aria-busy','false');
 }
-function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1><p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
+function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1><p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
 function renderGuidedWord(word){
  const set=new Set(word.changes.flatMap(x=>x.spans.flatMap(([s,e])=>Array.from({length:e-s},(_,j)=>s+j))));
  let html='';const letters=chars(word.latin);
@@ -142,6 +143,129 @@ function celebrateCompletion(){
 function next(){if(cardState.phase!==3)return;session.done.push({latin:currentWord().latin,spanish:currentWord().answers[0],mistakes:cardState.mistakes,attempts:cardState.attempts});session.index++;if(session.index<session.cards.length)initCard();else renderFinal();}
 function renderFinal(){const total=session.done.length;const perfect=session.done.filter(d=>d.mistakes===0).length;const mistakes=session.done.reduce((n,d)=>n+d.mistakes,0);
  app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">Repaso completado</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Palabras completadas sin errores · ${mistakes} errores durante la práctica.</p><div class="summary-list">${session.done.map(d=>`<div class="summary-line"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${d.mistakes===0?'✓ Sin errores':d.mistakes+' errores'}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;}
+// ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
+const study={screen:'home',query:'',visible:8,ruleId:null,subtype:'',wordId:null,changeIndex:0,origin:'home',contextIds:[]};
+let section='practice',resultDraft='';
+const practiceTab=document.querySelector('#nav-practice');
+const studyTab=document.querySelector('#nav-study');
+function showSection(next){
+ section=next==='study'?'study':'practice';
+ for(const [button,selectedView] of [[practiceTab,'practice'],[studyTab,'study']]){
+  button.classList.toggle('is-current',section===selectedView);
+  button.setAttribute('aria-pressed',String(section===selectedView));
+ }
+ if(section==='study')renderStudy();
+ else if(session && session.index>=session.cards.length)renderFinal();
+ else if(session && cardState)renderCard();
+ else setUp();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+practiceTab.addEventListener('click',()=>showSection('practice'));
+studyTab.addEventListener('click',()=>showSection('study'));
+
+function studyWordButton(w){
+ const meaning=w.answers.join(' / ');
+ return `<button type="button" class="study-word-button" data-study-word="${esc(w.id)}"><span class="study-word-names"><strong lang="la">${esc(w.latin)}</strong><span aria-hidden="true">→</span><span>${esc(meaning)}</span></span><span class="study-word-meta">${w.changes.length} cambios <span aria-hidden="true">›</span></span></button>`;
+}
+function studyList(wordsList,visible){
+ const subset=wordsList.slice(0,visible);
+ return wordsList.length ? `<p class="study-counter">${wordsList.length} ${wordsList.length===1?'ficha encontrada':'fichas encontradas'} · mostrando ${subset.length}</p>
+ <div class="study-word-list">${subset.map(studyWordButton).join('')}</div>
+ ${visible<wordsList.length?'<button type="button" class="button-secondary study-more" data-study-more="true">Mostrar 24 más</button>':''}`
+ : '<p class="study-empty">No hay palabras del banco que coincidan. Prueba otra forma latina o castellana; solo se muestran fichas revisadas.</p>';
+}
+function studyHome(){
+ const counts=studyRuleCounts(words);
+ return `<div class="study-shell"><header class="study-hero"><p class="eyebrow">Biblioteca de evolución fonética</p><h1>Estudia cada palabra, <em>paso a paso</em>.</h1><p class="intro">Consulta las palabras revisadas o una de las 20 normas oficiales. Las soluciones y explicaciones se muestran directamente, sin ejercicios ni puntuación.</p></header>
+ <section class="panel study-panel" aria-labelledby="study-search-title"><div class="study-panel-heading"><div><p class="eyebrow">01 · Palabras</p><h2 id="study-search-title">Buscar en el banco</h2></div><span class="tiny">${words.length} fichas revisadas</span></div>
+ <label for="study-search" class="field-label">Forma latina o resultado castellano</label><input id="study-search" class="study-search" type="search" value="${esc(study.query)}" autocomplete="off" spellcheck="false" placeholder="Ej.: poenam, pœnam, noche, milagro…"><p class="helper">Admite variantes æ/ae, œ/oe, mayúsculas y vocales latinas con diacríticos.</p>
+ <div id="study-results" aria-live="polite">${studyList(findStudyWords(words,study.query),study.visible)}</div></section>
+ <section class="study-catalog" aria-labelledby="study-rules-title"><div class="study-section-heading"><p class="eyebrow">02 · Normas fonéticas</p><h2 id="study-rules-title">Catálogo de las 20 normas</h2><p class="intro">Abre una norma para consultar su definición oficial, sus ejemplos y todas las fichas en las que interviene, aunque contengan otras transformaciones.</p></div>
+ <div class="study-rules-grid">${RULES.map((r,i)=>`<button type="button" class="study-rule-button" data-study-rule="${esc(r.id)}"><span class="study-rule-number">${String(i+1).padStart(2,'0')}</span><strong>${esc(r.name)}</strong><span class="study-rule-count">${counts[r.id]} ${counts[r.id]===1?'palabra':'palabras'}</span><span class="study-rule-chevron" aria-hidden="true">›</span></button>`).join('')}</div>
+ <p class="study-note">Normas fijas: el acusativo latino es la referencia didáctica para sustantivos y adjetivos. La pérdida de <em>-m</em> final se muestra dentro de cada ficha a la que corresponde, pero no forma parte de las 20 normas seleccionables.</p></section></div>`;
+}
+function studyRule(){
+ const r=RULES.find(item=>item.id===study.ruleId);
+ if(!r){study.screen='home';return studyHome();}
+ const all=studyWordsForRule(words,r.id);
+ const filtered=studyWordsForRule(words,r.id,study.subtype);
+ const variants=studySubtypes(words,r.id);
+ return `<div class="study-shell"><button type="button" class="back-button" data-study-back="home">← Todas las normas y buscador</button>
+ <div class="panel study-panel"><p class="eyebrow">Norma oficial de las PAU</p><h1 class="study-title">${esc(r.name)}</h1><p class="study-rule-description">${esc(r.description)}</p>
+ <h2 class="study-small-title">Ejemplos oficiales</h2><p class="study-official-examples">${r.examples.map(v=>`<span>${esc(v)}</span>`).join('')}</p>
+ <p class="study-note">Los ejemplos oficiales se presentan como referencia didáctica; solo las palabras ya incorporadas al banco pueden abrirse como tarjetas.</p></div>
+ <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div></div>
+ ${variants.length?`<div class="study-subtypes" aria-label="Filtrar subtipos documentados"><button type="button" class="study-subtype ${study.subtype===''?'is-selected':''}" aria-pressed="${study.subtype===''}" data-study-subtype="">Todos (${all.length})</button>${variants.map(v=>`<button type="button" class="study-subtype ${study.subtype===v.name?'is-selected':''}" aria-pressed="${study.subtype===v.name}" data-study-subtype="${esc(v.name)}">${esc(v.name)} (${v.count})</button>`).join('')}</div>`:''}
+ <div id="study-rule-results">${studyList(filtered,study.visible)}</div></section></div>`;
+}
+function studyVisual(word,change){
+ const letters=chars(word.latin);
+ const {indices,anchor}=studyHighlight(word,change);
+ let html='';
+ for(let i=0;i<=letters.length;i++){
+  if(anchor===i)html+='<span class="study-insertion" aria-label="Punto de inserción de sonido">＋</span>';
+  if(i<letters.length)html+=`<span class="study-letter ${indices.has(i)?'is-marked':''}">${esc(letters[i])}</span>`;
+ }
+ return `<div class="study-word-visual" lang="la" aria-label="${esc(word.latin)}: ${esc(labelFragment(word,change))}">${html}</div>`;
+}
+function studyWord(){
+ const w=words.find(w=>w.id===study.wordId);
+ if(!w){study.screen='home';return studyHome();}
+ study.changeIndex=Math.max(0,Math.min(study.changeIndex,w.changes.length-1));
+ const t=w.changes[study.changeIndex],rule=RULES.find(r=>r.id===t.rule);
+ const contextIndex=study.contextIds.indexOf(w.id);
+ const fixed=w.changes.some(c=>c.rule===FIXED_RULE.id);
+ const stages=Array.isArray(t.stages)&&t.stages.length ? `<p class="study-stages"><strong>Etapas documentadas:</strong> ${t.stages.map(esc).join(' · ')}</p>`:'';
+ return `<div class="study-shell study-detail-shell"><div class="study-detail-nav"><button type="button" class="back-button" data-study-back="${study.origin}">← ${study.origin==='rule'?'Volver a la norma':'Volver al buscador'}</button><span class="tiny">Consulta libre · Sin puntuación</span></div>
+ <article class="panel study-word-card"><p class="eyebrow">Ficha filológica · Banco revisado</p><div class="study-word-pair"><h1 lang="la">${esc(w.latin)}</h1><span aria-hidden="true">→</span><h2>${esc(w.answers.join(' / '))}</h2></div>
+ <p class="study-word-intro">Pulsa cada fenómeno para ver qué letras o grupos intervienen. Los cambios se muestran según las anotaciones didácticas verificadas, sin reconstruir etapas que no figuren en el banco.</p>
+ <div class="study-change-tabs" role="group" aria-label="Fenómenos de ${esc(w.latin)}">${w.changes.map((change,i)=>`<button type="button" class="study-change-tab ${i===study.changeIndex?'is-active':''}" data-study-change="${i}" aria-pressed="${i===study.changeIndex}"><span class="study-change-index">${i+1}</span><span>${esc(ruleName(change.rule))}${change.subtype?`<small>${esc(change.subtype)}</small>`:''}</span></button>`).join('')}</div>
+ <div class="study-change-detail" aria-live="polite"><p class="eyebrow">Cambio ${study.changeIndex+1} de ${w.changes.length}</p>${studyVisual(w,t)}
+ <div class="study-change-label"><strong>${esc(ruleName(t.rule))}${t.subtype?` · ${esc(t.subtype)}`:''}</strong>${t.rule===FIXED_RULE.id?'<span class="study-fixed-label">Norma fija</span>':''}</div>
+ <p class="study-fragment-result">${esc(labelFragment(w,t))} <span aria-hidden="true">→</span> ${esc(t.output||'∅')}</p>
+ <p class="study-change-explanation">${esc(t.note)}</p>${stages}
+ ${rule?`<p class="study-rule-definition"><strong>Definición PAU:</strong> ${esc(rule.description)}</p>`:`<p class="study-rule-definition"><strong>Norma fija:</strong> ${esc(FIXED_RULE.description)}</p>`}</div>
+ <div class="study-step-nav"><button type="button" class="button-secondary" data-study-step="-1" ${study.changeIndex===0?'disabled':''}>← Cambio anterior</button><button type="button" class="button-secondary" data-study-step="1" ${study.changeIndex===w.changes.length-1?'disabled':''}>Siguiente cambio →</button></div>
+ <section class="study-word-summary"><h3>Explicación de la evolución</h3><p>${esc(w.explanation||'La ficha recoge las transformaciones anotadas en el banco.')}</p>
+ ${fixed?'<p class="study-note">Normas fijas: los sustantivos y adjetivos se estudian a partir del acusativo según el criterio didáctico oficial. La -m final desaparece, pero no se contabiliza como apócope seleccionable.</p>':''}
+ <p class="study-source">Procedencia: Excel docente · Banco, fila ${esc(w.source.row)} · Lote ${esc(w.source.lot)}.</p></section>
+ ${contextIndex>=0&&study.contextIds.length>1?`<div class="study-word-navigation"><button class="button-secondary" type="button" data-study-neighbor="-1" ${contextIndex===0?'disabled':''}>← Palabra anterior</button><span class="tiny">${contextIndex+1} de ${study.contextIds.length}</span><button class="button-secondary" type="button" data-study-neighbor="1" ${contextIndex===study.contextIds.length-1?'disabled':''}>Siguiente palabra →</button></div>`:''}
+ </article></div>`;
+}
+function renderStudy(){
+ app.innerHTML=study.screen==='word'?studyWord():study.screen==='rule'?studyRule():studyHome();
+ app.setAttribute('aria-busy','false');
+}
+function renderStudyResults(){
+ const node=app.querySelector(study.screen==='rule'?'#study-rule-results':'#study-results');
+ if(!node)return;
+ const pool=study.screen==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
+ node.innerHTML=studyList(pool,study.visible);
+}
+function handleStudyClick(button){
+ if(button.dataset.studyRule!==undefined){
+  study.ruleId=button.dataset.studyRule;study.subtype='';study.screen='rule';study.visible=24;renderStudy();window.scrollTo({top:0,behavior:'instant'});return;
+ }
+ if(button.dataset.studySubtype!==undefined){study.subtype=button.dataset.studySubtype;study.visible=24;renderStudy();return;}
+ if(button.dataset.studyWord!==undefined){
+  study.origin=study.screen==='rule'?'rule':'home';
+  const pool=study.origin==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
+  study.contextIds=pool.map(w=>w.id);study.wordId=button.dataset.studyWord;
+  study.changeIndex=0;study.screen='word';renderStudy();window.scrollTo({top:0,behavior:'instant'});return;
+ }
+ if(button.dataset.studyBack!==undefined){
+  study.screen=button.dataset.studyBack==='rule'?'rule':'home';
+  renderStudy();window.scrollTo({top:0,behavior:'instant'});return;
+ }
+ if(button.dataset.studyChange!==undefined){study.changeIndex=Number(button.dataset.studyChange);renderStudy();return;}
+ if(button.dataset.studyStep!==undefined){study.changeIndex+=Number(button.dataset.studyStep);renderStudy();return;}
+ if(button.dataset.studyMore!==undefined){study.visible+=24;renderStudyResults();return;}
+ if(button.dataset.studyNeighbor!==undefined){
+  const i=study.contextIds.indexOf(study.wordId)+Number(button.dataset.studyNeighbor);
+  if(i>=0 && i<study.contextIds.length){study.wordId=study.contextIds[i];study.changeIndex=0;renderStudy();window.scrollTo({top:0,behavior:'instant'});}
+ }
+}
+
 app.addEventListener('change',event=>{
  const e=event.target;
  if(e.matches('[data-rule]')){if(e.checked)selected.add(e.dataset.rule);else selected.delete(e.dataset.rule);updateAvailable();}
@@ -154,10 +278,11 @@ app.addEventListener('change',event=>{
    }
  }
 });
-app.addEventListener('input',event=>{if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
-app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;event.preventDefault();const answer=document.querySelector('#castellano').value;if(checkResult(cardState,answer)){feedback='';renderCard();}else{feedback='Incorrecto. Revisa el resultado e inténtalo de nuevo.';renderCard();document.querySelector('#castellano')?.focus();}});
+app.addEventListener('input',event=>{if(section==='study'&&event.target.id==='study-search'){study.query=event.target.value;study.visible=24;renderStudyResults();return;}if(event.target.id==='castellano'){resultDraft=event.target.value;}if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
+app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;event.preventDefault();const answer=document.querySelector('#castellano').value;resultDraft=answer;if(checkResult(cardState,answer)){resultDraft='';feedback='';renderCard();}else{feedback='Incorrecto. Revisa el resultado e inténtalo de nuevo.';renderCard();document.querySelector('#castellano')?.focus();}});
 app.addEventListener('click',event=>{
  const t=event.target.closest('button');if(!t)return;
+ if(section==='study'){handleStudyClick(t);return;}
  if(t.dataset.action==='select-all'){selected=new Set(RULES.map(r=>r.id));setUp();return;}
  if(t.dataset.action==='select-none'){selected.clear();setUp();return;}
  if(t.dataset.action==='start'){requested=Number(document.querySelector('#requested')?.value)||10;startSession();return;}

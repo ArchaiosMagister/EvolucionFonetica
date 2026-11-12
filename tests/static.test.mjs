@@ -27,3 +27,15 @@ test('El acierto completo celebra una sola corrección y respeta movimiento redu
  assert.match(css,/@media \(prefers-reduced-motion:reduce\)\{\.celebration-layer\{display:none!important\}\}/);
  assert.match(engine,/export function optionRuleIds/);
 });
+
+
+test('Estudio tiene navegación independiente, buscador, catálogo, explicaciones y caché offline',()=>{
+ const html=text('index.html'),js=text('src/app.mjs'),css=text('style.css'),sw=text('sw.js');
+ assert.match(html,/id="nav-practice"/);assert.match(html,/id="nav-study"/);
+ assert.match(js,/\.\/study\.mjs/);assert.match(js,/data-study-word/);
+ assert.match(js,/data-study-rule/);assert.match(js,/id="study-search"/);
+ assert.match(js,/studyWord\(\)/);assert.match(js,/studyVisual\(word,change\)/);
+ assert.match(js,/section==='study'/);assert.match(js,/showSection\('practice'\)/);
+ assert.match(css,/\.study-word-visual/);assert.match(css,/\.study-rules-grid/);
+ assert.match(sw,/\.\/src\/study\.mjs/);
+});

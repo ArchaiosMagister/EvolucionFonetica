@@ -1,6 +1,6 @@
 /* Cache version must change whenever the offline resources change. */
-const VERSION='evolutio-bank-252-20261112-batch100-third';
-const CORE=['./','./index.html','./style.css','./src/app.mjs','./src/engine.mjs','./src/rules.mjs','./data/pilot.json','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png'];
+const VERSION='evolutio-study-252-20261112-1';
+const CORE=['./','./index.html','./style.css','./src/app.mjs','./src/study.mjs','./src/engine.mjs','./src/rules.mjs','./data/pilot.json','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==VERSION).map(key=>caches.delete(key)))),self.clients.claim()])));
 self.addEventListener('fetch',event=>{
