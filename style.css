@@ -56,3 +56,12 @@
 .latin-interactive>:first-child{margin-left:auto}
 .latin-interactive>:last-child{margin-right:auto}
 .latin-interactive .symbol-button,.latin-interactive .insertion-button{flex:none}
+
+/* Acierto completo: señal accesible + confeti ligero (sin bloquear controles). */
+.success-banner{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 20px;color:var(--good);font-weight:750;font-size:15px;text-align:center}
+.success-check{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;background:color-mix(in srgb,var(--good) 17%,var(--panel));border:1px solid var(--good);font-size:20px}
+.celebration-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999;contain:layout paint}
+.celebration-piece{position:absolute;left:50%;top:clamp(190px,35vh,340px);height:12px;width:8px;border-radius:2px;opacity:0;animation:confetti-burst 1150ms cubic-bezier(.15,.65,.22,1) var(--delay) both}
+.celebration-piece:nth-child(3n){height:8px;width:8px;border-radius:50%}
+@keyframes confetti-burst{0%{opacity:0;transform:translate(-50%,-50%) rotate(0deg) scale(.5)}10%{opacity:1}72%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot)) scale(.95)}}
+@media (prefers-reduced-motion:reduce){.celebration-layer{display:none!important}}

@@ -15,3 +15,15 @@ test('Despliegue condicionado a validación y ámbito offline relativo',()=>{
  assert.match(workflow,/needs: validate/);assert.match(workflow,/npm test/);
  assert.match(sw,/data\/pilot.json/);assert.match(sw,/VERSION=/);assert.match(sw,/caches\.match/);
 });
+
+
+test('El acierto completo celebra una sola corrección y respeta movimiento reducido',()=>{
+ const js=text('src/app.mjs'),css=text('style.css'),engine=text('src/engine.mjs');
+ assert.match(js,/if\(checked\.complete\)celebrateCompletion\(\)/);
+ assert.match(js,/if\(window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches\)return/);
+ assert.match(js,/¡Todas las normas correctas!/);
+ assert.match(js,/aria-hidden','true'/);
+ assert.match(css,/\.celebration-layer\{[^}]*pointer-events:none/);
+ assert.match(css,/@media \(prefers-reduced-motion:reduce\)\{\.celebration-layer\{display:none!important\}\}/);
+ assert.match(engine,/export function optionRuleIds/);
+});

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { RULES } from '../src/rules.mjs';
-import { chars, normAnswer, resultMatches, requiredRules, availableWords, chooseWords, changeMatches, gradeChange, isComplete, validationErrors, coverage, newCardState, checkResult, applyChange, checkAllChanges } from '../src/engine.mjs';
+import { chars, normAnswer, resultMatches, requiredRules, availableWords, chooseWords, changeMatches, gradeChange, isComplete, validationErrors, coverage, newCardState, checkResult, applyChange, checkAllChanges, optionRuleIds } from '../src/engine.mjs';
 const dataset = JSON.parse(readFileSync(new URL('../data/pilot.json', import.meta.url),'utf8'));
 const words=dataset.words;
 const word=id=>words.find(x=>x.id===`xl-${id}`);
@@ -179,4 +179,16 @@ test('Comprobar todo en modo a ciegas admite tramos discontinuos e inserciones, 
  assert.equal(first.complete,false);assert.equal(first.results.at(-1).status,'incorrect');assert.equal(state.phase,2);
  const second=checkAllChanges(state,drafts);
  assert.equal(second.complete,true);assert.equal(state.phase,3);
+});
+
+
+test('La pérdida fija de -m es la primera opción aplicable sin cambiar el filtro',()=>{
+ const poena=word(245),latinWithoutM=word(35);
+ const selected=['MONOP','ABER'];
+ const first=optionRuleIds(poena,selected);
+ assert.deepEqual(first,['FIX_M','MONOP','ABER']);
+ assert.deepEqual(selected,['MONOP','ABER'],'No se modifica la lista original');
+ assert.deepEqual(optionRuleIds(latinWithoutM,selected),selected,'La norma fija se omite si no procede');
+ assert.deepEqual(optionRuleIds(poena,['FIX_M',...selected]),first,'La norma fija no se duplica');
+ assert.deepEqual(requiredRules(poena),['MONOP'],'La norma fija sigue fuera del filtrado');
 });

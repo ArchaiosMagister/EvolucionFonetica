@@ -3,6 +3,14 @@ export const chars = text => [...text.normalize('NFC')];
 export const normAnswer = text => String(text ?? '').normalize('NFC').trim().replace(/\s+/gu,' ').toLocaleLowerCase('es');
 export const resultMatches = (word, answer) => word.answers.some(value => normAnswer(value) === normAnswer(answer));
 export const requiredRules = word => [...new Set(word.changes.filter(x => x.rule !== FIXED_RULE.id).map(x => x.rule))];
+// Orden de las opciones de las tarjetas: norma fija primero si procede;
+// en las restantes palabras nunca se muestra. No modifica los filtros.
+export function optionRuleIds(word, selected){
+ const regular=[...new Set([...selected].filter(id=>id!==FIXED_RULE.id))];
+ return word.changes.some(change=>change.rule===FIXED_RULE.id)
+   ? [FIXED_RULE.id,...regular]
+   : regular;
+}
 export const availableWords = (words, selected) => words.filter(w => {
   const needed = requiredRules(w);
   return needed.length > 0 && needed.every(id => selected.has(id));

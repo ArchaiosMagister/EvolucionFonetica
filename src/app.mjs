@@ -1,5 +1,5 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
-import { chars, availableWords, chooseWords, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules } from './engine.mjs';
+import { chars, availableWords, chooseWords, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const themePicker=document.querySelector('#theme-select');
@@ -86,9 +86,8 @@ function blindWord(word){
  `;
 }
 function choiceOptions(word,value=''){
- const ids=[...session.selected];
- if(word.changes.some(t=>t.rule===FIXED_RULE.id))ids.push(FIXED_RULE.id);
- return ids.map(id=>`<option value="${id}" ${value===id?'selected':''}>${esc(ruleName(id))}${id==='FIX_M'?' (fija)':''}</option>`).join('');
+ // La norma fija aparece primero SOLO en las palabras a las que corresponde.
+ return optionRuleIds(word,session.selected).map(id=>`<option value="${id}" ${value===id?'selected':''}>${esc(ruleName(id))}${id==='FIX_M'?' (fija)':''}</option>`).join('');
 }
 function renderSecond(w){
  const guided=session.mode==='guided',count=drafts.length;
@@ -109,11 +108,36 @@ function renderSecond(w){
   </div>`;
 }
 function renderComplete(w){
- return `<div class="completion"><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div><h3>Explicación de los cambios</h3>
+ return `<div class="completion"><div class="success-banner" role="status"><span class="success-check" aria-hidden="true">✓</span><strong>¡Todas las normas correctas!</strong></div><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div><h3>Explicación de los cambios</h3>
  ${w.changes.map(t=>`<div class="change-detail"><span class="change-tag ${t.rule==='FIX_M'?'fixed-tag':''}">${esc(ruleName(t.rule))}${t.subtype?' · '+esc(t.subtype):''}</span><strong>${esc(labelFragment(w,t))} → ${esc(t.output||'∅')}</strong><p>${esc(t.note)}</p>${t.stages?`<p>Etapas: ${esc(t.stages.join(' · '))}</p>`:''}</div>`).join('')}
  ${w.changes.some(t=>t.rule==='FIX_M')?'<p class="review-note">Normas fijas: según el criterio didáctico oficial, las formas nominales se estudian desde el acusativo. La -m final del acusativo se pierde; no es la apócope seleccionable.</p>':''}
  <p class="review-note">Fuente: Excel docente · Banco, fila ${w.source.row} · Lote ${w.source.lot}. Se respeta la terminología de las normas PAU.</p>
  <button class="button-primary full" data-action="next">${session.index+1===session.cards.length?'Ver resumen':'Siguiente palabra →'}</button></div>`;
+}
+// Celebración breve, sin dependencias ni bloqueo de la navegación. Se ejecuta
+// solamente después de que «Comprobar todo» haya validado todos los cambios.
+function celebrateCompletion(){
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const previous=document.querySelector('.celebration-layer');
+ previous?.remove();
+ const layer=document.createElement('div');
+ layer.className='celebration-layer';
+ layer.setAttribute('aria-hidden','true');
+ const palette=['#36c7a1','#d8a34e','#6dbbe7','#c6a6ed','#ef8d8d'];
+ for(let i=0;i<24;i++){
+  const piece=document.createElement('span');
+  piece.className='celebration-piece';
+  const angle=(2*Math.PI*i/24)+((Math.random()-.5)*.20);
+  const distance=95+Math.random()*200;
+  piece.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);
+  piece.style.setProperty('--dy',`${Math.sin(angle)*distance+75}px`);
+  piece.style.setProperty('--rot',`${Math.round(Math.random()*960-480)}deg`);
+  piece.style.setProperty('--delay',`${Math.round(Math.random()*120)}ms`);
+  piece.style.backgroundColor=palette[i%palette.length];
+  layer.appendChild(piece);
+ }
+ document.body.appendChild(layer);
+ window.setTimeout(()=>layer.remove(),1550);
 }
 function next(){if(cardState.phase!==3)return;session.done.push({latin:currentWord().latin,spanish:currentWord().answers[0],mistakes:cardState.mistakes,attempts:cardState.attempts});session.index++;if(session.index<session.cards.length)initCard();else renderFinal();}
 function renderFinal(){const total=session.done.length;const perfect=session.done.filter(d=>d.mistakes===0).length;const mistakes=session.done.reduce((n,d)=>n+d.mistakes,0);
@@ -161,6 +185,7 @@ app.addEventListener('click',event=>{
   batchFeedback=checked.message;
   if(!drafts.length)batchFeedback='Añade al menos un cambio antes de comprobar.';
   renderCard();
+  if(checked.complete)celebrateCompletion();
   if(cardState.phase===2)app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
 });
