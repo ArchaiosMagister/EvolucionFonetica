@@ -161,22 +161,14 @@
 .transmission-note{max-width:650px;margin:6px auto 16px;padding:9px 13px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.55;text-align:center}
 .transmission-note strong{color:var(--ink)}
 
-/* Dificultad independiente del contenido filológico, con controles táctiles. */
-#study-difficulty,#study-rule-difficulty,#practice-difficulty{
- display:block;width:100%;max-width:100%;min-height:48px;padding:9px 12px;
- border:1px solid var(--border);border-radius:11px;
- background:var(--panel2);color:var(--ink);font-size:14px;margin:5px 0 12px;
-}
-.study-difficulty-chooser{flex:1 1 210px;max-width:300px;min-width:0}
-.study-difficulty-chooser .field-label{display:block;font-size:12px;margin-bottom:4px}
+/* Dificultad didáctica: presentación compartida entre Estudiar y Practicar. */
 .study-word-button{flex-wrap:wrap}
 .study-word-meta{white-space:normal;text-align:right;margin-left:auto}
 @media(max-width:620px){
- .study-difficulty-chooser{max-width:none;flex-basis:100%}
  .study-word-button{align-items:start}
 }
 
-/* Botones de selección múltiple en Estudiar (independientes de Practicar). */
+/* Botones de dificultad compartidos entre Estudiar y Practicar. */
 .study-difficulty-filter{margin:8px 0 22px;max-width:100%}
 .study-difficulty-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
 .study-difficulty-heading .field-label{margin:0}
@@ -192,3 +184,26 @@
 .study-count-total{display:inline-block;margin-left:4px;font:500 13px/1.4 system-ui,sans-serif;color:var(--muted);white-space:normal}
 @media(max-width:620px){.study-difficulty-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.study-difficulty-button{justify-content:flex-start;padding:11px 12px}}
 @media(max-width:350px){.study-difficulty-button{font-size:13px;gap:6px;padding:10px 7px}}
+
+/* Tick inequívoco y legible en todos los temas, también en OLED. */
+.study-difficulty-button{position:relative;justify-content:flex-start;padding-right:35px}
+.study-difficulty-name{min-width:0;overflow-wrap:anywhere}
+.study-difficulty-button .difficulty-tick{display:grid;place-items:center;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:7px;background:var(--accentInk);color:var(--accent);font-size:17px;font-weight:900;line-height:1}
+.study-difficulty-button .difficulty-tick.is-empty{display:none}
+.practice-difficulty-filter{margin:0}
+.practice-difficulty-filter .study-difficulty-buttons{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.practice-difficulty-filter .study-difficulty-button{min-height:51px;font-size:13px}
+.practice-difficulty-filter .study-difficulty-number{min-width:22px;min-height:22px}
+.practice-difficulty-filter .study-difficulty-heading{gap:6px}
+.practice-difficulty-filter .study-difficulty-actions{gap:4px}
+
+/* Actualización manual de la PWA desde la cabecera. */
+.header-right{gap:10px}
+.update-app-control{position:relative;flex:0 0 auto}
+.update-app-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:7px 11px;border:1px solid var(--border);border-radius:11px;background:var(--panel);color:var(--ink);font-size:12px;font-weight:750;white-space:nowrap}
+.update-app-button:hover{border-color:var(--accent);background:var(--accent2)}
+.update-app-button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.update-app-icon{font-size:20px;line-height:1}
+.update-app-status:not(:empty){position:absolute;z-index:10;right:0;top:calc(100% + 8px);width:min(270px,calc(100vw - 24px));border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--panel);color:var(--ink);font-size:12px;line-height:1.4;box-shadow:var(--shadow)}
+@media(max-width:620px){.update-app-label{display:none}.update-app-button{min-width:42px;padding:7px 10px}.header-right{gap:8px}}
+@media(max-width:420px){.site-header{gap:6px}.brand{gap:7px}.brand-symbol{width:38px;height:38px}.brand strong{font-size:14px}.brand small{display:none}.header-right{gap:6px}.theme-picker select{min-width:94px;max-width:100px}.update-app-button{width:42px;padding:0}}

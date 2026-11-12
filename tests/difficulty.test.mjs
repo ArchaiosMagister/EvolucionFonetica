@@ -144,3 +144,22 @@ test('Multiselección funciona tras búsqueda y barajado, conserva orden y norma
  const broken={...records,[words[0].id]:{level:9}};
  assert.throws(()=>filterWordsByDifficultyLevels(words,broken,new Set([1])),/clasificación/);
 });
+
+test('Practicar admite dificultades no consecutivas sin violar las normas exigibles',()=>{
+ const selectedLevels=new Set([1,3]);
+ const legalRules=new Set(RULES.map(r=>r.id));
+ const general=filterWordsByDifficultyLevels(availableWords(words,legalRules),records,selectedLevels);
+ assert.equal(general.length,216);
+ assert.ok(general.every(w=>selectedLevels.has(records[w.id].level)));
+ const limitedRules=new Set(['ABER','DIPT','SONOR']);
+ const limited=filterWordsByDifficultyLevels(availableWords(words,limitedRules),records,selectedLevels);
+ assert.ok(limited.every(w=>requiredRules(w).every(rule=>limitedRules.has(rule))));
+ assert.ok(limited.every(w=>selectedLevels.has(records[w.id].level)));
+ for(const rule of RULES){
+  const pool=filterWordsByDifficultyLevels(availableFocusedWords(words,rule.id),records,new Set([2,4]));
+  assert.ok(pool.every(w=>w.changes.some(c=>c.rule===rule.id)));
+  assert.ok(pool.every(w=>[2,4].includes(records[w.id].level)));
+ }
+ assert.equal(filterWordsByDifficultyLevels(availableWords(words,legalRules),records,new Set()).length,0);
+ assert.equal(chooseFromPool([],10).length,0);
+});

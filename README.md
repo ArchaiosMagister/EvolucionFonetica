@@ -41,7 +41,7 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 ## Cuatro niveles de dificultad didáctica (12/11/2026)
 
-**522 fichas clasificadas provisionalmente**, sin modificar las anotaciones de `data/pilot.json`. La clasificación vive en `data/difficulty.json` y se carga tanto en **Practicar** como en **Estudiar**. En **Practicar**, el desplegable permite «Todos», «Solo nivel 1–4» y «Hasta nivel 1–3». En **Estudiar**, cuatro botones independientes permiten seleccionar cualquier combinación de niveles, con accesos rápidos «Todas» y «Ninguna». Ambos sistemas se combinan con las normas correspondientes, la búsqueda y los subtipos del catálogo. Las fichas muestran su nivel.
+**522 fichas clasificadas provisionalmente**, sin modificar las anotaciones de `data/pilot.json`. La clasificación vive en `data/difficulty.json` y se carga tanto en **Practicar** como en **Estudiar**. En **Practicar** y **Estudiar**, cuatro botones independientes permiten seleccionar cualquier combinación de niveles, con accesos rápidos «Todas» y «Ninguna». Una marca visible **✓** destaca cada nivel activo, también en los temas oscuro y OLED. Las selecciones de ambos modos son independientes. Se combinan con las normas del repaso general y focalizado, la búsqueda y los subtipos del catálogo. Las fichas muestran su nivel.
 
 | Nivel | Etiqueta | Fichas |
 |---|---|---:|
@@ -53,6 +53,10 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 **Criterio inicial automatizado, pendiente de revisión docente**: número de transformaciones seleccionables, diversidad y rareza de fenómenos, reiteraciones e interacción de fragmentos. La pérdida fija de `-m` final **no incrementa** la dificultad. Es un indicador pedagógico, no una certificación filológica ni una reconstrucción adicional. Entre los ejemplos reales del banco, `bŏnam → buena` queda en el nivel 1 y `annuculum → añojo` en el 4.
 
 Para regenerar: `npm run difficulty:build`; para verificar coherencia: `npm run difficulty:check`. La generación conserva los registros marcados explícitamente con `origin: "docente"`, permitiendo revisiones manuales persistentes sin alterar el banco. Los registros generados tienen `origin: "automatico"`. Las pruebas incluyen integridad de 522 asignaciones, filtros exactos y acumulativos y su interacción con ambas modalidades de práctica. El nuevo JSON y su módulo están incluidos en el precaché offline de la PWA.
+
+## Botón de actualización de la webapp (12/11/2026)
+
+En la cabecera, junto al selector de aspecto, se añade **«↻ Actualizar»**. Al pulsarlo con conexión, se comprueba si hay nueva versión mediante `ServiceWorkerRegistration.update()`; cuando haya un worker en instalación se espera a que se active antes de recargar. Si no existe registro o el navegador no admite service workers se recarga igualmente. Los errores de red o instalación se muestran sin afirmar que haya una actualización. **Antes de recargar una práctica en curso**, se pide confirmación: la sesión no se guarda de forma permanente. El comportamiento es compatible con el funcionamiento sin conexión de la PWA, pero la búsqueda de actualizaciones requiere conexión.
 
 ## Barajado de tarjetas de estudio (12/11/2026)
 
