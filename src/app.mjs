@@ -1,6 +1,6 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
 import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
-import { DIFFICULTY_LEVELS, DIFFICULTY_FILTERS, difficultyErrors, difficultyLabel, filterWordsByDifficulty, filterWordsByDifficultyLevels } from './difficulty.mjs';
+import { DIFFICULTY_LEVELS, difficultyErrors, difficultyLabel, filterWordsByDifficultyLevels } from './difficulty.mjs';
 import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -17,12 +17,12 @@ function theme(value){
 }
 theme(initialTheme);
 themePicker.addEventListener('change',event=>theme(event.target.value));
-let words=[], difficultyAssignments={}, practiceDifficulty='all', studyDifficulty=new Set(DIFFICULTY_LEVELS.map(x=>x.level)),
+const allDifficultyLevels=()=>new Set(DIFFICULTY_LEVELS.map(x=>x.level));
+let words=[], difficultyAssignments={}, practiceDifficulty=allDifficultyLevels(), studyDifficulty=allDifficultyLevels(),
  selected=new Set(RULES.map(r=>r.id)), practiceScope='general', focusRule='PALAT', mode='guided', requested=10, session=null, cardState=null, feedback='';
-const difficultyOptions=selectedValue=>DIFFICULTY_FILTERS.map(item=>`<option value="${item.value}" ${item.value===selectedValue?'selected':''}>${esc(item.label)}</option>`).join('');
 const wordDifficulty=word=>difficultyLabel(difficultyAssignments[word.id]?.level);
 const isFocused = () => practiceScope === 'focus';
-const eligiblePool = () => filterWordsByDifficulty(
+const eligiblePool = () => filterWordsByDifficultyLevels(
  isFocused()?availableFocusedWords(words,focusRule):availableWords(words,selected),
  difficultyAssignments,practiceDifficulty
 );
@@ -47,7 +47,7 @@ function wordSourceNote(w){
 const labelFragment=(word,t)=>t.anchor!==undefined?`Inserción ${t.anchor===0?'antes de '+chars(word.latin)[0]??'':'tras la letra '+chars(word.latin)[t.anchor-1]}`:t.spans.map(([s,e])=>chars(word.latin).slice(s,e).join('')).join(' + ');
 function setupHTML(){
  const pool=eligiblePool();const count=Math.min(requested,pool.length);
- const focusCounts=Object.fromEntries(RULES.map(r=>[r.id,filterWordsByDifficulty(availableFocusedWords(words,r.id),difficultyAssignments,practiceDifficulty).length]));
+ const focusCounts=Object.fromEntries(RULES.map(r=>[r.id,filterWordsByDifficultyLevels(availableFocusedWords(words,r.id),difficultyAssignments,practiceDifficulty).length]));
  return `<section class="hero"><p class="eyebrow">Laboratorio de lengua histórica</p><h1>Del latín al <em>castellano</em>.</h1><p class="intro">Descubre la palabra resultante y demuestra qué transformaciones explican su evolución. Primero la respuesta; después, las normas.</p><div class="details-steps"><span class="step-pill"><b>01</b> Resuelve</span><span class="step-pill"><b>02</b> Analiza</span><span class="step-pill"><b>03</b> Comprueba</span></div></section>
  <section class="setup-grid"><div class="panel"><div class="panel-header"><div><h2>Qué quieres practicar</h2><p>Elige entre el repaso completo o concentrarte en una sola norma.</p></div></div>
  <fieldset class="scope-choice" aria-label="Tipo de repaso"><legend class="sr-only">Tipo de repaso</legend>
@@ -55,7 +55,7 @@ function setupHTML(){
  <label class="scope-option"><input type="radio" name="practice-scope" value="focus" ${isFocused()?'checked':''}><span><strong>Una sola norma</strong><small>Solo se evalúa el fenómeno seleccionado</small></span></label></fieldset>
  ${isFocused()?`<div class="focus-picker"><label class="field-label" for="focus-rule">Norma que quieres reforzar</label><select id="focus-rule">${RULES.map((r,i)=>`<option value="${r.id}" ${r.id===focusRule?'selected':''}>${String(i+1).padStart(2,'0')}. ${esc(r.name)} · ${focusCounts[r.id]} ${focusCounts[r.id]===1?'palabra':'palabras'}</option>`).join('')}</select><p class="helper" id="focus-description">${esc(RULES.find(r=>r.id===focusRule)?.description||'')}</p><p class="focus-explanation">Se incluyen todas las palabras que contienen esta norma, aunque también intervengan otras. Al terminar verás la explicación completa; solo se corrige el fenómeno elegido.</p></div>`
  :`<div class="panel-header rules-heading"><div><h3>Normas fonéticas</h3><p>Selecciona solo las que has estudiado.</p></div><div class="rule-actions"><button class="text-button" data-action="select-all">Todas</button><button class="text-button" data-action="select-none">Ninguna</button></div></div><div class="rules">${RULES.map((r,i)=>`<label class="rule-option" title="${esc(r.description)}"><input type="checkbox" data-rule="${r.id}" ${selected.has(r.id)?'checked':''}><span class="rule-num">${String(i+1).padStart(2,'0')}</span><span>${esc(r.name)}</span></label>`).join('')}</div>`}</div>
- <aside class="panel side-panel"><h2>Tu sesión</h2><div class="field"><label class="field-label" for="practice-difficulty">Dificultad de las palabras</label><select id="practice-difficulty">${difficultyOptions(practiceDifficulty)}</select><p class="helper">Clasificación orientativa pendiente de revisión docente; se combina con las normas elegidas.</p></div><div class="field"><div class="field-label">Modalidad de análisis</div><div class="choice-row"><label class="choice-label"><input type="radio" name="mode" value="guided" ${mode==='guided'?'checked':''}> Guiado</label><label class="choice-label"><input type="radio" name="mode" value="blind" ${mode==='blind'?'checked':''}> A ciegas</label></div><p class="helper">${mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.'}</p></div>
+ <aside class="panel side-panel"><h2>Tu sesión</h2><div class="field">${difficultyButtons('practice')}</div><div class="field"><div class="field-label">Modalidad de análisis</div><div class="choice-row"><label class="choice-label"><input type="radio" name="mode" value="guided" ${mode==='guided'?'checked':''}> Guiado</label><label class="choice-label"><input type="radio" name="mode" value="blind" ${mode==='blind'?'checked':''}> A ciegas</label></div><p class="helper">${mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.'}</p></div>
  <div class="field"><label class="field-label" for="requested">Número de tarjetas</label><input id="requested" type="number" min="1" max="${Math.max(pool.length,1)}" value="${count||1}" inputmode="numeric"><p class="helper" id="eligible-count">${pool.length} ${pool.length===1?'palabra elegible':'palabras elegibles'} ${isFocused()?'para '+esc(focusedName()):'con las normas seleccionadas'}.${pool.length<requested?' Se ajustará la cantidad a las disponibles.':''}</p></div>
  <button type="button" class="button-primary full" data-action="start" ${!pool.length?'disabled':''}>Empezar práctica <span aria-hidden="true">→</span></button>${!pool.length?`<p class="feedback error">${isFocused()?'Esta combinación de norma y dificultad no tiene palabras disponibles.':'No hay palabras compatibles con las normas y la dificultad seleccionadas. Modifica los filtros; nunca se ampliarán automáticamente.'}</p>`:''}
  <details class="rule-reference"><summary>Consultar las 20 normas oficiales</summary><div class="reference-list">${RULES.map((r,i)=>`<p><strong>${i+1}. ${esc(r.name)}.</strong> ${esc(r.description)}<br><em>${esc(r.examples.join('; '))}</em></p>`).join('')}<p><strong>Normas fijas.</strong> Los sustantivos y adjetivos castellanos se explican desde el acusativo latino según el criterio didáctico oficial. La -m final del acusativo se pierde y no se marca como apócope.</p></div></details>
@@ -66,7 +66,7 @@ function updateAvailable(){const pool=eligiblePool();const countEl=document.quer
 function startSession(){
  const pool=eligiblePool();if(!pool.length){setUp();return;}
  const n=Math.max(1,Math.min(requested,pool.length));
- session={cards:chooseFromPool(pool,n),index:0,done:[],selected:[...selected],mode,scope:practiceScope,focusRule:isFocused()?focusRule:null,difficulty:practiceDifficulty};
+ session={cards:chooseFromPool(pool,n),index:0,done:[],selected:[...selected],mode,scope:practiceScope,focusRule:isFocused()?focusRule:null,difficulty:[...practiceDifficulty]};
  initCard();
 }
 function initCard(){
@@ -181,22 +181,49 @@ function renderFinal(){const total=session.done.length;const perfect=session.don
 // ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
 const study={screen:'home',query:'',visible:8,ruleId:null,subtype:'',wordId:null,changeIndex:0,origin:'home',contextIds:[]};
 let studyDeck=[], shuffleSearchResults=false;
-function studyDifficultyButtons(){
- const allSelected=studyDifficulty.size===DIFFICULTY_LEVELS.length;
- return `<div class="study-difficulty-filter" role="group" aria-label="Seleccionar niveles de dificultad">
+// Un único selector sirve para ambos modos; las colecciones elegidas son independientes.
+function difficultyButtons(scope){
+ const levels=scope==='practice'?practiceDifficulty:studyDifficulty;
+ const allSelected=levels.size===DIFFICULTY_LEVELS.length;
+ return `<div class="study-difficulty-filter ${scope==='practice'?'practice-difficulty-filter':''}" role="group" aria-label="Seleccionar niveles de dificultad para ${scope==='practice'?'practicar':'estudiar'}">
   <div class="study-difficulty-heading"><span class="field-label">Dificultad</span>
    <span class="study-difficulty-actions">
-    <button type="button" class="text-button" data-study-difficulty-all="true" ${allSelected?'disabled':''}>Todas</button>
-    <button type="button" class="text-button" data-study-difficulty-none="true" ${studyDifficulty.size===0?'disabled':''}>Ninguna</button>
+    <button type="button" class="text-button" data-${scope}-difficulty-all="true" ${allSelected?'disabled':''}>Todas</button>
+    <button type="button" class="text-button" data-${scope}-difficulty-none="true" ${levels.size===0?'disabled':''}>Ninguna</button>
    </span></div>
   <div class="study-difficulty-buttons">${DIFFICULTY_LEVELS.map(x=>`<button type="button"
-    class="study-difficulty-button ${studyDifficulty.has(x.level)?'is-selected':''}"
-    data-study-difficulty-level="${x.level}" aria-pressed="${studyDifficulty.has(x.level)}">
+    class="study-difficulty-button ${levels.has(x.level)?'is-selected':''}"
+    data-${scope}-difficulty-level="${x.level}" aria-pressed="${levels.has(x.level)}">
     <span class="study-difficulty-number">${x.level}</span>
-    <span>${esc(x.label)}</span>
+    <span class="study-difficulty-name">${esc(x.label)}</span>
+    <span class="difficulty-tick ${levels.has(x.level)?'':'is-empty'}" aria-hidden="true">✓</span>
    </button>`).join('')}</div>
-  <p class="helper">Selecciona uno o varios niveles. ${studyDifficulty.size===0?'No hay niveles seleccionados.':'Puedes combinarlos libremente.'}</p>
+  <p class="helper">${levels.size===0?'No hay niveles seleccionados.': 'Selecciona uno o varios niveles; la ✓ indica cuáles están activos.'}</p>
  </div>`;
+}
+function studyDifficultyButtons(){return difficultyButtons('study');}
+// Actualiza solo la colección del modo pulsado y conserva la selección del otro.
+function changeDifficulty(button,scope){
+ const raw=button.dataset[scope+'DifficultyLevel'];
+ const all=button.dataset[scope+'DifficultyAll']!==undefined;
+ const none=button.dataset[scope+'DifficultyNone']!==undefined;
+ if(raw===undefined&&!all&&!none)return false;
+ let levels=scope==='practice'?practiceDifficulty:studyDifficulty;
+ if(raw!==undefined){
+  const level=Number(raw);
+  if(!DIFFICULTY_LEVELS.some(x=>x.level===level))return true;
+  if(levels.has(level))levels.delete(level);else levels.add(level);
+ }else if(all){
+  levels=allDifficultyLevels();
+ }else levels=new Set();
+ if(scope==='practice')practiceDifficulty=levels;else studyDifficulty=levels;
+ const selector=raw!==undefined
+  ? '[data-'+scope+'-difficulty-level="'+raw+'"]'
+  : all?'[data-'+scope+'-difficulty-all]':'[data-'+scope+'-difficulty-none]';
+ if(scope==='practice')setUp();
+ else {study.visible=study.screen==='rule'?24:8;renderStudy();}
+ app.querySelector(selector)?.focus({preventScroll:true});
+ return true;
 }
 // La consulta vacía y el catálogo de normas utilizan el orden aleatorio estable.
 // Una búsqueda escrita conserva la prioridad de coincidencias exactas, salvo
@@ -309,25 +336,7 @@ function renderStudyResults(){
  node.innerHTML=studyList(studyPool(),study.visible);
 }
 function handleStudyClick(button){
- if(button.dataset.studyDifficultyLevel!==undefined||button.dataset.studyDifficultyAll!==undefined||button.dataset.studyDifficultyNone!==undefined){
-  if(button.dataset.studyDifficultyLevel!==undefined){
-   const level=Number(button.dataset.studyDifficultyLevel);
-   if(!DIFFICULTY_LEVELS.some(item=>item.level===level))return;
-   if(studyDifficulty.has(level))studyDifficulty.delete(level);
-   else studyDifficulty.add(level);
-  }else if(button.dataset.studyDifficultyAll!==undefined){
-   studyDifficulty=new Set(DIFFICULTY_LEVELS.map(item=>item.level));
-  }else{
-   studyDifficulty.clear();
-  }
-  study.visible=study.screen==='rule'?24:8;
-  const focusSelector=button.dataset.studyDifficultyLevel!==undefined
-   ? '[data-study-difficulty-level="'+button.dataset.studyDifficultyLevel+'"]'
-   : button.dataset.studyDifficultyAll!==undefined?'[data-study-difficulty-all]':'[data-study-difficulty-none]';
-  renderStudy();
-  app.querySelector(focusSelector)?.focus({preventScroll:true});
-  return;
- }
+ if(changeDifficulty(button,'study'))return;
  if(button.dataset.studyShuffle!==undefined){
   studyDeck=shuffleStudyWords(words);shuffleSearchResults=true;
   study.visible=study.screen==='rule'?24:8;renderStudyResults();return;
@@ -363,10 +372,6 @@ function handleStudyClick(button){
 
 app.addEventListener('change',event=>{
  const e=event.target;
- if(e.id==='practice-difficulty'){
-  if(DIFFICULTY_FILTERS.some(x=>x.value===e.value)){practiceDifficulty=e.value;setUp();}
-  return;
- }
  if(e.matches('input[name="practice-scope"]')){practiceScope=e.value==='focus'?'focus':'general';setUp();return;}
  if(e.id==='focus-rule'){if(RULES.some(r=>r.id===e.value)){focusRule=e.value;updateAvailable();const description=document.querySelector('#focus-description');if(description)description.textContent=RULES.find(r=>r.id===focusRule).description;}return;}
  if(e.matches('[data-rule]')){if(e.checked)selected.add(e.dataset.rule);else selected.delete(e.dataset.rule);updateAvailable();}
@@ -384,6 +389,7 @@ app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;
 app.addEventListener('click',event=>{
  const t=event.target.closest('button');if(!t)return;
  if(section==='study'){handleStudyClick(t);return;}
+ if(changeDifficulty(t,'practice'))return;
  if(t.dataset.action==='select-all'){selected=new Set(RULES.map(r=>r.id));setUp();return;}
  if(t.dataset.action==='select-none'){selected.clear();setUp();return;}
  if(t.dataset.action==='start'){requested=Number(document.querySelector('#requested')?.value)||10;startSession();return;}
