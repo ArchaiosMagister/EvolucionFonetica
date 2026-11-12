@@ -12,7 +12,7 @@ export const RULES = Object.freeze([
   { id: 'GRIE', name: 'Evolución de grafías griegas', description: 'y → i; ph → f; th → t; ch → c/q.', examples: ['lyra → lira', 'thesaurum → tesoro', 'chartam → carta'] },
   { id: 'METAT', name: 'Metátesis', description: 'Cambio de lugar de un sonido: -arium → -airo → -ero; desplazamiento de r en otros contextos.', examples: ['ferrarium → ferrairo → herrero', 'semper → siempre'] },
   { id: 'MONOP', name: 'Monoptongación', description: 'Un diptongo latino (ae, oe, au) se reduce a una vocal.', examples: ['poenam → pena'] },
-  { id: 'PALAT', name: 'Palatalización', description: 'Un sonido o grupo desplaza su articulación hacia el paladar; incluye -ll-, -lt-, -gn-, -mn-, -nn-, -ni-, -di-, -ti-, -li-, -ct-, -x-, cl-, pl- y fl-.', examples: ['multum → mucho', 'lignum → leño', 'noctem → noche', 'clavem → llave'] },
+  { id: 'PALAT', name: 'Palatalización', description: 'Un sonido o grupo desplaza su articulación hacia el paladar; incluye -ll-, -lt-, -gn-, -mn-, -nn-, -ni-, -di-, -ti-, -li-, -ct-, -x-, cl-, pl- y fl-.', examples: ['multum → mucho', 'lignum → leño', 'noctem → noche', 'clauem → llave'] },
   { id: 'PROT', name: 'Prótesis', description: 'Adición de un sonido al principio de la palabra.', examples: ['spiritum → espíritu'] },
   { id: 'SIMPL', name: 'Simplificación', description: 'Reducción de consonantes dobles y de grupos: -mb- → -m-, -pt- → -t-, -ns- → -s-, -tt- → -t-.', examples: ['buccam → boca', 'plumbum → plomo', 'captare → catar', 'mensa → mesa', 'attonitum → atónito'] },
   { id: 'SINC', name: 'Síncopa', description: 'Pérdida de un sonido o grupo en el interior de palabra.', examples: ['turbidum → turbio', 'cadere → caer'] },
