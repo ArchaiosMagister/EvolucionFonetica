@@ -19,7 +19,7 @@ test('Despliegue condicionado a validación y ámbito offline relativo',()=>{
 
 test('El acierto completo celebra una sola corrección y respeta movimiento reducido',()=>{
  const js=text('src/app.mjs'),css=text('style.css'),engine=text('src/engine.mjs');
- assert.match(js,/if\(checked\.complete\)celebrateCompletion\(\)/);
+ assert.match(js,/if\(checked\.complete\)\{renderCard\(\);celebrateCompletion\(\);return;\}/);
  assert.match(js,/if\(window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches\)return/);
  assert.match(js,/¡Todas las normas correctas!/);
  assert.match(js,/aria-hidden','true'/);
@@ -56,7 +56,7 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-refresh-ticks-20261112/);
+ assert.match(text('sw.js'),/evolutio-reveal-3-attempts-20261112/);
 });
 
 test('Estudiar usa botones accesibles para seleccionar niveles independientes',()=>{
@@ -92,4 +92,23 @@ test('Actualizar aparece junto al selector de aspecto y comprueba el SW antes de
  assert.match(css,/\.update-app-button/);
  assert.match(css,/\.difficulty-tick/);
  assert.match(css,/data-theme/);
+});
+
+test('Práctica sin bloqueo: tres intentos, solución manual y fallo sin confundir con acierto',()=>{
+ const js=text('src/app.mjs'),engine=text('src/engine.mjs'),css=text('style.css');
+ assert.match(js,/MAX_PRACTICE_ATTEMPTS=3/);
+ assert.match(js,/data-action="reveal"/);
+ assert.match(js,/revealCard\(cardState,'manual'\)/);
+ assert.match(js,/revealCard\(cardState,'limit'\)/);
+ assert.match(js,/cardState\.analysisAttempts>=MAX_PRACTICE_ATTEMPTS/);
+ assert.match(js,/cardState\.attempts>=MAX_PRACTICE_ATTEMPTS/);
+ assert.match(js,/if\(!drafts\.some\(d=>d\.rule\)\)/);
+ assert.match(js,/Ficha pendiente de aprender/);
+ assert.match(js,/summary-revealed/);
+ assert.match(js,/Solución consultada/);
+ assert.match(js,/solución no.*acierto|No se contabiliza como acierto/);
+ assert.match(engine,/export function revealCard/);
+ assert.match(engine,/state\.analysisAttempts\+\+/);
+ assert.match(css,/\.reveal-banner/);
+ assert.match(css,/prefers-reduced-motion:reduce\)\{\.reveal-banner\{animation:none\}/);
 });
