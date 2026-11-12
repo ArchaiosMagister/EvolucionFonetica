@@ -8,13 +8,13 @@ const dataset=JSON.parse(readFileSync(new URL('../data/pilot.json',import.meta.u
 const words=dataset.words;
 const word=latin=>words.find(w=>w.latin===latin);
 
-test('Estudio reutiliza las 252 fichas verificadas sin añadir datos ni reglas',()=>{
- assert.equal(words.length,252);
+test('Estudio reutiliza todo el banco ampliado sin añadir datos ni reglas',()=>{
+ assert.ok(words.length>=252);
  assert.deepEqual(validationErrors(dataset),[]);
  assert.equal(RULES.length,20);
  assert.equal(sortStudyWords(words).length,words.length);
  assert.equal(findStudyWords(words,'').length,words.length);
- assert.equal(new Set(sortStudyWords(words).map(w=>w.id)).size,252);
+ assert.equal(new Set(sortStudyWords(words).map(w=>w.id)).size,words.length);
 });
 test('Búsqueda latina tolera æ/ae, œ/oe, cantidades, mayúsculas y espacios',()=>{
  assert.equal(normalizeStudyQuery(' PŒNAM '),'poenam');
@@ -59,7 +59,7 @@ test('El catálogo permite seleccionar subtipos realmente anotados',()=>{
   assert.equal(list.length,v.count);
   assert.ok(list.every(w=>w.changes.some(c=>c.rule==='PALAT'&&c.subtype===v.name)));
  }
- assert.ok(studySubtypes(words,'CUL').some(v=>v.name==='-CUL- > -G-' && v.count===1));
+ assert.ok(studySubtypes(words,'CUL').some(v=>v.name==='-CUL- > -G-' && v.count>=1));
  assert.equal(studyWordsForRule(words,'CUL','inexistente').length,0);
 });
 test('La tarjeta señala la ubicación exacta de grupos consonánticos y -m final',()=>{

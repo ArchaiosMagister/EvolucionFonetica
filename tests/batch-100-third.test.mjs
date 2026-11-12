@@ -8,7 +8,7 @@ const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'ut
 const root=read('data/pilot.json');
 const manifest=read('data/batches/2026-11-12-100-tercero.json');
 const old=root.words.slice(0,manifest.previousCount);
-const added=root.words.slice(manifest.previousCount);
+const added=root.words.slice(manifest.previousCount,manifest.previousCount+manifest.newCount);
 const byRow=row=>added.find(w=>w.id===`xl-${row}`);
 
 const normalize=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
@@ -16,13 +16,13 @@ const normalize=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLow
 test('Lote III: 100 nuevas fichas y 252 acumuladas; anteriores idénticas',()=>{
  assert.equal(manifest.previousCount,152);
  assert.equal(manifest.newCount,100);
- assert.equal(root.words.length,manifest.totalCount);
+ assert.ok(root.words.length>=manifest.totalCount);
  assert.equal(added.length,100);
  assert.deepEqual(added.map(w=>w.id),manifest.ids);
  assert.deepEqual(added.map(w=>w.source.row),manifest.rows);
  assert.equal(createHash('sha256').update(JSON.stringify(old)).digest('hex'),manifest.previousWordsSha256);
- assert.equal(new Set(root.words.map(w=>w.id)).size,252);
- assert.equal(new Set(root.words.map(w=>normalize(w.latin))).size,252);
+ assert.equal(new Set(root.words.map(w=>w.id)).size,root.words.length);
+ assert.equal(new Set(root.words.map(w=>normalize(w.latin))).size,root.words.length);
  assert.deepEqual(validationErrors(root),[]);
 });
 
@@ -67,7 +67,7 @@ test('En -um se exigen abertura y pérdida fija por separado',()=>{
 
 test('Todos los filtros respetan las normas estudiadas, incluso sin ninguna',()=>{
  const all=new Set(RULES.map(r=>r.id));
- assert.equal(availableWords(root.words,all).length,252);
+ assert.equal(availableWords(root.words,all).length,root.words.length);
  assert.equal(availableWords(root.words,new Set()).length,0);
  for(const w of added){
   const need=requiredRules(w);

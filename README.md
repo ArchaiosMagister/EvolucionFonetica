@@ -26,7 +26,7 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas, no sortea palabras y no modifica la lógica de evaluación.
 
-- **Buscador bidireccional:** localiza las 252 fichas revisadas por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
+- **Buscador bidireccional:** localiza las 282 fichas revisadas por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
 - **Catálogo de normas:** presenta exactamente las 20 categorías oficiales, sus definiciones y ejemplos tal como figuran en `src/rules.mjs`. Indica las fichas del banco que contienen cada norma, incluso si requieren otras transformaciones para llegar al castellano. Las normas fijas se consultan dentro de las fichas, no como categoría número 21.
 - **Subtipos documentados:** cuando el banco incluye subtipos, pueden filtrarse desde el catálogo (p. ej. `-ct- > -ch-`, `-CUL- > -J-` y `-CUL- > -G-`). Nunca se deducen ejemplos nuevos a partir de una regla.
 - **Tarjetas filológicas interactivas:** resultado visible, botones para recorrer cada transformación, letras/grupos originales resaltados según posiciones Unicode de la ficha, puntos de inserción `＋`, tramos discontinuos, nota de la transformación, etapas intermedias **solo cuando están anotadas**, definición oficial, resumen del banco y referencia a fila y lote del Excel. Navegación entre fichas de la consulta sin volver a buscar.
@@ -49,7 +49,7 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 ## Fuentes y ampliaciones
 
-- `data/pilot.json`: banco acumulado anotado (252 fichas: 52 iniciales, 100 del segundo lote y 100 del tercero) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
+- `data/pilot.json`: banco acumulado anotado (282 fichas: 52 iniciales, 100 del segundo lote, 100 del tercero y 30 del cuarto) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
 - `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
 - `src/engine.mjs`: filtrado estricto y focalizado por norma, corrección y validación de rangos; los fragmentos solapados son legítimos.
 - `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.
@@ -104,3 +104,14 @@ El nombre `data/pilot.json` se conserva por compatibilidad con la PWA instalada;
 - `tools/build_batch3.py` y `tools/selected_batch_3_rows.py`: especificaciones de anotación manual para preparar este lote desde la extracción del Excel. No se ejecutan en producción.
 
 El archivo `data/pilot.json` conserva su nombre por compatibilidad con el service worker y la web instalada.
+
+## Ampliación IV: 30 ejemplos nuevos para normas escasas (282 en total)
+
+Se han añadido 30 entradas del Excel docente, revisadas y anotadas en posiciones originales, sin duplicados y con huella de integridad de las 252 anteriores. Se priorizan vocalización, epéntesis, grafías griegas, consonantización, metátesis, -MIN- > -MBR-, -CUL- > -G- y simplificación. No se inventan fichas de aféresis/asimilación/disimilación cuando no hay candidatas seguras.
+
+- `data/batches/2026-11-12-normas-escasas.json`: manifiesto con filas y normas.
+- `docs/LOTE_30_ESCASAS.md`: inventario, notas de filología histórica y fuentes.
+- `tests/priority-30.test.mjs`: pruebas de integridad y funcionamiento en práctica general, focalizada y Estudiar.
+- `tools/build_scarce_batch.py`: transcripción explícita de las 30 fichas; requiere la extracción del Excel del profesor y un banco base de 252 palabras.
+
+La versión de la caché de la PWA se incrementa para que el nuevo vocabulario llegue a los dispositivos instalados.

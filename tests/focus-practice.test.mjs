@@ -31,8 +31,8 @@ test('La elección focal admite exactamente 20 normas, no la regla fija ni ident
  assert.throws(()=>newCardState(word('focum'),'CUL'),/no contiene/);
 });
 
-test('Las 252 fichas existentes se mantienen en el banco común sin modificación',()=>{
- assert.equal(words.length,252);
+test('El banco conserva al menos 252 fichas y las consultas focalizadas no lo modifican',()=>{
+ assert.ok(words.length>=252);
  const copy=JSON.stringify(words);
  for(const rule of RULES)availableFocusedWords(words,rule.id);
  assert.equal(JSON.stringify(words),copy);

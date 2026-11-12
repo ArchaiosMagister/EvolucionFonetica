@@ -1,6 +1,6 @@
-# Cobertura acumulada (252 fichas)
+# Cobertura acumulada (282 fichas)
 
-El banco reúne **52 fichas iniciales, 100 del segundo lote y 100 del tercer lote**. Las 20 normas están representadas en el conjunto. Véanse [LOTE_100.md](LOTE_100.md) y [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para las fichas, filas de procedencia, subtipos y cobertura total.
+El banco reúne **52 fichas iniciales, 100 del segundo lote, 100 del tercero y 30 del lote prioritario de normas escasas**. Las 20 normas están representadas en el conjunto. Véanse [LOTE_100.md](LOTE_100.md) y [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para las fichas, filas de procedencia, subtipos y cobertura total.
 
 ## Primer lote (52 fichas)
 
@@ -42,3 +42,7 @@ Ejemplos calculados a partir de las 252 fichas: «Diptongación» ofrece **48** 
 ## Subtipos aún no representados
 
 La cobertura del catálogo **no** implica que estén incluidos todos los subtipos. El tercer lote añade -ni- + vocal > ñ, pl- > ll-, -di- + vocal > y, diversas palatalizaciones de -ti-, -mn-, -gn-, -nn-, -ct- y otros grupos; el segundo ya incluía fl- > ll-, -mb- > -m- e y > i. La variante -CUL- → -G- está representada por *miraculum → milagro*. **ph > f** no se fuerza al sorteo patrimonial cuando el Excel lo considera no patrimonial. Las cifras acumuladas por norma constan en [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md).
+
+## Lote IV: refuerzo de normas escasas (30 fichas)
+
+El banco suma **282 fichas**. Se refuerzan 16 categorías, especialmente epéntesis, vocalización, grafías griegas, consonantización, metátesis y -MIN- → -MBR-. Aféresis, asimilación y disimilación no tienen fichas nuevas aprobadas en este lote. Véanse las cifras anteriores y posteriores, las filas de Excel y las advertencias en [LOTE_30_ESCASAS.md](LOTE_30_ESCASAS.md).

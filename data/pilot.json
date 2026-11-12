@@ -15169,6 +15169,1837 @@
         }
       ],
       "explanation": "Lenticŭlam > lenteja: ĭ tónica > e y -cŭl- > j. Doblete culto: lentícula."
+    },
+    {
+      "id": "xl-164",
+      "latin": "iuventutem",
+      "answers": [
+        "juventud"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 164,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS",
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "j",
+          "note": "La semiconsonante inicial i- se representa con j-.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La t de -tutem en la posición final evoluciona a d, con reajuste de la terminación.",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "La e final de -tem desaparece; el sufijo romance termina en -tud.",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "iuventutem > juventud: i- consonántica se representa j- y el sufijo -tūtem evoluciona hacia -tud con sonorización; hay también reajuste morfológico de la palabra."
+    },
+    {
+      "id": "xl-219",
+      "latin": "ocŭlos",
+      "answers": [
+        "ojos"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 219,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SÍNC",
+          "CUL JG"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Desaparece la ŭ del grupo -cŭl-.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "CUL",
+          "output": "j",
+          "note": "-cŭl- > -cl- > -j-. La forma plural conserva -os.",
+          "subtype": "-CUL- > -J-",
+          "spans": [
+            [
+              1,
+              4
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "ocŭlos > ojos: ŭ postónica de -cŭl- desaparece y el grupo -cl- resulta en j; forma plural latina y castellana concordantes."
+    },
+    {
+      "id": "xl-234",
+      "latin": "pericŭlum",
+      "answers": [
+        "peligro"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 234,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT",
+          "SÍNC",
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SONOR",
+          "output": "g",
+          "note": "La c se sonoriza en g durante la fase romance periglo.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Síncopa de ŭ postónica en -cŭl-.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "CUL",
+          "output": "g",
+          "note": "El grupo -cŭl- produce una secuencia con g y líquida: *periglo, antes de la metátesis. Ejemplo de evolución semiculta, no del subtipo -J-.",
+          "subtype": "-CUL- > -G-",
+          "stages": [
+            "pericŭlum → *periglo → peligro"
+          ],
+          "spans": [
+            [
+              4,
+              7
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "rule": "METAT",
+          "output": "lr",
+          "note": "Las líquidas r y l permutan sus posiciones en *periglo → peligro.",
+          "spans": [
+            [
+              2,
+              3
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t4"
+        },
+        {
+          "id": "t5",
+          "rule": "ABER",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "o",
+          "note": "Abertura de la u final de -um a -o (norma seleccionable)."
+        },
+        {
+          "id": "t6",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "pericŭlum > peligro: síncopa de ŭ postónica, sonorización de -c- > -g- en el desarrollo del grupo y metátesis de líquida (-r-), de *periglo a peligro. No es el caso simple -cul- > j."
+    },
+    {
+      "id": "xl-343",
+      "latin": "vivite",
+      "answers": [
+        "vivid"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 343,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "-t- de la desinencia vivite > vivid se sonoriza en d.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Se pierde -e final del imperativo plural.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Vivite > vivid: la -t- de la terminación se sonoriza en -d- y se pierde la -e final."
+    },
+    {
+      "id": "xl-520",
+      "latin": "fossam",
+      "answers": [
+        "huesa"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 520,
+        "lot": 6,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "DIPT",
+          "SIMPL"
+        ],
+        "sourceUrl": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/9905"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- inicial pasa a h- muda.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga a ue.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "La geminada -ss- se simplifica.",
+          "subtype": "-ss- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Fŏssam > huesa (sepultura, hoy poco usual): f- > h-, ŏ > ue y -ss- > -s-. «Fosa» es la forma conservadora/culta."
+    },
+    {
+      "id": "xl-527",
+      "latin": "iacere",
+      "answers": [
+        "yacer"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 527,
+        "lot": 6,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS",
+          "PALAT"
+        ],
+        "sourceUrl": "https://iedra.es/palabras/yacer"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "y",
+          "note": "La i consonántica inicial (yod) se representa con y en castellano.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "c",
+          "note": "La velar latina c ante e se palataliza históricamente (grafía c conservada, pronunciación distinta).",
+          "subtype": "c + e > consonante palatal",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Se pierde la -e final del infinitivo latino.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t3"
+        }
+      ],
+      "explanation": "Iacēre > yacer: i inicial consonántica > y y palatalización histórica de c ante e."
+    },
+    {
+      "id": "xl-611",
+      "latin": "foliatilem",
+      "answers": [
+        "hojaldre"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 611,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "EPÉNT",
+          "PALAT"
+        ],
+        "sourceUrl": "https://stel.ub.edu/diccaxv/listings/NeologismsByDistributionView/page%3A655"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- latina dio h- gráfica (aspiración medieval, después perdida).",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "j",
+          "note": "-li- ante vocal dio una consonante palatal, representada hoy por j.",
+          "subtype": "-li- + vocal > -j-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "En la forma antigua hojalde, la t latina corresponde a d.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "La ĭ postónica de -tĭl- se pierde durante la reducción del grupo.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t4"
+        },
+        {
+          "rule": "METAT",
+          "output": "ld",
+          "note": "La segunda l ocupa una posición anterior a la consonante d en hojalde; no confundir con la l anterior palatalizada.",
+          "spans": [
+            [
+              5,
+              6
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "id": "t5"
+        },
+        {
+          "rule": "EPENT",
+          "output": "r",
+          "note": "La r aparece por repercusión de líquida en la fase castellana hojalde → hojaldre, NO directamente en el latín.",
+          "stages": [
+            "foliatĭlem → hojalde → hojaldre"
+          ],
+          "spans": [],
+          "anchor": 6,
+          "id": "t6"
+        },
+        {
+          "id": "t7",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Foliatĭlem > hojalde > hojaldre: f- > h-, palatalización de -li- y adición/repercusión de r en la forma moderna; conviene explicar que hay etapas intermedias."
+    },
+    {
+      "id": "xl-711",
+      "latin": "thium",
+      "answers": [
+        "tío"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 711,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "GRIE"
+        ],
+        "sourceUrl": "https://ilg.usc.gal/ddgm/ddd_pescuda.php?pescuda=tio&tipo_busca=lema"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "GRIE",
+          "output": "t",
+          "note": "La grafía grecolatina th se adapta a t; latín tardío thius, del griego θεῖος. No es un cultismo moderno.",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "Abertura de la u final de -um a -o (norma seleccionable)."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Thium (acusativo del latín tardío thīus) > tío: préstamo del griego θεῖος integrado en el latín tardío; adaptación th > t. No confundir con un cultismo moderno."
+    },
+    {
+      "id": "xl-716",
+      "latin": "acerem",
+      "answers": [
+        "arce"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 716,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT",
+          "SÍNC"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Desaparece la e interna de acerem.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "METAT",
+          "output": "rc",
+          "note": "Se reordenan la c y la r: ac(e)re → arce; no confundir con acre.",
+          "spans": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Acerem > arce: pérdida de la vocal interior y reordenación de la líquida (ac(e)re > arce); no confundir con acre, otro étimo."
+    },
+    {
+      "id": "xl-720",
+      "latin": "catenatum",
+      "answers": [
+        "candado"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 720,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT",
+          "SÍNC",
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.delcastellano.com/evolucion/candado-catenatu/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La primera t intervocálica se sonoriza a d.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La segunda t intervocálica se sonoriza a d.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Síncopa de e pretónica: cadenado → cadnado.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "rule": "METAT",
+          "output": "nd",
+          "note": "En la etapa cadnado se intercambia el orden de d y n: -dn- → -nd-.",
+          "stages": [
+            "catenatum → cadenado → cadnado → candado"
+          ],
+          "spans": [
+            [
+              2,
+              3
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t4"
+        },
+        {
+          "id": "t5",
+          "rule": "ABER",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "o",
+          "note": "Abertura de la u final de -um a -o (norma seleccionable)."
+        },
+        {
+          "id": "t6",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Catenatum > cadenado > cadnado > candado: -t- intervocálica > d, síncopa de e pretónica y metátesis -dn- > -nd-."
+    },
+    {
+      "id": "xl-724",
+      "latin": "integrare",
+      "answers": [
+        "entregar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 724,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "METÁT"
+        ],
+        "sourceUrl": "https://es.wiktionary.org/wiki/entregar"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La i átona inicial se abre en e: in- → en-.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "METAT",
+          "output": "re",
+          "note": "La r desplaza su posición en -egr-: *entegrar → entregar.",
+          "spans": [
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Pérdida de -e final del infinitivo -are.",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "id": "t3"
+        }
+      ],
+      "explanation": "Integrare > *entegrar > entregar: ĭ átona > e y metátesis de r; no confundir con el latinismo integrar."
+    },
+    {
+      "id": "xl-731",
+      "latin": "pro",
+      "answers": [
+        "por"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 731,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "METAT",
+          "output": "or",
+          "note": "La vibrante r cambia de posición dentro de pro: pro → por.",
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        }
+      ],
+      "explanation": "Pro > por: metátesis de la r, frente a pro, latinismo que también se utiliza en castellano."
+    },
+    {
+      "id": "xl-736",
+      "latin": "viduam",
+      "answers": [
+        "viuda"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 736,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "METAT",
+          "output": "ud",
+          "note": "Se invierte el orden de d y u: -dua- → -uda-; viuda conserva la a final.",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Viduam > viuda: cambio de orden de los segmentos en -dua- > -uda-; no confundir con viudedad, derivado castellano."
+    },
+    {
+      "id": "xl-748",
+      "latin": "aullam",
+      "answers": [
+        "olla"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 748,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP",
+          "PALAT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "o",
+          "note": "El diptongo latino au se monoptonga y da o en castellano.",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "La -ll- latina se palataliza en ll castellana.",
+          "subtype": "-ll- > -ll-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Aullam/aulam > olla: au > o y palatalización de la geminada -ll-; la forma aulla se relaciona con aula."
+    },
+    {
+      "id": "xl-750",
+      "latin": "ausare",
+      "answers": [
+        "osar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 750,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "o",
+          "note": "Au > o por monoptongación.",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Pérdida de -e final del infinitivo.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Ausare > osar: au > o; el infinitivo latino pierde su -e final habitual en español."
+    },
+    {
+      "id": "xl-785",
+      "latin": "pausare",
+      "answers": [
+        "posar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 785,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "o",
+          "note": "El diptongo au evoluciona a o.",
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Pérdida de -e del infinitivo -are.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Pausare > posar: au > o; no confundir con pasar, de passare."
+    },
+    {
+      "id": "xl-807",
+      "latin": "ballænam",
+      "answers": [
+        "ballena"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 807,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP",
+          "PALAT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "e",
+          "note": "Monoptongación de ae a e.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "La geminada -ll- tiene resultado palatal castellano.",
+          "subtype": "-ll- > -ll-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Ballaenam > ballena: ae > e y geminada -ll- con resultado palatal ll; forma castellana antigua de origen grecolatino."
+    },
+    {
+      "id": "xl-812",
+      "latin": "cæpullam",
+      "answers": [
+        "cebolla"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 812,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "MONOP",
+          "PALAT",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "e",
+          "note": "El diptongo ae se reduce a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "b",
+          "note": "-p- intervocálica se sonoriza a -b-.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La u breve latina se abre en o en la evolución castellana.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "La geminada -ll- da ll palatal.",
+          "subtype": "-ll- > -ll-",
+          "spans": [
+            [
+              4,
+              6
+            ]
+          ],
+          "id": "t4"
+        },
+        {
+          "id": "t5",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Caepullam > cebolla: ae > e, -p- intervocálica > b, ŭ > o y -ll- > ll palatal."
+    },
+    {
+      "id": "xl-912",
+      "latin": "desponsare",
+      "answers": [
+        "desposar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 912,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "Desaparición de n en -ns- > -s-.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              5,
+              7
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Cae la -e final del infinitivo.",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Desponsare > desposar: simplificación del grupo -ns- > s, con pérdida de la nasal."
+    },
+    {
+      "id": "xl-917",
+      "latin": "monstrare",
+      "answers": [
+        "mostrar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 917,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "Se simplifica el grupo -ns- > -s-.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Se pierde la vocal final -e del infinitivo latino -are.",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Monstrare > mostrar: el grupo latino -ns- se reduce a s."
+    },
+    {
+      "id": "xl-919",
+      "latin": "passum",
+      "answers": [
+        "paso"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 919,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "La geminada -ss- se simplifica en -s-.",
+          "subtype": "-ss- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "Abertura de la u final de -um a -o (norma seleccionable)."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Passum > paso: -ss- geminada > s simple."
+    },
+    {
+      "id": "xl-922",
+      "latin": "pinsare",
+      "answers": [
+        "pisar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 922,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "La nasal desaparece de -ns-, resultando s.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "La -e final del infinitivo se pierde.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Pinsare > pisar: pérdida de n en el grupo -ns- > s; la base latina popular puede reconstruirse como *pinsare."
+    },
+    {
+      "id": "xl-927",
+      "latin": "trans",
+      "answers": [
+        "tras"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 927,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "El grupo -ns- pierde la nasal en la variante romance tras; trans- también se conserva como prefijo culto.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              3,
+              5
+            ]
+          ],
+          "id": "t1"
+        }
+      ],
+      "explanation": "Trans > tras: pérdida de n ante s; en castellano conviven los prefijos trans- y tras-."
+    },
+    {
+      "id": "xl-1027",
+      "latin": "calcem",
+      "answers": [
+        "coz"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1027,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "VOC"
+        ],
+        "sourceUrl": "https://mas.lne.es/toponimia/index.php?leer=1%3Cspan+class%3Dresaltado%3E2%3C%2Fspan%3E9&palabra=cou"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "VOC",
+          "output": "o",
+          "note": "La secuencia -alC- vocaliza l (al > au) y se reduce finalmente a o, según la norma oficial.",
+          "stages": [
+            "calce → *cauce → coz"
+          ],
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Cae la -e final de calce en la forma castellana coz. La evolución c+e > z no dispone de una norma específica del catálogo.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Calcem > *cauce > coz: vocalización del grupo -alC- y posterior monoptongación (al > au > o). La africación de c ante e no tiene norma específica aquí; no confundir con cauce (< calicem)."
+    },
+    {
+      "id": "xl-1031",
+      "latin": "faminem",
+      "answers": [
+        "hambre"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1031,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "MIN MBR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- inicial se refleja en h- (antiguo fambre → hambre).",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "-min- > -mn- > -mbr-; el étimo *faminem es una reconstrucción vulgar, no la forma clásica famem.",
+          "stages": [
+            "*faminem → fambre → hambre"
+          ],
+          "spans": [
+            [
+              2,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "De latín vulgar *famĭnem > hambre (ant. fambre): f- > h- y -min- > -mbr-. La forma clásica ordinaria era famem; la base *faminem es reconstrucción romance."
+    },
+    {
+      "id": "xl-1032",
+      "latin": "ferruminem",
+      "answers": [
+        "herrumbre"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1032,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "MIN MBR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- inicial de ferruminem se convirtió en h-; ant. ferrumbre.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "-min- > -mbr- por síncopa y epéntesis interna; antiguo ferrumbre → herrumbre.",
+          "spans": [
+            [
+              5,
+              8
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Ferruminem > herrumbre (ant. ferrumbre): f- inicial > h- y -min- > -mbr-. Se conserva la vibrante fuerte; distinguir este étimo de otros derivados de ferrum."
+    },
+    {
+      "id": "xl-1034",
+      "latin": "luminaria",
+      "answers": [
+        "lumbrera"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1034,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MIN MBR"
+        ],
+        "sourceUrl": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12955"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "El grupo -min- pasa a -mbr- en lumbrera; el resto del sufijo -aria evoluciona a -era (sin adjudicar una ley no prevista).",
+          "spans": [
+            [
+              2,
+              5
+            ]
+          ],
+          "id": "t1"
+        }
+      ],
+      "explanation": "Luminaria (plural neutro) > lumbrera: transformación -min- > -mbr- y evolución romance de -aria a -era. «Luminaria» es el doblete culto."
+    },
+    {
+      "id": "xl-1037",
+      "latin": "seminare",
+      "answers": [
+        "sembrar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1037,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MIN MBR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "-min- > -mbr- por síncopa y reorganización del grupo.",
+          "spans": [
+            [
+              2,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Se pierde la -e del infinitivo -are → -ar.",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Seminare > sembrar: evolución característica -min- > -mbr- por síncopa y reorganización del grupo consonántico; -are > -ar."
+    },
+    {
+      "id": "xl-1053",
+      "latin": "sorticulam",
+      "answers": [
+        "sortija"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1053,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CUL JG"
+        ],
+        "sourceUrl": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/19953"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Síncopa de u postónica del grupo -cul-.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "CUL",
+          "output": "j",
+          "note": "-cul- > -cl- > -j-. Se conserva la i precedente (no debe etiquetarse abertura falsa).",
+          "subtype": "-CUL- > -J-",
+          "spans": [
+            [
+              5,
+              8
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Sorticŭlam > sortija: desarrollo de -cŭl- > j. La conservación de i se explica por el contexto palatal y la historia de la forma; no se marca mecánicamente apertura ĭ > e."
+    },
+    {
+      "id": "xl-1055",
+      "latin": "vinciculum",
+      "answers": [
+        "vencejo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1055,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "CUL JG"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La primera i breve del étimo pasa a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La segunda i breve pasa a e.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Síncopa de la u del grupo -cul-.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "rule": "CUL",
+          "output": "j",
+          "note": "-cul- > -cl- > -j-; aquí «vencejo» significa atadura de mieses, no el pájaro.",
+          "subtype": "-CUL- > -J-",
+          "spans": [
+            [
+              5,
+              8
+            ]
+          ],
+          "id": "t4"
+        },
+        {
+          "id": "t5",
+          "rule": "ABER",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "output": "o",
+          "note": "Abertura de la u final de -um a -o (norma seleccionable)."
+        },
+        {
+          "id": "t6",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              9,
+              10
+            ]
+          ],
+          "output": "∅",
+          "note": "Pérdida fija de la -m del acusativo (no es apócope seleccionable)."
+        }
+      ],
+      "explanation": "Vincicŭlum > vencejo (cordel para atar gavillas): apertura de las vocales breves ĭ y evolución de -cŭl- > j. No confundir esta acepción con el ave llamada «vencejo»."
     }
   ]
 }

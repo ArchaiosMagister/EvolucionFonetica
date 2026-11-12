@@ -58,3 +58,9 @@ Las 100 entradas nuevas son distintas de las 152 ya publicadas y están clasific
 En palabras cuya explicación del Excel contempla una reestructuración histórica adicional que no corresponde inequívocamente a las 20 normas (por ejemplo, *cŏrium → cuero*), la ficha conserva la advertencia en su explicación en lugar de introducir una norma seleccionable ficticia.
 
 Véase [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para cobertura y registros individuales.
+
+## Cuarto lote: 30 fichas de normas escasas (12 de noviembre de 2026)
+
+Se han incorporado 30 entradas patrimoniales según la clasificación de la hoja docente, manteniendo 252 fichas previas intactas. Se han descartado formas ya representadas con otra notación, ejemplos cultos y etiquetas no justificadas. En la ficha *pericŭlum → peligro* se explica explícitamente el carácter semiculto de la evolución, sin borrar la clasificación de procedencia del Excel. En *foliatilem → hojaldre* se delimita la epéntesis de r a la etapa *hojalde → hojaldre*. En *calcem → coz* se separa la vocalización *al → au → o* de cambios no codificados como ley oficial.
+
+No se añaden aféresis, asimilación ni disimilación sin candidato documentalmente seguro. Detalles y bibliografía en [LOTE_30_ESCASAS.md](LOTE_30_ESCASAS.md).
