@@ -1,6 +1,6 @@
-# Cobertura acumulada (152 fichas)
+# Cobertura acumulada (252 fichas)
 
-El banco reúne **52 fichas iniciales y 100 incorporadas en el segundo lote**. Las 20 normas están representadas en el conjunto. Véase [LOTE_100.md](LOTE_100.md) para la tabla completa de cobertura, las 100 entradas, las filas de procedencia y la distribución entre las diez tandas.
+El banco reúne **52 fichas iniciales, 100 del segundo lote y 100 del tercer lote**. Las 20 normas están representadas en el conjunto. Véanse [LOTE_100.md](LOTE_100.md) y [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para las fichas, filas de procedencia, subtipos y cobertura total.
 
 ## Primer lote (52 fichas)
 
@@ -35,4 +35,4 @@ Una ficha sólo se sortea cuando todas sus normas **seleccionables** están incl
 
 ## Subtipos aún no representados
 
-La cobertura del catálogo **no** implica que estén incluidos los subtipos de palatalización -ni- y algunos grupos; el segundo lote ya incluye fl- > ll-, -mb- > -m- e y > i, pero ph > f sigue sin ficha nueva, La variante -CUL- → -G- ya está representada por *miraculum → milagro*. Los subtipos restantes no se incluyen sin confirmar su ficha exacta y las transformaciones exigibles.
+La cobertura del catálogo **no** implica que estén incluidos todos los subtipos. El tercer lote añade -ni- + vocal > ñ, pl- > ll-, -di- + vocal > y, diversas palatalizaciones de -ti-, -mn-, -gn-, -nn-, -ct- y otros grupos; el segundo ya incluía fl- > ll-, -mb- > -m- e y > i. La variante -CUL- → -G- está representada por *miraculum → milagro*. **ph > f** no se fuerza al sorteo patrimonial cuando el Excel lo considera no patrimonial. Las cifras acumuladas por norma constan en [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md).

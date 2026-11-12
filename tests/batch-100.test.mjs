@@ -8,13 +8,15 @@ const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'ut
 const root=read('data/pilot.json');
 const manifest=read('data/batches/2026-11-12-100.json');
 const original=root.words.slice(0,manifest.previousCount);
-const newcomers=root.words.slice(manifest.previousCount);
+const newcomers=root.words.slice(manifest.previousCount,manifest.previousCount+manifest.newCount);
+const secondBatchBank=root.words.slice(0,manifest.previousCount+manifest.newCount);
 const unique=a=>new Set(a).size===a.length;
 
 test('Segundo lote suma exactamente 100 palabras sin alterar el primero',()=>{
  assert.equal(manifest.newCount,100);
  assert.equal(manifest.previousCount,52);
- assert.equal(root.words.length,152);
+ assert.equal(secondBatchBank.length,152);
+ assert.ok(root.words.length>=152);
  assert.deepEqual(newcomers.map(x=>x.id),manifest.ids);
  assert.deepEqual(newcomers.map(x=>x.source.row),manifest.rows);
  assert.ok(unique(root.words.map(w=>w.id)));
@@ -50,7 +52,7 @@ test('17 normas distintas presentes en el lote, 20 representadas acumuladas',()=
 
 test('Regresión: el filtro exige todas las normas de las 152 fichas',()=>{
  const all=new Set(RULES.map(r=>r.id));
- assert.equal(availableWords(root.words,all).length,152);
+ assert.equal(availableWords(secondBatchBank,all).length,152);
  for(const w of newcomers){
   const needed=requiredRules(w);
   assert.ok(needed.length);

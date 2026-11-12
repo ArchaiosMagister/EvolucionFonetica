@@ -48,3 +48,13 @@ Se han añadido 100 entradas tomadas de las diez tandas del Excel, todas clasifi
 - La forma *cæcum → ciego* conserva dos cambios sobre el mismo diptongo: monoptongación y posterior diptongación.
 
 **No incorporados en esta tanda:** ejemplos señalados como `EXCLUIDA`, `REVISAR`, `NO PATRIMONIAL` y aquellos con posiciones dudosas. La cobertura de 17/20 normas nuevas no equivale a cobertura completa de todos los subtipos.
+
+## Tercer lote de 100 · 12 de noviembre de 2026
+
+Las 100 entradas nuevas son distintas de las 152 ya publicadas y están clasificadas `PATRIMONIAL` en los lotes del Excel. Se incluyeron análisis de grupos de letras completos, con la abertura de -um → -o y la pérdida fija de -m separadas, conforme a la decisión confirmada.
+
+**Decisión de cobertura:** no se incorporan nuevos ejemplos de grafías griegas desde entradas `NO PATRIMONIAL`, aunque sean ejemplos correctos de adaptación ortográfica; en la web queda la norma, con sus ejemplos ya existentes. Los préstamos cultos requieren una decisión docente explícita si se quiere practicar grafías griegas independientemente de las evoluciones patrimoniales.
+
+En palabras cuya explicación del Excel contempla una reestructuración histórica adicional que no corresponde inequívocamente a las 20 normas (por ejemplo, *cŏrium → cuero*), la ficha conserva la advertencia en su explicación en lugar de introducir una norma seleccionable ficticia.
+
+Véase [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para cobertura y registros individuales.

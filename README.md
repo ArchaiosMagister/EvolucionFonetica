@@ -20,7 +20,7 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 ## Fuentes y ampliaciones
 
-- `data/pilot.json`: banco acumulado anotado (152 fichas: 52 iniciales y 100 del segundo lote) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
+- `data/pilot.json`: banco acumulado anotado (252 fichas: 52 iniciales, 100 del segundo lote y 100 del tercero) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
 - `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
 - `src/engine.mjs`: filtrado por inclusión total, corrección y validación de rangos; los fragmentos solapados son legítimos.
 - `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.
@@ -63,3 +63,15 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 - `tests/batch-100.test.mjs`: pruebas de conservación del primer lote, modo guiado/a ciegas, filtros, grupos y acumulación de datos.
 
 El nombre `data/pilot.json` se conserva por compatibilidad con la PWA instalada; el contenido ya es el banco acumulado. Se incrementa la versión de caché offline para que las instalaciones reciban las palabras nuevas.
+
+## Ampliación III: 100 fichas adicionales (252 en total)
+
+- Incorporadas otras **100 entradas patrimoniales** de las diez tandas del Excel, sin repetir las anteriores.
+- Refuerzo de palatalización en grupos `-ni-`, `-gn-`, `-mn-`, `-nn-`, `-ct-`, `-li-`, `-di-`, `-ti-`, `pl-`, además de simplificaciones, diptongaciones, abertura y `-CUL-`.
+- No se fuerzan como patrimoniales los ejemplos de grafías griegas catalogados como cultismos: siguen siendo ejemplos de referencia de la norma, no fichas nuevas del sorteo.
+- `data/batches/2026-11-12-100-tercero.json`: trazabilidad del lote y huella SHA-256 de las 152 palabras anteriores.
+- `docs/LOTE_100_TERCERO.md`: 100 nuevas fichas, reglas, subtipos, filas del Excel y cobertura acumulada.
+- `tests/batch-100-third.test.mjs`: validación de 100 fichas en ambos modos de corrección conjunta y preservación del banco anterior.
+- `tools/build_batch3.py` y `tools/selected_batch_3_rows.py`: especificaciones de anotación manual para preparar este lote desde la extracción del Excel. No se ejecutan en producción.
+
+El archivo `data/pilot.json` conserva su nombre por compatibilidad con el service worker y la web instalada.
