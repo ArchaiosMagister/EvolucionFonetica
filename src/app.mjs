@@ -150,12 +150,29 @@ function renderSecond(w){
   </div>`;
 }
 function renderComplete(w){
- return `<div class="completion"><div class="success-banner" role="status"><span class="success-check" aria-hidden="true">✓</span><strong>¡Todas las normas correctas!</strong></div><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div>${transmissionNote(w)}<h3>Explicación completa de la evolución</h3>
- ${session.focusRule?`<p class="focus-session-note"><strong>Norma practicada: ${esc(ruleName(session.focusRule))}.</strong> Identificaste ${assessedChanges(w,session.focusRule).length} ${assessedChanges(w,session.focusRule).length===1?'cambio':'cambios'}. Los demás se explican a continuación sin evaluarlos.</p>`:''}
- ${w.changes.map(t=>`<div class="change-detail ${session.focusRule&&t.rule===session.focusRule?'focus-change-detail':''}">${session.focusRule?`<span class="change-eval-status">${t.rule===session.focusRule?'✓ Norma practicada':'Solo explicación'}</span>`:''}<span class="change-tag ${t.rule==='FIX_M'?'fixed-tag':''}">${esc(ruleName(t.rule))}${t.subtype?' · '+esc(t.subtype):''}</span><strong>${esc(labelFragment(w,t))} → ${esc(t.output||'∅')}</strong><p>${esc(t.note)}</p>${t.stages?`<p>Etapas: ${esc(t.stages.join(' · '))}</p>`:''}</div>`).join('')}
- ${w.changes.some(t=>t.rule==='FIX_M')?'<p class="review-note">Normas fijas: según el criterio didáctico oficial, las formas nominales se estudian desde el acusativo. La -m final del acusativo se pierde; no es la apócope seleccionable.</p>':''}
- <p class="review-note">${wordSourceNote(w)} Se respeta la terminología de las normas PAU.</p>
- <button class="button-primary full" data-action="next">${session.index+1===session.cards.length?'Ver resumen':'Siguiente palabra →'}</button></div>`;
+ const revealed=cardState.revealed;
+ const targets=assessedChanges(w,session.focusRule);
+ const banner=revealed
+  ? `<div class="reveal-banner" role="status"><span class="reveal-symbol" aria-hidden="true">✕</span><strong>Solución mostrada · Ficha pendiente de aprender</strong><p>${cardState.revealReason==='limit'?'Has agotado los tres intentos de esta fase.':'Has elegido consultar la solución.'} No se contabiliza como acierto.</p></div>`
+  : `<div class="success-banner" role="status"><span class="success-check" aria-hidden="true">✓</span><strong>¡Todas las normas correctas!</strong></div>`;
+ const evaluated=cardState.revealPhase===1?0:cardState.solved.size;
+ const focusStatus=session.focusRule
+  ? `<p class="focus-session-note"><strong>Norma practicada: ${esc(ruleName(session.focusRule))}.</strong> ${revealed
+    ? `Se habían evaluado ${targets.length} ${targets.length===1?'transformación':'transformaciones'}; ${evaluated} identificadas correctamente antes de mostrar la solución.`
+    : `Identificaste ${targets.length} ${targets.length===1?'transformación':'transformaciones'}.`} Las demás normas aparecen como explicación.</p>`
+  : '';
+ const statusForChange=t=>{
+  if(session.focusRule&&t.rule!==session.focusRule)return 'Solo explicación';
+  if(!revealed)return session.focusRule?'✓ Norma identificada':'';
+  return cardState.revealPhase===1?'Solución mostrada'
+   :cardState.solved.has(t.id)?'✓ Identificada':'Solución mostrada';
+ };
+ return `<div class="completion">${banner}<p class="card-kicker" style="text-align:center">Tarjeta ${revealed?'no resuelta por el alumno':'completada'} · ${cardState.mistakes===0?'Sin errores registrados':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers.join(' / '))}</div>${transmissionNote(w)}<h3>Explicación completa de la evolución</h3>
+  ${focusStatus}
+  ${w.changes.map(t=>`<div class="change-detail ${session.focusRule&&t.rule===session.focusRule?'focus-change-detail':''}">${statusForChange(t)?`<span class="change-eval-status">${statusForChange(t)}</span>`:''}<span class="change-tag ${t.rule==='FIX_M'?'fixed-tag':''}">${esc(ruleName(t.rule))}${t.subtype?' · '+esc(t.subtype):''}</span><strong>${esc(labelFragment(w,t))} → ${esc(t.output||'∅')}</strong><p>${esc(t.note)}</p>${t.stages?`<p>Etapas: ${esc(t.stages.join(' · '))}</p>`:''}</div>`).join('')}
+  ${w.changes.some(t=>t.rule==='FIX_M')?'<p class="review-note">Normas fijas: según el criterio didáctico oficial, las formas nominales se estudian desde el acusativo. La -m final del acusativo se pierde; no es la apócope seleccionable.</p>':''}
+  <p class="review-note">${wordSourceNote(w)} Se respeta la terminología de las normas PAU.</p>
+  <button class="button-primary full" data-action="next">${session.index+1===session.cards.length?'Ver resumen':'Siguiente palabra →'}</button></div>`;
 }
 // Celebración breve, sin dependencias ni bloqueo de la navegación. Se ejecuta
 // solamente después de que «Comprobar todo» haya validado todos los cambios.
@@ -189,8 +206,15 @@ function next(){
   revealed:cardState.revealed,revealPhase:cardState.revealPhase});
  session.index++;if(session.index<session.cards.length)initCard();else renderFinal();
 }
-function renderFinal(){const total=session.done.length;const perfect=session.done.filter(d=>d.mistakes===0).length;const mistakes=session.done.reduce((n,d)=>n+d.mistakes,0);
- app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">${session.focusRule?'Repaso de '+esc(ruleName(session.focusRule))+' completado':'Repaso completado'}</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Palabras completadas sin errores · ${mistakes} errores durante la práctica.</p><div class="summary-list">${session.done.map(d=>`<div class="summary-line"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${d.mistakes===0?'✓ Sin errores':d.mistakes+' errores'}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;}
+function renderFinal(){
+ const done=session.done,total=done.length;
+ const revealed=done.filter(d=>d.revealed).length;
+ const perfect=done.filter(d=>!d.revealed&&d.mistakes===0&&d.analysisAttempts<=1).length;
+ const withErrors=total-revealed-perfect;
+ const mistakes=done.reduce((n,d)=>n+d.mistakes,0);
+ const label=d=>d.revealed?'↯ Solución consultada':d.mistakes===0&&d.analysisAttempts<=1?'✓ Sin errores':'Resuelta tras intentos';
+ app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">${session.focusRule?'Repaso de '+esc(ruleName(session.focusRule))+' completado':'Repaso completado'}</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Fichas resueltas sin errores. ${withErrors} resueltas tras intentos · ${revealed} con solución consultada · ${mistakes} errores registrados.</p><div class="summary-list">${done.map(d=>`<div class="summary-line ${d.revealed?'summary-revealed':''}"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${label(d)}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;
+}
 // ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
 const study={screen:'home',query:'',visible:8,ruleId:null,subtype:'',wordId:null,changeIndex:0,origin:'home',contextIds:[]};
 let studyDeck=[], shuffleSearchResults=false;
