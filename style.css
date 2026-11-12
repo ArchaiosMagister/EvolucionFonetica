@@ -160,3 +160,18 @@
 /* Avisos filológicos no intrusivos en ejercicios y fichas importadas. */
 .transmission-note{max-width:650px;margin:6px auto 16px;padding:9px 13px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.55;text-align:center}
 .transmission-note strong{color:var(--ink)}
+
+/* Dificultad independiente del contenido filológico, con controles táctiles. */
+#study-difficulty,#study-rule-difficulty,#practice-difficulty{
+ display:block;width:100%;max-width:100%;min-height:48px;padding:9px 12px;
+ border:1px solid var(--border);border-radius:11px;
+ background:var(--panel2);color:var(--ink);font-size:14px;margin:5px 0 12px;
+}
+.study-difficulty-chooser{flex:1 1 210px;max-width:300px;min-width:0}
+.study-difficulty-chooser .field-label{display:block;font-size:12px;margin-bottom:4px}
+.study-word-button{flex-wrap:wrap}
+.study-word-meta{white-space:normal;text-align:right;margin-left:auto}
+@media(max-width:620px){
+ .study-difficulty-chooser{max-width:none;flex-basis:100%}
+ .study-word-button{align-items:start}
+}
