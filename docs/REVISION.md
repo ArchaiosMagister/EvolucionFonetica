@@ -33,3 +33,18 @@ La -u final se abre a -o mediante la norma seleccionable «Abertura»; la -m fin
 | **ocŭlum → ojo** | La columna «Clasificación» del control del lote 1 contiene una precisión de singular/plural, no la etiqueta literal «PATRIMONIAL». | Se incluye como ejemplo oficial singular tras comprobar la corrección *ocŭlum → ojo*, y no el plural *ojos*. |
 
 **Otras lagunas deliberadas:** faltan por anotar como fichas los subtipos -ni- → ñ, fl- → ll, -mb- → -m-, y → i, ph → f, y la totalidad de las variantes oficiales para las que no hay análisis completo seguro. En fase piloto se garantiza la cobertura **de las 20 categorías**, no la cobertura exhaustiva de subreglas.
+
+## Segundo lote de 100 fichas · 12 de noviembre de 2026
+
+Se han añadido 100 entradas tomadas de las diez tandas del Excel, todas clasificadas **PATRIMONIAL** en la hoja de control. Se han anotado fragmentos y normas de manera independiente, no mediante conversión mecánica de todas las etiquetas antiguas. Detalle en [`LOTE_100.md`](LOTE_100.md).
+
+**Precisiones adoptadas al transcribir el material docente:**
+
+- *flammam → llama* y *grŏssum → grueso*: además del cambio principal, se identifica la simplificación de la geminada, según la norma oficial general.
+- *sponsam → esposa*: se usa la categoría oficial **Simplificación** para -ns- > -s-, en lugar de contar una síncopa independiente de n.
+- *semper → siempre* (fila 732): se anotan tanto la diptongación como la metátesis; no se importa la versión de la fila 281, cuya etiqueta antigua solo incluía diptongación.
+- *parabolam → palabra* y *sibilare → silbar*: los tramos de metátesis se marcan expresamente.
+- *falcem → hoz*: vocalización -alC- > au > o y aspiración de f-; la evolución de c ante e se explica en la nota de origen sin inventar una categoría oficial adicional.
+- La forma *cæcum → ciego* conserva dos cambios sobre el mismo diptongo: monoptongación y posterior diptongación.
+
+**No incorporados en esta tanda:** ejemplos señalados como `EXCLUIDA`, `REVISAR`, `NO PATRIMONIAL` y aquellos con posiciones dudosas. La cobertura de 17/20 normas nuevas no equivale a cobertura completa de todos los subtipos.

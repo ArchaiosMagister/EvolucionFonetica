@@ -1,4 +1,8 @@
-# Cobertura del primer lote
+# Cobertura acumulada (152 fichas)
+
+El banco reúne **52 fichas iniciales y 100 incorporadas en el segundo lote**. Las 20 normas están representadas en el conjunto. Véase [LOTE_100.md](LOTE_100.md) para la tabla completa de cobertura, las 100 entradas, las filas de procedencia y la distribución entre las diez tandas.
+
+## Primer lote (52 fichas)
 
 **52 palabras** procedentes de las diez tandas del Excel docente. Las 20 normas están presentes, pero no todos los subtipos lo están. La pérdida fija de -m figura en 48 fichas y no participa en los filtros.
 
@@ -31,4 +35,4 @@ Una ficha sólo se sortea cuando todas sus normas **seleccionables** están incl
 
 ## Subtipos aún no representados
 
-La cobertura del catálogo **no** implica que estén incluidos los subtipos de palatalización -ni-, fl-, todos los grupos de simplificación (-mb-), todas las grafías griegas (y, ph), La variante -CUL- → -G- ya está representada por *miraculum → milagro*. Los subtipos restantes no se incluyen sin confirmar su ficha exacta y las transformaciones exigibles.
+La cobertura del catálogo **no** implica que estén incluidos los subtipos de palatalización -ni- y algunos grupos; el segundo lote ya incluye fl- > ll-, -mb- > -m- e y > i, pero ph > f sigue sin ficha nueva, La variante -CUL- → -G- ya está representada por *miraculum → milagro*. Los subtipos restantes no se incluyen sin confirmar su ficha exacta y las transformaciones exigibles.

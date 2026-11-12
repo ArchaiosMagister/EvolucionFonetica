@@ -8,7 +8,7 @@ const words=dataset.words;
 const word=id=>words.find(x=>x.id===`xl-${id}`);
 test('Banco íntegro, identificado y filológicamente referenciado',()=>{
  assert.deepEqual(validationErrors(dataset),[]);
- assert.ok(words.length>=30 && words.length<=80);
+ assert.ok(words.length>=52); // Crece por lotes sin límite superior artificial.
  assert.equal(words.length,new Set(words.map(x=>x.id)).size);
  assert.ok(words.every(x=>x.source.file==='banco_evolucion_fonetica_con_filtro_didactico.xlsx'));
 });
