@@ -10,7 +10,8 @@
     "overlap": 273,
     "autoAligned": 240,
     "pending": 142,
-    "conflicts": 4
+    "conflicts": 0,
+    "resolvedConflicts": 4
   },
   "pending": [
     {
@@ -1684,7 +1685,9 @@
       "reason": "No coincide la transformación completa sin introducir cambios no anotados"
     }
   ],
-  "conflicts": [
+  "conflicts": [],
+  "decisionFile": "data/imports/decisiones-docentes.json",
+  "resolvedConflicts": [
     {
       "sourceId": "EVF-0282",
       "latin": "seniorem",
@@ -1700,7 +1703,9 @@
         "APOC",
         "FIX_M"
       ],
-      "sourceNote": "El grupo n+i+vocal da ñ; se reduce el segmento interior de seniorem > señor."
+      "decision": "conservar",
+      "decisionDate": "2026-11-12",
+      "criterio": "La i de -ni- pertenece a la palatalización ni → ñ; conservar apócope de -e y pérdida fija de -m, sin síncopa duplicada."
     },
     {
       "sourceId": "EVF-0283",
@@ -1716,7 +1721,9 @@
         "ABER",
         "FIX_M"
       ],
-      "sourceNote": "Se pierde -n- ante -s- en sensum > seso (desnasalización del grupo -ns-)."
+      "decision": "conservar",
+      "decisionDate": "2026-11-12",
+      "criterio": "-ns- → -s- se clasifica como simplificación, además de abertura final u → o y pérdida fija de -m."
     },
     {
       "sourceId": "EVF-0303",
@@ -1733,7 +1740,9 @@
         "SIMPL",
         "FIX_M"
       ],
-      "sourceNote": "Se añade e- ante sp- y se pierde n del grupo -ns-: sponsam > esposa."
+      "decision": "conservar",
+      "decisionDate": "2026-11-12",
+      "criterio": "Conservar prótesis e-, simplificación del grupo -ns- → -s- y pérdida fija de -m."
     },
     {
       "sourceId": "EVF-0304",
@@ -1751,7 +1760,9 @@
         "ABER",
         "FIX_M"
       ],
-      "sourceNote": "Se añade e- ante sp- y se pierde n del grupo -ns-: sponsum > esposo."
+      "decision": "conservar",
+      "decisionDate": "2026-11-12",
+      "criterio": "Conservar prótesis e-, simplificación -ns- → -s-, abertura final u → o y pérdida fija de -m."
     }
   ]
 }

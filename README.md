@@ -131,3 +131,10 @@ Se han añadido 30 entradas del Excel docente, revisadas y anotadas en posicione
 - `tools/build_scarce_batch.py`: transcripción explícita de las 30 fichas; requiere la extracción del Excel del profesor y un banco base de 252 palabras.
 
 La versión de la caché de la PWA se incrementa para que el nuevo vocabulario llegue a los dispositivos instalados.
+
+
+## Decisiones docentes sobre el cotejo con GeneradorExamenes (12-11-2026)
+
+Aprobadas como **conservar** las fichas de *seniorem → señor*, *sensum → seso*, *sponsam → esposa* y *sponsum → esposo*, sin modificar sus análisis. En particular, *-ns- → -s-* se sigue clasificando como simplificación; *seniorem* mantiene su palatalización y apócope final. En las formas en *-um* son independientes la abertura *u → o* y la caída fija de *-m*.
+
+El registro persistente está en `data/imports/decisiones-docentes.json`; el sincronizador `tools/sync-generador.mjs` aplica únicamente las decisiones cuyas firmas sigan concordando y reabre cualquier discrepancia posterior. Quedan **142 entradas nuevas pendientes**, y las cuatro incidencias resueltas se documentan sin borrarlas del historial. El banco jugable sigue teniendo **522 fichas**.

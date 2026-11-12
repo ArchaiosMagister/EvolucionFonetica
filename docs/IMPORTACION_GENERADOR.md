@@ -19,7 +19,7 @@ Las 240 altas se distribuyen por etiqueta de transmisión original: 124 adaptaci
 
 Cuando un sustantivo termina en `-um`, se registra siempre **abertura u → o** como norma seleccionable y caída fija de `-m` como operación independiente. La pérdida fija `-m` no equivale a apócope. Las adaptaciones cultas **no** se presentan como transmisiones patrimoniales completas.
 
-## Cuatro conflictos pendientes de decisión docente
+## Cuatro conflictos resueltos: conservar las fichas de EvolucionFonetica
 
 Se han conservado las fichas anteriores sin sobrescribirlas:
 
@@ -30,7 +30,14 @@ Se han conservado las fichas anteriores sin sobrescribirlas:
 | *sponsam → esposa* | Prótesis `e-`, simplificación `-ns- → -s-` y caída fija de `-m` | N14 Prótesis; N16 Síncopa | **Conservar la ficha actual**: N15 permite tratar `-ns- → -s-` como simplificación. |
 | *sponsum → esposo* | Prótesis `e-`, simplificación `-ns- → -s-`, abertura `u → o` y caída fija de `-m` | N14 Prótesis; N16 Síncopa | **Conservar la ficha actual**, por el mismo motivo y por la abertura final confirmada por el docente. |
 
-Las decisiones han de enviarse de forma explícita. Ninguna alternativa se aplica automáticamente a estos cuatro registros coincidentes.
+**Decisión docente del 12 de noviembre de 2026:** conservar las cuatro fichas actuales, sin alterar sus transformaciones ni el banco de GeneradorExamenes. Las anotaciones aprobadas prevalecen frente a las etiquetas originales discordantes.
+
+- *seniorem → señor*: palatalización ni → ñ, apócope de e final y pérdida fija de -m; no contabilizar una síncopa adicional de la i.
+- *sensum → seso*: simplificación ns → s, abertura u → o y pérdida fija de -m; no reclasificar el grupo como síncopa.
+- *sponsam → esposa*: prótesis e-, simplificación ns → s y caída fija de -m.
+- *sponsum → esposo*: prótesis e-, simplificación ns → s, abertura u → o y caída fija de -m.
+
+Las aprobaciones quedan en `data/imports/decisiones-docentes.json`, asociadas a los identificadores y a las firmas de normas de ambas fuentes. La cola `data/imports/revision-generador.json` conserva las cuatro incidencias en `resolvedConflicts`, y mantiene **0 conflictos abiertos y 142 entradas nuevas pendientes**. El sincronizador compara las firmas y, si una ficha o su etiqueta original cambia, vuelve a presentar el conflicto en lugar de aplicar automáticamente una decisión obsoleta.
 
 ## Cola de revisión: 142 entradas
 
@@ -42,8 +49,9 @@ Entre los candidatos pendientes están *advocatum → abogado* (cambios adiciona
 
 - `data/imports/generador-655.json`: copia inmutable de la fuente en esta revisión.
 - `tools/import-generador.mjs`: cotejo sin duplicados, equivalencia de códigos, generación posicional y retención de dudas.
-- `tools/sync-generador.mjs`: auditoría reproducible y opción explícita `--apply`, sin modificar el origen.
+- `tools/sync-generador.mjs`: auditoría reproducible que respeta las decisiones docentes persistentes; opción explícita `--apply`, sin modificar el origen.
 - `tests/import-generador.test.mjs`: transformaciones sintéticas, exclusiones, reglas y posiciones.
-- `tests/import-generador-integration.test.mjs`: recuentos exactos, huella SHA-256 de las 282 fichas originales y simulación de corrección de todas las nuevas fichas, incluida la modalidad focalizada.
+- `tests/import-generador-integration.test.mjs`: recuentos exactos, huella SHA-256 de las 282 fichas originales, resoluciones persistentes y simulación de corrección de todas las nuevas fichas, incluida la modalidad focalizada.
+- `tests/decisiones-docentes.test.mjs`: regresiones de las cuatro decisiones aprobadas, abertura final y caída fija, y reapertura automática al cambiar las etiquetas.
 
 **Nota de seguridad docente:** el motor no inventa respuestas nuevas ni elimina advertencias; copia únicamente `APTO_PROPUESTO`, comprueba coincidencias originales y rechaza grupos no alineables o de segmentación múltiple. Aceptar una solución ortográfica sin ambigüedad no implica que la etimología histórica completa esté probada por el procedimiento automático.

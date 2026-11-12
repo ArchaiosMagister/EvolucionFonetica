@@ -140,3 +140,35 @@ export function auditImport(source,existing){
  }
  return {accepted,pending,overlap,conflicts};
 }
+
+/**
+ * Aplica únicamente decisiones docentes expresamente autorizadas y todavía
+ * concordantes con las firmas de ambas fuentes. Nunca edita una ficha.
+ * Si el origen o la ficha local cambian, el conflicto vuelve a revisión.
+ */
+export function reconcileDecisions(audit, registry) {
+ const records=registry?.decisiones??[];
+ if(!Array.isArray(records))throw new TypeError('Registro de decisiones docentes inválido');
+ const byLatin=new Map();
+ for(const item of records) {
+   if(!item?.latin||byLatin.has(key(item.latin)))throw new Error('Decisión duplicada o sin étimo');
+   byLatin.set(key(item.latin),item);
+ }
+ const conflicts=[],resolvedConflicts=[];
+ for(const conflict of audit.conflicts) {
+   const item=byLatin.get(key(conflict.item.latin));
+   const aligned=item?.decision==='conservar'
+     && item.sourceId===conflict.item.id
+     && item.existingId===conflict.wordId
+     && JSON.stringify(item.expectedSourceRules)===JSON.stringify(conflict.item.normas)
+     && JSON.stringify(item.expectedCurrentRules)===JSON.stringify(conflict.currentRules);
+   if(!aligned){conflicts.push(conflict);continue;}
+   resolvedConflicts.push({
+     sourceId:conflict.item.id,latin:conflict.item.latin,castellano:conflict.item.castellano,
+     type:conflict.type,existingId:conflict.wordId,sourceRules:conflict.item.normas,
+     existingRules:conflict.currentRules,decision:'conservar',
+     decisionDate:registry.fecha,criterio:item.criterio
+   });
+ }
+ return {...audit,conflicts,resolvedConflicts};
+}
