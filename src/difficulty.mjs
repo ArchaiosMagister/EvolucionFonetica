@@ -76,3 +76,19 @@ export function filterWordsByDifficulty(words,assignments,filter='all'){
   return kind==='exact'?level===limit:level<=limit;
  });
 }
+
+/**
+ * Selección múltiple para Estudiar. Mantiene el orden de entrada (incluido
+ * el barajado) y no modifica las fichas ni los filtros únicos de Practicar.
+ * Un conjunto vacío deja la lista vacía hasta volver a elegir niveles.
+ */
+export function filterWordsByDifficultyLevels(words,assignments,levels){
+ if(!(levels instanceof Set)||[...levels].some(level=>!DIFFICULTY_LEVELS.some(x=>x.level===level)))
+  throw new Error('Selección de niveles de dificultad inválida.');
+ return words.filter(w=>{
+  const level=assignments[w.id]?.level;
+  if(!Number.isInteger(level)||level<1||level>4)
+   throw new Error('Ficha sin clasificación de dificultad válida: '+w.id);
+  return levels.has(level);
+ });
+}
