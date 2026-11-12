@@ -10,6 +10,16 @@ export function normalizeStudyQuery(value) {
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .toLocaleLowerCase('es').replace(/\s+/g, ' ').trim();
 }
+// Baraja una copia: no modifica el banco y conserva cada ficha una sola vez.
+// El orden se mantiene en la interfaz hasta que el usuario decide barajar de nuevo.
+export function shuffleStudyWords(words, random=Math.random) {
+  const shuffled=[...words];
+  for(let i=shuffled.length-1;i>0;i--){
+    const j=Math.floor(random()*(i+1));
+    [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+  }
+  return shuffled;
+}
 export const sortStudyWords = words => [...words].sort((a,b) =>
   normalizeStudyQuery(a.latin).localeCompare(normalizeStudyQuery(b.latin),'es') || a.id.localeCompare(b.id));
 export function findStudyWords(words, query) {
