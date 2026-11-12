@@ -1,6 +1,7 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
 import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
-import { chars, availableWords, chooseWords, availableFocusedWords, chooseFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
+import { DIFFICULTY_FILTERS, difficultyErrors, difficultyLabel, filterWordsByDifficulty } from './difficulty.mjs';
+import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const themePicker=document.querySelector('#theme-select');
@@ -16,9 +17,15 @@ function theme(value){
 }
 theme(initialTheme);
 themePicker.addEventListener('change',event=>theme(event.target.value));
-let words=[], selected=new Set(RULES.map(r=>r.id)), practiceScope='general', focusRule='PALAT', mode='guided', requested=10, session=null, cardState=null, feedback='';
+let words=[], difficultyAssignments={}, practiceDifficulty='all', studyDifficulty='all',
+ selected=new Set(RULES.map(r=>r.id)), practiceScope='general', focusRule='PALAT', mode='guided', requested=10, session=null, cardState=null, feedback='';
+const difficultyOptions=selectedValue=>DIFFICULTY_FILTERS.map(item=>`<option value="${item.value}" ${item.value===selectedValue?'selected':''}>${esc(item.label)}</option>`).join('');
+const wordDifficulty=word=>difficultyLabel(difficultyAssignments[word.id]?.level);
 const isFocused = () => practiceScope === 'focus';
-const eligiblePool = () => isFocused() ? availableFocusedWords(words,focusRule) : availableWords(words,selected);
+const eligiblePool = () => filterWordsByDifficulty(
+ isFocused()?availableFocusedWords(words,focusRule):availableWords(words,selected),
+ difficultyAssignments,practiceDifficulty
+);
 const focusedName = () => ruleName(focusRule);
 let drafts=[], draftSerial=0, batchFeedback='', focusHintShown=false;
 let blindSpans=[], pendingStart=null, insertion=null;
@@ -40,7 +47,7 @@ function wordSourceNote(w){
 const labelFragment=(word,t)=>t.anchor!==undefined?`Inserción ${t.anchor===0?'antes de '+chars(word.latin)[0]??'':'tras la letra '+chars(word.latin)[t.anchor-1]}`:t.spans.map(([s,e])=>chars(word.latin).slice(s,e).join('')).join(' + ');
 function setupHTML(){
  const pool=eligiblePool();const count=Math.min(requested,pool.length);
- const focusCounts=Object.fromEntries(RULES.map(r=>[r.id,availableFocusedWords(words,r.id).length]));
+ const focusCounts=Object.fromEntries(RULES.map(r=>[r.id,filterWordsByDifficulty(availableFocusedWords(words,r.id),difficultyAssignments,practiceDifficulty).length]));
  return `<section class="hero"><p class="eyebrow">Laboratorio de lengua histórica</p><h1>Del latín al <em>castellano</em>.</h1><p class="intro">Descubre la palabra resultante y demuestra qué transformaciones explican su evolución. Primero la respuesta; después, las normas.</p><div class="details-steps"><span class="step-pill"><b>01</b> Resuelve</span><span class="step-pill"><b>02</b> Analiza</span><span class="step-pill"><b>03</b> Comprueba</span></div></section>
  <section class="setup-grid"><div class="panel"><div class="panel-header"><div><h2>Qué quieres practicar</h2><p>Elige entre el repaso completo o concentrarte en una sola norma.</p></div></div>
  <fieldset class="scope-choice" aria-label="Tipo de repaso"><legend class="sr-only">Tipo de repaso</legend>
@@ -48,9 +55,9 @@ function setupHTML(){
  <label class="scope-option"><input type="radio" name="practice-scope" value="focus" ${isFocused()?'checked':''}><span><strong>Una sola norma</strong><small>Solo se evalúa el fenómeno seleccionado</small></span></label></fieldset>
  ${isFocused()?`<div class="focus-picker"><label class="field-label" for="focus-rule">Norma que quieres reforzar</label><select id="focus-rule">${RULES.map((r,i)=>`<option value="${r.id}" ${r.id===focusRule?'selected':''}>${String(i+1).padStart(2,'0')}. ${esc(r.name)} · ${focusCounts[r.id]} ${focusCounts[r.id]===1?'palabra':'palabras'}</option>`).join('')}</select><p class="helper" id="focus-description">${esc(RULES.find(r=>r.id===focusRule)?.description||'')}</p><p class="focus-explanation">Se incluyen todas las palabras que contienen esta norma, aunque también intervengan otras. Al terminar verás la explicación completa; solo se corrige el fenómeno elegido.</p></div>`
  :`<div class="panel-header rules-heading"><div><h3>Normas fonéticas</h3><p>Selecciona solo las que has estudiado.</p></div><div class="rule-actions"><button class="text-button" data-action="select-all">Todas</button><button class="text-button" data-action="select-none">Ninguna</button></div></div><div class="rules">${RULES.map((r,i)=>`<label class="rule-option" title="${esc(r.description)}"><input type="checkbox" data-rule="${r.id}" ${selected.has(r.id)?'checked':''}><span class="rule-num">${String(i+1).padStart(2,'0')}</span><span>${esc(r.name)}</span></label>`).join('')}</div>`}</div>
- <aside class="panel side-panel"><h2>Tu sesión</h2><div class="field"><div class="field-label">Modalidad de análisis</div><div class="choice-row"><label class="choice-label"><input type="radio" name="mode" value="guided" ${mode==='guided'?'checked':''}> Guiado</label><label class="choice-label"><input type="radio" name="mode" value="blind" ${mode==='blind'?'checked':''}> A ciegas</label></div><p class="helper">${mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.'}</p></div>
+ <aside class="panel side-panel"><h2>Tu sesión</h2><div class="field"><label class="field-label" for="practice-difficulty">Dificultad de las palabras</label><select id="practice-difficulty">${difficultyOptions(practiceDifficulty)}</select><p class="helper">Clasificación orientativa pendiente de revisión docente; se combina con las normas elegidas.</p></div><div class="field"><div class="field-label">Modalidad de análisis</div><div class="choice-row"><label class="choice-label"><input type="radio" name="mode" value="guided" ${mode==='guided'?'checked':''}> Guiado</label><label class="choice-label"><input type="radio" name="mode" value="blind" ${mode==='blind'?'checked':''}> A ciegas</label></div><p class="helper">${mode==='guided'?'Se destacan los grupos que debes analizar.':'Descubre tú mismo las letras o puntos de inserción.'}</p></div>
  <div class="field"><label class="field-label" for="requested">Número de tarjetas</label><input id="requested" type="number" min="1" max="${Math.max(pool.length,1)}" value="${count||1}" inputmode="numeric"><p class="helper" id="eligible-count">${pool.length} ${pool.length===1?'palabra elegible':'palabras elegibles'} ${isFocused()?'para '+esc(focusedName()):'con las normas seleccionadas'}.${pool.length<requested?' Se ajustará la cantidad a las disponibles.':''}</p></div>
- <button type="button" class="button-primary full" data-action="start" ${!pool.length?'disabled':''}>Empezar práctica <span aria-hidden="true">→</span></button>${!pool.length?`<p class="feedback error">${isFocused()?'Esta norma todavía no tiene palabras disponibles en el banco.':'No hay palabras compatibles. Elige otras normas; nunca se ampliará el filtro automáticamente.'}</p>`:''}
+ <button type="button" class="button-primary full" data-action="start" ${!pool.length?'disabled':''}>Empezar práctica <span aria-hidden="true">→</span></button>${!pool.length?`<p class="feedback error">${isFocused()?'Esta combinación de norma y dificultad no tiene palabras disponibles.':'No hay palabras compatibles con las normas y la dificultad seleccionadas. Modifica los filtros; nunca se ampliarán automáticamente.'}</p>`:''}
  <details class="rule-reference"><summary>Consultar las 20 normas oficiales</summary><div class="reference-list">${RULES.map((r,i)=>`<p><strong>${i+1}. ${esc(r.name)}.</strong> ${esc(r.description)}<br><em>${esc(r.examples.join('; '))}</em></p>`).join('')}<p><strong>Normas fijas.</strong> Los sustantivos y adjetivos castellanos se explican desde el acusativo latino según el criterio didáctico oficial. La -m final del acusativo se pierde y no se marca como apócope.</p></div></details>
  </aside></section>`;
 }
@@ -59,7 +66,7 @@ function updateAvailable(){const pool=eligiblePool();const countEl=document.quer
 function startSession(){
  const pool=eligiblePool();if(!pool.length){setUp();return;}
  const n=Math.max(1,Math.min(requested,pool.length));
- session={cards:isFocused()?chooseFocusedWords(words,focusRule,n):chooseWords(words,selected,n),index:0,done:[],selected:[...selected],mode,scope:practiceScope,focusRule:isFocused()?focusRule:null};
+ session={cards:chooseFromPool(pool,n),index:0,done:[],selected:[...selected],mode,scope:practiceScope,focusRule:isFocused()?focusRule:null,difficulty:practiceDifficulty};
  initCard();
 }
 function initCard(){
@@ -71,7 +78,7 @@ function initCard(){
 function renderCard(){
  const w=currentWord();if(!w){renderFinal();return;}
  const stage=cardState.phase;
- app.innerHTML=`<div class="practice-shell"><div class="topline"><button type="button" class="back-button" data-action="back">← Cambiar normas</button><span class="tiny">Tarjeta ${session.index+1} de ${session.cards.length} · ${session.focusRule?'Una norma: '+esc(ruleName(session.focusRule))+' · ':''}${session.mode==='guided'?'Guiado':'A ciegas'}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${progress()}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso"><div class="progress-value" style="width:${progress()}%"></div></div><article class="panel practice-card"><p class="eyebrow">${phaseTitle[stage]}</p>${stage===1?renderFirst(w):stage===2?renderSecond(w):renderComplete(w)}</article></div>`;
+ app.innerHTML=`<div class="practice-shell"><div class="topline"><button type="button" class="back-button" data-action="back">← Cambiar normas</button><span class="tiny">Tarjeta ${session.index+1} de ${session.cards.length} · ${session.focusRule?'Una norma: '+esc(ruleName(session.focusRule))+' · ':''}${session.mode==='guided'?'Guiado':'A ciegas'} · ${esc(wordDifficulty(w))}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${progress()}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso"><div class="progress-value" style="width:${progress()}%"></div></div><article class="panel practice-card"><p class="eyebrow">${phaseTitle[stage]}</p>${stage===1?renderFirst(w):stage===2?renderSecond(w):renderComplete(w)}</article></div>`;
  app.setAttribute('aria-busy','false');
 }
 function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1>${transmissionNote(w)}<p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}${session.focusRule?`<div class="focus-hint-box"><button type="button" class="text-button" data-action="focus-hint" aria-controls="focus-hint" aria-expanded="${focusHintShown}">${focusHintShown?'Ocultar pista':'Pista: otras normas de esta palabra'}</button>${focusHintShown?`<p id="focus-hint" class="helper" role="status">${(()=>{const others=[...new Set(w.changes.filter(t=>t.rule!==session.focusRule&&t.rule!==FIXED_RULE.id).map(t=>ruleName(t.rule)))];const fixed=w.changes.some(t=>t.rule===FIXED_RULE.id);return esc([...(others.length?others:['No hay otras normas seleccionables']),...(fixed?['Pérdida fija de -m final']:[])].join(' · '));})()}</p>`:''}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
@@ -178,10 +185,12 @@ let studyDeck=[], shuffleSearchResults=false;
 // Una búsqueda escrita conserva la prioridad de coincidencias exactas, salvo
 // cuando el usuario decide barajar explícitamente sus resultados.
 function studyPool(){
- if(study.screen!=='rule'&&!study.query.trim())return studyDeck;
- const found=study.screen==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
- if(study.screen!=='rule'&&!shuffleSearchResults)return found;
- const allowed=new Set(found.map(w=>w.id));
+ const found=study.screen==='rule'
+  ? studyWordsForRule(words,study.ruleId,study.subtype)
+  : (!study.query.trim()?studyDeck:findStudyWords(words,study.query));
+ const filtered=filterWordsByDifficulty(found,difficultyAssignments,studyDifficulty);
+ if(study.screen!=='rule'&&study.query.trim()&&!shuffleSearchResults)return filtered;
+ const allowed=new Set(filtered.map(w=>w.id));
  return studyDeck.filter(w=>allowed.has(w.id));
 }
 let section='practice',resultDraft='';
@@ -204,20 +213,21 @@ studyTab.addEventListener('click',()=>showSection('study'));
 
 function studyWordButton(w){
  const meaning=w.answers.join(' / ');
- return `<button type="button" class="study-word-button" data-study-word="${esc(w.id)}"><span class="study-word-names"><strong lang="la">${esc(w.latin)}</strong><span aria-hidden="true">→</span><span>${esc(meaning)}</span></span><span class="study-word-meta">${w.changes.length} cambios <span aria-hidden="true">›</span></span></button>`;
+ return `<button type="button" class="study-word-button" data-study-word="${esc(w.id)}"><span class="study-word-names"><strong lang="la">${esc(w.latin)}</strong><span aria-hidden="true">→</span><span>${esc(meaning)}</span></span><span class="study-word-meta">${esc(wordDifficulty(w))} · ${w.changes.length} cambios <span aria-hidden="true">›</span></span></button>`;
 }
 function studyList(wordsList,visible){
  const subset=wordsList.slice(0,visible);
  return wordsList.length ? `<p class="study-counter">${wordsList.length} ${wordsList.length===1?'ficha encontrada':'fichas encontradas'} · mostrando ${subset.length}</p>
  <div class="study-word-list">${subset.map(studyWordButton).join('')}</div>
  ${visible<wordsList.length?'<button type="button" class="button-secondary study-more" data-study-more="true">Mostrar 24 más</button>':''}`
- : '<p class="study-empty">No hay palabras del banco que coincidan. Prueba otra forma latina o castellana; solo se muestran fichas revisadas.</p>';
+ : '<p class="study-empty">No hay fichas compatibles con la búsqueda, la norma y la dificultad seleccionadas. Modifica los filtros.</p>';
 }
 function studyHome(){
- const counts=studyRuleCounts(words);
+ const counts=studyRuleCounts(filterWordsByDifficulty(words,difficultyAssignments,studyDifficulty));
  return `<div class="study-shell"><header class="study-hero"><p class="eyebrow">Biblioteca de evolución fonética</p><h1>Estudia cada palabra, <em>paso a paso</em>.</h1><p class="intro">Consulta las palabras revisadas o una de las 20 normas oficiales. Las soluciones y explicaciones se muestran directamente, sin ejercicios ni puntuación.</p></header>
  <section class="panel study-panel" aria-labelledby="study-search-title"><div class="study-panel-heading"><div><p class="eyebrow">01 · Palabras</p><h2 id="study-search-title">Buscar en el banco</h2></div><span class="tiny">${words.length} fichas revisadas</span><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
- <label for="study-search" class="field-label">Forma latina o resultado castellano</label><input id="study-search" class="study-search" type="search" value="${esc(study.query)}" autocomplete="off" spellcheck="false" placeholder="Ej.: poenam, pœnam, noche, milagro…"><p class="helper">Admite variantes æ/ae, œ/oe, mayúsculas y vocales latinas con diacríticos.</p>
+ <label for="study-difficulty" class="field-label">Dificultad</label><select id="study-difficulty">${difficultyOptions(studyDifficulty)}</select><p class="helper">Cuatro niveles provisionales; los filtros se aplican también al catálogo de normas.</p>
+  <label for="study-search" class="field-label">Forma latina o resultado castellano</label><input id="study-search" class="study-search" type="search" value="${esc(study.query)}" autocomplete="off" spellcheck="false" placeholder="Ej.: poenam, pœnam, noche, milagro…"><p class="helper">Admite variantes æ/ae, œ/oe, mayúsculas y vocales latinas con diacríticos.</p>
  <div id="study-results" aria-live="polite">${studyList(studyPool(),study.visible)}</div></section>
  <section class="study-catalog" aria-labelledby="study-rules-title"><div class="study-section-heading"><p class="eyebrow">02 · Normas fonéticas</p><h2 id="study-rules-title">Catálogo de las 20 normas</h2><p class="intro">Abre una norma para consultar su definición oficial, sus ejemplos y todas las fichas en las que interviene, aunque contengan otras transformaciones.</p></div>
  <div class="study-rules-grid">${RULES.map((r,i)=>`<button type="button" class="study-rule-button" data-study-rule="${esc(r.id)}"><span class="study-rule-number">${String(i+1).padStart(2,'0')}</span><strong>${esc(r.name)}</strong><span class="study-rule-count">${counts[r.id]} ${counts[r.id]===1?'palabra':'palabras'}</span><span class="study-rule-chevron" aria-hidden="true">›</span></button>`).join('')}</div>
@@ -233,7 +243,7 @@ function studyRule(){
  <div class="panel study-panel"><p class="eyebrow">Norma oficial de las PAU</p><h1 class="study-title">${esc(r.name)}</h1><p class="study-rule-description">${esc(r.description)}</p>
  <h2 class="study-small-title">Ejemplos oficiales</h2><p class="study-official-examples">${r.examples.map(v=>`<span>${esc(v)}</span>`).join('')}</p>
  <p class="study-note">Los ejemplos oficiales se presentan como referencia didáctica; solo las palabras ya incorporadas al banco pueden abrirse como tarjetas.</p><button type="button" class="button-secondary study-start-practice" data-study-practice="${esc(r.id)}">Practicar esta norma →</button></div>
- <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
+ <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div><div class="study-difficulty-chooser"><label for="study-rule-difficulty" class="field-label">Dificultad</label><select id="study-rule-difficulty">${difficultyOptions(studyDifficulty)}</select></div><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
  ${variants.length?`<div class="study-subtypes" aria-label="Filtrar subtipos documentados"><button type="button" class="study-subtype ${study.subtype===''?'is-selected':''}" aria-pressed="${study.subtype===''}" data-study-subtype="">Todos (${all.length})</button>${variants.map(v=>`<button type="button" class="study-subtype ${study.subtype===v.name?'is-selected':''}" aria-pressed="${study.subtype===v.name}" data-study-subtype="${esc(v.name)}">${esc(v.name)} (${v.count})</button>`).join('')}</div>`:''}
  <div id="study-rule-results">${studyList(filtered,study.visible)}</div></section></div>`;
 }
@@ -256,7 +266,7 @@ function studyWord(){
  const fixed=w.changes.some(c=>c.rule===FIXED_RULE.id);
  const stages=Array.isArray(t.stages)&&t.stages.length ? `<p class="study-stages"><strong>Etapas documentadas:</strong> ${t.stages.map(esc).join(' · ')}</p>`:'';
  return `<div class="study-shell study-detail-shell"><div class="study-detail-nav"><button type="button" class="back-button" data-study-back="${study.origin}">← ${study.origin==='rule'?'Volver a la norma':'Volver al buscador'}</button><span class="tiny">Consulta libre · Sin puntuación</span></div>
- <article class="panel study-word-card"><p class="eyebrow">${w.source?.generatorId?'Ficha importada · GeneradorExamenes':'Ficha filológica · Banco revisado'}</p><div class="study-word-pair"><h1 lang="la">${esc(w.latin)}</h1><span aria-hidden="true">→</span><h2>${esc(w.answers.join(' / '))}</h2></div>${transmissionNote(w)}
+ <article class="panel study-word-card"><p class="eyebrow">${w.source?.generatorId?'Ficha importada · GeneradorExamenes':'Ficha filológica · Banco revisado'} · ${esc(wordDifficulty(w))}</p><div class="study-word-pair"><h1 lang="la">${esc(w.latin)}</h1><span aria-hidden="true">→</span><h2>${esc(w.answers.join(' / '))}</h2></div>${transmissionNote(w)}
  <p class="study-word-intro">Pulsa cada fenómeno para ver qué letras o grupos intervienen. Los cambios se muestran según las anotaciones didácticas verificadas, sin reconstruir etapas que no figuren en el banco.</p>
  <div class="study-change-tabs" role="group" aria-label="Fenómenos de ${esc(w.latin)}">${w.changes.map((change,i)=>`<button type="button" class="study-change-tab ${i===study.changeIndex?'is-active':''}" data-study-change="${i}" aria-pressed="${i===study.changeIndex}"><span class="study-change-index">${i+1}</span><span>${esc(ruleName(change.rule))}${change.subtype?`<small>${esc(change.subtype)}</small>`:''}</span></button>`).join('')}</div>
  <div class="study-change-detail" aria-live="polite"><p class="eyebrow">Cambio ${study.changeIndex+1} de ${w.changes.length}</p>${studyVisual(w,t)}
@@ -316,6 +326,16 @@ function handleStudyClick(button){
 
 app.addEventListener('change',event=>{
  const e=event.target;
+ if(e.id==='practice-difficulty'){
+  if(DIFFICULTY_FILTERS.some(x=>x.value===e.value)){practiceDifficulty=e.value;setUp();}
+  return;
+ }
+ if(e.id==='study-difficulty'||e.id==='study-rule-difficulty'){
+  if(DIFFICULTY_FILTERS.some(x=>x.value===e.value)){
+   studyDifficulty=e.value;study.visible=study.screen==='rule'?24:8;renderStudy();
+  }
+  return;
+ }
  if(e.matches('input[name="practice-scope"]')){practiceScope=e.value==='focus'?'focus':'general';setUp();return;}
  if(e.id==='focus-rule'){if(RULES.some(r=>r.id===e.value)){focusRule=e.value;updateAvailable();const description=document.querySelector('#focus-description');if(description)description.textContent=RULES.find(r=>r.id===focusRule).description;}return;}
  if(e.matches('[data-rule]')){if(e.checked)selected.add(e.dataset.rule);else selected.delete(e.dataset.rule);updateAvailable();}
@@ -365,6 +385,19 @@ app.addEventListener('click',event=>{
   if(cardState.phase===2)app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
 });
-async function load(){try{const response=await fetch('./data/pilot.json',{cache:'no-cache'});if(!response.ok)throw new Error('No se pudo obtener el banco de palabras.');const data=await response.json();const errors=validationErrors(data);if(errors.length)throw new Error('El banco no supera la validación: '+errors.slice(0,3).join(' · '));words=data.words;studyDeck=shuffleStudyWords(words);const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}
+async function load(){try{
+ const [response,difficultyResponse]=await Promise.all([
+  fetch('./data/pilot.json',{cache:'no-cache'}),
+  fetch('./data/difficulty.json',{cache:'no-cache'})
+ ]);
+ if(!response.ok)throw new Error('No se pudo obtener el banco de palabras.');
+ if(!difficultyResponse.ok)throw new Error('No se pudo obtener la clasificación de dificultad.');
+ const [data,difficulty]=await Promise.all([response.json(),difficultyResponse.json()]);
+ const errors=validationErrors(data);
+ if(errors.length)throw new Error('El banco no supera la validación: '+errors.slice(0,3).join(' · '));
+ const difficultyProblems=difficultyErrors(data.words,difficulty);
+ if(difficultyProblems.length)throw new Error('La dificultad no supera la validación: '+difficultyProblems.slice(0,3).join(' · '));
+ words=data.words;difficultyAssignments=difficulty.assignments;
+ studyDeck=shuffleStudyWords(words);const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}
 load();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
