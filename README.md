@@ -38,6 +38,10 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 **Comprobaciones:** `tests/focus-practice.test.mjs` valida el filtrado de las 20 categorías, el bloqueo entre fases, la separación de las normas fijas, los grupos, las inserciones, las respuestas extra, las apariciones múltiples (`lupum`, dos aberturas), y la preservación del repaso general. Se han ejercitado los recorridos completos en Chromium con una simulación DOM a 320, 375, 768 y 1280 píxeles; esto no sustituye a una prueba en iOS físico.
 
+## Barajado de tarjetas de estudio (12/11/2026)
+
+Al abrir **Estudiar**, las fichas disponibles aparecen en orden aleatorio, no alfabético. El orden de la tanda permanece estable al pulsar «Mostrar más», consultar una tarjeta o regresar al listado; la navegación anterior/siguiente utiliza exactamente ese orden. En el buscador, cuando se escribe una consulta, se mantiene la prioridad de coincidencias exactas; el botón **«Barajar tarjetas»** permite mezclar también los resultados de esa consulta. El catálogo por normas y subtipos utiliza igualmente el barajado. No se modifican el banco, las explicaciones, los filtros ni la corrección de **Practicar**. El nuevo comportamiento se incluye en la caché offline.
+
 ## Modo Estudiar (consulta sin corrección)
 
 La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas, no sortea palabras y no modifica la lógica de evaluación.
