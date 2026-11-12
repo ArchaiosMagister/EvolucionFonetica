@@ -56,5 +56,20 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-difficulty-levels-20261112/);
+ assert.match(text('sw.js'),/evolutio-study-multiselect-20261112/);
+});
+
+test('Estudiar usa botones accesibles para seleccionar niveles independientes',()=>{
+ const js=text('src/app.mjs'),css=text('style.css');
+ assert.match(js,/function studyDifficultyButtons\(\)/);
+ assert.match(js,/data-study-difficulty-level/);
+ assert.match(js,/aria-pressed/);
+ assert.match(js,/data-study-difficulty-all/);
+ assert.match(js,/data-study-difficulty-none/);
+ assert.match(js,/filterWordsByDifficultyLevels/);
+ assert.doesNotMatch(js,/id="study-difficulty"/);
+ assert.doesNotMatch(js,/id="study-rule-difficulty"/);
+ assert.match(js,/id="practice-difficulty"/);
+ assert.match(css,/study-difficulty-button\.is-selected/);
+ assert.match(css,/@media\(max-width:620px\)/);
 });
