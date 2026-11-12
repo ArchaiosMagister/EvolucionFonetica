@@ -2,6 +2,7 @@ import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
 import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
 import { DIFFICULTY_LEVELS, difficultyErrors, difficultyLabel, filterWordsByDifficultyLevels } from './difficulty.mjs';
 import { chars, availableWords, chooseFromPool, availableFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
+import { checkForWebappUpdates } from './update.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const themePicker=document.querySelector('#theme-select');
@@ -436,5 +437,29 @@ async function load(){try{
  if(difficultyProblems.length)throw new Error('La dificultad no supera la validación: '+difficultyProblems.slice(0,3).join(' · '));
  words=data.words;difficultyAssignments=difficulty.assignments;
  studyDeck=shuffleStudyWords(words);const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}
+// Acción voluntaria: comprobar la actualización del SW y después recargar.
+const updateAppButton=document.querySelector('#refresh-app');
+const updateAppStatus=document.querySelector('#refresh-app-status');
+updateAppButton?.addEventListener('click',async()=>{
+ if(session && cardState && session.index<session.cards.length
+    && !window.confirm('Actualizar recargará Evolutio y se perderá la práctica actual. ¿Continuar?'))return;
+ if(navigator.onLine===false){
+  if(updateAppStatus)updateAppStatus.textContent='Sin conexión: conéctate a Internet para buscar actualizaciones.';
+  return;
+ }
+ updateAppButton.disabled=true;
+ updateAppButton.setAttribute('aria-busy','true');
+ if(updateAppStatus)updateAppStatus.textContent='Buscando actualizaciones…';
+ try{
+  await checkForWebappUpdates(navigator.serviceWorker);
+  if(updateAppStatus)updateAppStatus.textContent='Comprobación terminada. Recargando Evolutio…';
+  window.location.reload();
+ }catch(error){
+  console.error('No se pudo comprobar la actualización de Evolutio.',error);
+  if(updateAppStatus)updateAppStatus.textContent='No se ha podido actualizar. Comprueba la conexión e inténtalo otra vez.';
+  updateAppButton.disabled=false;
+  updateAppButton.removeAttribute('aria-busy');
+ }
+});
 load();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
