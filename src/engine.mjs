@@ -51,6 +51,7 @@ export function validationErrors(dataset) {
     ids.add(word.id);
     const letters=chars(word.latin ?? '');
     if (!letters.length || !Array.isArray(word.answers)||!word.answers.length||word.answers.some(x=>!normAnswer(x)))errors.push(`${word.id}: faltan forma o respuestas`);
+    if (/[vV]/u.test(word.latin??''))errors.push(`${word.id}: en los lemas latinos se emplea u, no v`);
     const formKey=word.latin?.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
     if(forms.has(formKey))errors.push(`${word.id}: forma latina repetida en el piloto`);
     forms.add(formKey);
