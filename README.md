@@ -14,6 +14,12 @@ La práctica nunca bloquea al alumno de manera indefinida. **Decisión didáctic
 
 El resumen final distingue las fichas acertadas a la primera, las completadas tras fallos y las reveladas. Se conserva el progreso de la sesión hasta pasar a la siguiente palabra y los análisis originales del banco; no se inventan reglas. Los avisos muestran texto además de color y una animación breve de fallo, desactivada con `prefers-reduced-motion`. Pruebas: `tests/reveal.test.mjs`, `tests/engine.test.mjs` y `tests/static.test.mjs`.
 
+## Grafía escolar latina: u consonántica (12/11/2026)
+
+Todas las **522 fichas** mantienen su contenido y sus análisis, pero las **34 formas latinas que contenían «v»** se han escrito con **«u»**: `uitam → vida`, `clauem → llave`, `uerrucam → verruga`, `uiuite → vivid`. Esta es una convención ortográfica de presentación del latín (la `u` puede tener valor vocálico o consonántico); no se modifican las formas castellanas ni se incorpora automáticamente una norma nueva a las fichas.
+
+El cambio es persistente en `data/pilot.json`, en los ejemplos didácticos y en `tools/import-generador.mjs` para evitar regresiones al sincronizar. El original de GeneradorExamenes y sus metadatos se conservan intactos como evidencia de procedencia; las nuevas importaciones se adaptan a `u`. Las búsquedas en Estudiar aceptan tanto `vitam` como `uitam`, sin convertir las `v` castellanas. Las posiciones de los cambios fonéticos, las 20 normas y las dificultades son las mismas, pues `v` y `u` ocupan una sola posición Unicode. La auditoría se encuentra en `tests/latin-orthography.test.mjs`.
+
 ## Importación desde GeneradorExamenes (12/11/2026)
 
 **522 fichas jugables:** las 282 anteriores se conservan sin modificación y se incorporan 240 entradas nuevas de `ArchaiosMagister/GeneradorExamenes/data/fonetica/banco_examenes.json`, cotejadas contra la fuente de **655** fichas `APTO_PROPUESTO`.

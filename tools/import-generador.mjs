@@ -1,6 +1,7 @@
 // Importador conservador del banco canónico de GeneradorExamenes.
 // Las fichas que no puedan segmentarse inequívocamente NO entran en el sorteo.
 import { chars } from '../src/engine.mjs';
+import { latinU, latinKey, normalizeLatinLemmaMentions } from '../src/latin.mjs';
 export const SOURCE_ID='ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json';
 export const CODE_RULES=Object.freeze({
  N01:'ABER',N02:'AFER',N03:'APOC',N04:'ASMIL',N05:'ASPIR',N06:'CONS',N07:'DIPT',N08:'DISIMIL',N09:'EPENT',N10:'GRIE',N11:'METAT',N12:'MONOP',N13:'PALAT',N14:'PROT',N15:'SIMPL',N16:'SINC',N17:'SONOR',N18:'VOC',N19:'MIN_MBR',N20:'CUL'
@@ -119,15 +120,17 @@ export function annotateDirect(item,{maxCombinations=4096}={}){
  const selected=selections[0].sort((a,b)=>a.start-b.start || (a.rule==='FIX_M'?1:0));
  if(!selected.some(o=>o.rule!=='FIX_M'))return {status:'requires_editorial_review',reason:'Sin fenómeno examinable'};
  const changes=selected.map((o,i)=>({id:`t${i+1}`,rule:o.rule,spans:o.anchor!==undefined?[]:[[o.start,o.end]],...(o.anchor!==undefined?{anchor:o.anchor}:{}),output:o.result||'∅',note:o.note,...(o.subtype?{subtype:o.subtype}:{})}));
- const record={id:`ge-${item.id}`,latin:item.latin,answers:[item.castellano],source:{file:SOURCE_ID,row:item.fila_origen||1,lot:item.lote||'Generador',generatorId:item.id,transmission:item.tipoTransmision||'NO_INDICADA',sourceStatus:item.estado,originalRules:item.normas,sourceNotes:item.observacion||'',sourceUrl:item.fuente||''},status:'reviewed-pilot',changes,explanation:`${item.latin} → ${item.castellano}. Etiquetas originales: ${item.normas.join(', ')}. ${item.observacion||''} (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)`};
+ const record={id:`ge-${item.id}`,latin:latinU(item.latin),answers:[item.castellano],source:{file:SOURCE_ID,row:item.fila_origen||1,lot:item.lote||'Generador',generatorId:item.id,transmission:item.tipoTransmision||'NO_INDICADA',sourceStatus:item.estado,originalRules:item.normas,sourceNotes:item.observacion||'',sourceUrl:item.fuente||''},status:'reviewed-pilot',changes,explanation:normalizeLatinLemmaMentions(`${item.latin} → ${item.castellano}. Etiquetas originales: ${item.normas.join(', ')}. ${item.observacion||''} (Importación automática con correspondencia ortográfica comprobada; no constituye certificación filológica adicional.)`,item.latin)};
  return {status:'auto_aligned',word:record};
 }
 export function auditImport(source,existing){
  if(source?.esquema!=='evoluciones-latin-castellano/v1'||!Array.isArray(source.items))throw Error('Banco fuente incompatible');
- const map=new Map(existing.words.map(w=>[key(w.latin),w]));
+ // Las fuentes externas conservan v; el banco didáctico utiliza u. Ambos
+ // sistemas de escritura designan el mismo lema para evitar duplicados.
+ const map=new Map(existing.words.map(w=>[latinKey(w.latin),w]));
  const accepted=[],pending=[],overlap=[],conflicts=[];
  for(const item of source.items){
-  const old=map.get(key(item.latin));
+  const old=map.get(latinKey(item.latin));
   if(old){
    overlap.push({sourceId:item.id,wordId:old.id,latin:item.latin,castellano:item.castellano});
    if(!old.answers.some(answer=>key(answer)===key(item.castellano)))conflicts.push({type:'meaning',item,wordId:old.id});
@@ -151,12 +154,12 @@ export function reconcileDecisions(audit, registry) {
  if(!Array.isArray(records))throw new TypeError('Registro de decisiones docentes inválido');
  const byLatin=new Map();
  for(const item of records) {
-   if(!item?.latin||byLatin.has(key(item.latin)))throw new Error('Decisión duplicada o sin étimo');
-   byLatin.set(key(item.latin),item);
+   if(!item?.latin||byLatin.has(latinKey(item.latin)))throw new Error('Decisión duplicada o sin étimo');
+   byLatin.set(latinKey(item.latin),item);
  }
  const conflicts=[],resolvedConflicts=[];
  for(const conflict of audit.conflicts) {
-   const item=byLatin.get(key(conflict.item.latin));
+   const item=byLatin.get(latinKey(conflict.item.latin));
    const aligned=item?.decision==='conservar'
      && item.sourceId===conflict.item.id
      && item.existingId===conflict.wordId

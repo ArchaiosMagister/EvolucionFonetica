@@ -12,7 +12,7 @@ const newcomers=root.words.slice(manifest.previousCount,manifest.previousCount+m
 const secondBatchBank=root.words.slice(0,manifest.previousCount+manifest.newCount);
 const unique=a=>new Set(a).size===a.length;
 
-test('Segundo lote suma exactamente 100 palabras sin alterar el primero',()=>{
+test('Segundo lote suma exactamente 100 palabras con el primer lote conservado salvo grafía u/v',()=>{
  assert.equal(manifest.newCount,100);
  assert.equal(manifest.previousCount,52);
  assert.equal(secondBatchBank.length,152);
@@ -20,7 +20,8 @@ test('Segundo lote suma exactamente 100 palabras sin alterar el primero',()=>{
  assert.deepEqual(newcomers.map(x=>x.id),manifest.ids);
  assert.deepEqual(newcomers.map(x=>x.source.row),manifest.rows);
  assert.ok(unique(root.words.map(w=>w.id)));
- assert.equal(createHash('sha256').update(JSON.stringify(original)).digest('hex'),manifest.previousWordsSha256);
+ // La grafía latina cambió a u; este snapshot protege el lote ya normalizado.
+ assert.equal(createHash('sha256').update(JSON.stringify(original)).digest('hex'),'847ba2baea7c394926362877546687c4f0f006626a2279aa0984e31d908d99db');
  assert.deepEqual(validationErrors(root),[]);
 });
 

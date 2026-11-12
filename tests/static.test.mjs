@@ -56,7 +56,7 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-reveal-3-attempts-20261112/);
+ assert.match(text('sw.js'),/evolutio-latin-u-20261112/);
 });
 
 test('Estudiar usa botones accesibles para seleccionar niveles independientes',()=>{
@@ -111,4 +111,14 @@ test('Práctica sin bloqueo: tres intentos, solución manual y fallo sin confund
  assert.match(engine,/state\.analysisAttempts\+\+/);
  assert.match(css,/\.reveal-banner/);
  assert.match(css,/prefers-reduced-motion:reduce\)\{\.reveal-banner\{animation:none\}/);
+});
+
+test('La u consonántica se muestra en los dos modos y está disponible offline',()=>{
+ const js=text('src/app.mjs'),sw=text('sw.js'),rules=text('src/rules.mjs'),importer=text('tools/import-generador.mjs');
+ assert.match(js,/uitam/);
+ assert.match(js,/consonántic/);
+ assert.match(sw,/\.\/src\/latin\.mjs/);
+ assert.match(rules,/clauem → llave/);
+ assert.match(importer,/latinU\(item\.latin\)/);
+ assert.match(importer,/latinKey\(item\.latin\)/);
 });

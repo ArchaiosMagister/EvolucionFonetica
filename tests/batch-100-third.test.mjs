@@ -13,14 +13,15 @@ const byRow=row=>added.find(w=>w.id===`xl-${row}`);
 
 const normalize=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
 
-test('Lote III: 100 nuevas fichas y 252 acumuladas; anteriores idénticas',()=>{
+test('Lote III: 100 nuevas fichas y 252 acumuladas; anteriores preservadas salvo grafía u/v',()=>{
  assert.equal(manifest.previousCount,152);
  assert.equal(manifest.newCount,100);
  assert.ok(root.words.length>=manifest.totalCount);
  assert.equal(added.length,100);
  assert.deepEqual(added.map(w=>w.id),manifest.ids);
  assert.deepEqual(added.map(w=>w.source.row),manifest.rows);
- assert.equal(createHash('sha256').update(JSON.stringify(old)).digest('hex'),manifest.previousWordsSha256);
+ // Snapshot actualizado tras la grafía docente u/v; el manifiesto histórico se conserva.
+ assert.equal(createHash('sha256').update(JSON.stringify(old)).digest('hex'),'896ba8a9a244ae4d9657742e714c2b490d1eca1a29284c08bde2ed288318a828');
  assert.equal(new Set(root.words.map(w=>w.id)).size,root.words.length);
  assert.equal(new Set(root.words.map(w=>normalize(w.latin))).size,root.words.length);
  assert.deepEqual(validationErrors(root),[]);

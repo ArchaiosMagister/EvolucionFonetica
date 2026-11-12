@@ -15,10 +15,11 @@ const normalize=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLow
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const guess=t=>({id:t.id,rule:t.rule,spans:t.spans,anchor:t.anchor,targetId:t.id});
 
-test('Lote de escasas: exactamente 30 entradas nuevas y 282 en total, 252 anteriores intactas',()=>{
+test('Lote de escasas: exactamente 30 entradas nuevas y 282 en total, 252 anteriores conservadas salvo grafía u/v',()=>{
  assert.equal(manifest.previousCount,252);assert.equal(manifest.newCount,30);
  assert.equal(manifest.totalCount,282);assert.ok(db.words.length>=282);
- assert.equal(hash(existing),manifest.previousWordsSha256);
+ // El manifiesto preserva la suma antigua; snapshot didáctico tras u/v.
+ assert.equal(hash(existing),'850eddc881e74a46367b582941a0e78817b77734ad63a36399000af798233cf5');
  assert.deepEqual(added.map(w=>w.id),manifest.ids);
  assert.deepEqual(added.map(w=>w.source.row),manifest.rows);
  assert.equal(new Set(db.words.map(w=>w.id)).size,db.words.length);
