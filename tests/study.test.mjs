@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {RULES,FIXED_RULE} from '../src/rules.mjs';
 import {chars,validationErrors,newCardState,checkResult,checkAllChanges,availableWords} from '../src/engine.mjs';
-import {normalizeStudyQuery,findStudyWords,sortStudyWords,studyWordsForRule,studySubtypes,studyRuleCounts,studyHighlight} from '../src/study.mjs';
+import {normalizeStudyQuery,findStudyWords,sortStudyWords,studyWordsForRule,studySubtypes,studyRuleCounts,studyHighlight,shuffleStudyWords} from '../src/study.mjs';
 const dataset=JSON.parse(readFileSync(new URL('../data/pilot.json',import.meta.url),'utf8'));
 const words=dataset.words;
 const word=latin=>words.find(w=>w.latin===latin);
@@ -15,6 +15,20 @@ test('Estudio reutiliza todo el banco ampliado sin añadir datos ni reglas',()=>
  assert.equal(sortStudyWords(words).length,words.length);
  assert.equal(findStudyWords(words,'').length,words.length);
  assert.equal(new Set(sortStudyWords(words).map(w=>w.id)).size,words.length);
+});
+test('El estudio baraja sin alterar datos, duplicar fichas ni repetir el orden alfabético',()=>{
+ const original=words.map(w=>w.id);
+ const sample=[{id:'a'},{id:'b'},{id:'c'},{id:'d'}];
+ const shuffled=shuffleStudyWords(sample,()=>0);
+ assert.deepEqual(sample.map(w=>w.id),['a','b','c','d']);
+ assert.deepEqual(shuffled.map(w=>w.id),['b','c','d','a']);
+ const all=shuffleStudyWords(words,()=>0.5);
+ assert.equal(all.length,words.length);
+ assert.deepEqual(new Set(all.map(w=>w.id)),new Set(original));
+ assert.deepEqual(words.map(w=>w.id),original);
+ assert.notDeepEqual(all.map(w=>w.id),sortStudyWords(words).map(w=>w.id));
+ const another=shuffleStudyWords(words,()=>0);
+ assert.notDeepEqual(another.map(w=>w.id),all.map(w=>w.id));
 });
 test('Búsqueda latina tolera æ/ae, œ/oe, cantidades, mayúsculas y espacios',()=>{
  assert.equal(normalizeStudyQuery(' PŒNAM '),'poenam');

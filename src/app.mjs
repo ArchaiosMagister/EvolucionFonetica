@@ -1,5 +1,5 @@
 import { RULES, FIXED_RULE, ruleName } from './rules.mjs';
-import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight } from './study.mjs';
+import { findStudyWords, studyWordsForRule, studyRuleCounts, studySubtypes, studyHighlight, shuffleStudyWords } from './study.mjs';
 import { chars, availableWords, chooseWords, availableFocusedWords, chooseFocusedWords, assessedChanges, coverage, validationErrors, newCardState, checkResult, checkAllChanges, requiredRules, optionRuleIds } from './engine.mjs';
 const app=document.querySelector('#app');
 const esc = value => String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -173,6 +173,17 @@ function renderFinal(){const total=session.done.length;const perfect=session.don
  app.innerHTML=`<div class="practice-shell"><section class="panel practice-card"><p class="eyebrow">Sesión terminada</p><h1 class="hero" style="font-family:var(--serif);font-weight:500;font-size:clamp(33px,6vw,50px);margin:0 0 12px">${session.focusRule?'Repaso de '+esc(ruleName(session.focusRule))+' completado':'Repaso completado'}</h1><div class="summary-figure">${perfect}<span style="font-size:24px;color:var(--muted)"> / ${total}</span></div><p class="prompt">Palabras completadas sin errores · ${mistakes} errores durante la práctica.</p><div class="summary-list">${session.done.map(d=>`<div class="summary-line"><strong>${esc(d.latin)} → ${esc(d.spanish)}</strong><span>${d.mistakes===0?'✓ Sin errores':d.mistakes+' errores'}</span></div>`).join('')}</div><button type="button" class="button-primary full" style="margin-top:20px" data-action="home">Nueva práctica</button></section></div>`;}
 // ===== Estudio: búsqueda, catálogo y explicaciones, sin puntuación ni filtros de práctica. =====
 const study={screen:'home',query:'',visible:8,ruleId:null,subtype:'',wordId:null,changeIndex:0,origin:'home',contextIds:[]};
+let studyDeck=[], shuffleSearchResults=false;
+// La consulta vacía y el catálogo de normas utilizan el orden aleatorio estable.
+// Una búsqueda escrita conserva la prioridad de coincidencias exactas, salvo
+// cuando el usuario decide barajar explícitamente sus resultados.
+function studyPool(){
+ if(study.screen!=='rule'&&!study.query.trim())return studyDeck;
+ const found=study.screen==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
+ if(study.screen!=='rule'&&!shuffleSearchResults)return found;
+ const allowed=new Set(found.map(w=>w.id));
+ return studyDeck.filter(w=>allowed.has(w.id));
+}
 let section='practice',resultDraft='';
 const practiceTab=document.querySelector('#nav-practice');
 const studyTab=document.querySelector('#nav-study');
@@ -205,9 +216,9 @@ function studyList(wordsList,visible){
 function studyHome(){
  const counts=studyRuleCounts(words);
  return `<div class="study-shell"><header class="study-hero"><p class="eyebrow">Biblioteca de evolución fonética</p><h1>Estudia cada palabra, <em>paso a paso</em>.</h1><p class="intro">Consulta las palabras revisadas o una de las 20 normas oficiales. Las soluciones y explicaciones se muestran directamente, sin ejercicios ni puntuación.</p></header>
- <section class="panel study-panel" aria-labelledby="study-search-title"><div class="study-panel-heading"><div><p class="eyebrow">01 · Palabras</p><h2 id="study-search-title">Buscar en el banco</h2></div><span class="tiny">${words.length} fichas revisadas</span></div>
+ <section class="panel study-panel" aria-labelledby="study-search-title"><div class="study-panel-heading"><div><p class="eyebrow">01 · Palabras</p><h2 id="study-search-title">Buscar en el banco</h2></div><span class="tiny">${words.length} fichas revisadas</span><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
  <label for="study-search" class="field-label">Forma latina o resultado castellano</label><input id="study-search" class="study-search" type="search" value="${esc(study.query)}" autocomplete="off" spellcheck="false" placeholder="Ej.: poenam, pœnam, noche, milagro…"><p class="helper">Admite variantes æ/ae, œ/oe, mayúsculas y vocales latinas con diacríticos.</p>
- <div id="study-results" aria-live="polite">${studyList(findStudyWords(words,study.query),study.visible)}</div></section>
+ <div id="study-results" aria-live="polite">${studyList(studyPool(),study.visible)}</div></section>
  <section class="study-catalog" aria-labelledby="study-rules-title"><div class="study-section-heading"><p class="eyebrow">02 · Normas fonéticas</p><h2 id="study-rules-title">Catálogo de las 20 normas</h2><p class="intro">Abre una norma para consultar su definición oficial, sus ejemplos y todas las fichas en las que interviene, aunque contengan otras transformaciones.</p></div>
  <div class="study-rules-grid">${RULES.map((r,i)=>`<button type="button" class="study-rule-button" data-study-rule="${esc(r.id)}"><span class="study-rule-number">${String(i+1).padStart(2,'0')}</span><strong>${esc(r.name)}</strong><span class="study-rule-count">${counts[r.id]} ${counts[r.id]===1?'palabra':'palabras'}</span><span class="study-rule-chevron" aria-hidden="true">›</span></button>`).join('')}</div>
  <p class="study-note">Normas fijas: el acusativo latino es la referencia didáctica para sustantivos y adjetivos. La pérdida de <em>-m</em> final se muestra dentro de cada ficha a la que corresponde, pero no forma parte de las 20 normas seleccionables.</p></section></div>`;
@@ -216,13 +227,13 @@ function studyRule(){
  const r=RULES.find(item=>item.id===study.ruleId);
  if(!r){study.screen='home';return studyHome();}
  const all=studyWordsForRule(words,r.id);
- const filtered=studyWordsForRule(words,r.id,study.subtype);
+ const filtered=studyPool();
  const variants=studySubtypes(words,r.id);
  return `<div class="study-shell"><button type="button" class="back-button" data-study-back="home">← Todas las normas y buscador</button>
  <div class="panel study-panel"><p class="eyebrow">Norma oficial de las PAU</p><h1 class="study-title">${esc(r.name)}</h1><p class="study-rule-description">${esc(r.description)}</p>
  <h2 class="study-small-title">Ejemplos oficiales</h2><p class="study-official-examples">${r.examples.map(v=>`<span>${esc(v)}</span>`).join('')}</p>
  <p class="study-note">Los ejemplos oficiales se presentan como referencia didáctica; solo las palabras ya incorporadas al banco pueden abrirse como tarjetas.</p><button type="button" class="button-secondary study-start-practice" data-study-practice="${esc(r.id)}">Practicar esta norma →</button></div>
- <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div></div>
+ <section class="panel study-panel" aria-labelledby="study-rule-words"><div class="study-panel-heading"><div><p class="eyebrow">Fichas que contienen esta norma</p><h2 id="study-rule-words">${all.length} ${all.length===1?'palabra':'palabras'} del banco</h2></div><button type="button" class="text-button" data-study-shuffle="true">↻ Barajar tarjetas</button></div>
  ${variants.length?`<div class="study-subtypes" aria-label="Filtrar subtipos documentados"><button type="button" class="study-subtype ${study.subtype===''?'is-selected':''}" aria-pressed="${study.subtype===''}" data-study-subtype="">Todos (${all.length})</button>${variants.map(v=>`<button type="button" class="study-subtype ${study.subtype===v.name?'is-selected':''}" aria-pressed="${study.subtype===v.name}" data-study-subtype="${esc(v.name)}">${esc(v.name)} (${v.count})</button>`).join('')}</div>`:''}
  <div id="study-rule-results">${studyList(filtered,study.visible)}</div></section></div>`;
 }
@@ -267,10 +278,13 @@ function renderStudy(){
 function renderStudyResults(){
  const node=app.querySelector(study.screen==='rule'?'#study-rule-results':'#study-results');
  if(!node)return;
- const pool=study.screen==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
- node.innerHTML=studyList(pool,study.visible);
+ node.innerHTML=studyList(studyPool(),study.visible);
 }
 function handleStudyClick(button){
+ if(button.dataset.studyShuffle!==undefined){
+  studyDeck=shuffleStudyWords(words);shuffleSearchResults=true;
+  study.visible=study.screen==='rule'?24:8;renderStudyResults();return;
+ }
  if(button.dataset.studyPractice!==undefined){
   const chosen=button.dataset.studyPractice;
   if(!RULES.some(r=>r.id===chosen))return;
@@ -283,7 +297,7 @@ function handleStudyClick(button){
  if(button.dataset.studySubtype!==undefined){study.subtype=button.dataset.studySubtype;study.visible=24;renderStudy();return;}
  if(button.dataset.studyWord!==undefined){
   study.origin=study.screen==='rule'?'rule':'home';
-  const pool=study.origin==='rule'?studyWordsForRule(words,study.ruleId,study.subtype):findStudyWords(words,study.query);
+  const pool=studyPool();
   study.contextIds=pool.map(w=>w.id);study.wordId=button.dataset.studyWord;
   study.changeIndex=0;study.screen='word';renderStudy();window.scrollTo({top:0,behavior:'instant'});return;
  }
@@ -314,7 +328,7 @@ app.addEventListener('change',event=>{
    }
  }
 });
-app.addEventListener('input',event=>{if(section==='study'&&event.target.id==='study-search'){study.query=event.target.value;study.visible=24;renderStudyResults();return;}if(event.target.id==='castellano'){resultDraft=event.target.value;}if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
+app.addEventListener('input',event=>{if(section==='study'&&event.target.id==='study-search'){study.query=event.target.value;shuffleSearchResults=false;study.visible=24;renderStudyResults();return;}if(event.target.id==='castellano'){resultDraft=event.target.value;}if(event.target.id==='requested'){const val=Number(event.target.value);if(Number.isFinite(val)&&val>0)requested=Math.floor(val);updateAvailable();}});
 app.addEventListener('submit',event=>{if(event.target.id!=='result-form')return;event.preventDefault();const answer=document.querySelector('#castellano').value;resultDraft=answer;if(checkResult(cardState,answer)){resultDraft='';feedback='';renderCard();}else{feedback='Incorrecto. Revisa el resultado e inténtalo de nuevo.';renderCard();document.querySelector('#castellano')?.focus();}});
 app.addEventListener('click',event=>{
  const t=event.target.closest('button');if(!t)return;
@@ -351,6 +365,6 @@ app.addEventListener('click',event=>{
   if(cardState.phase===2)app.querySelector('.analysis-footer .feedback')?.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
 });
-async function load(){try{const response=await fetch('./data/pilot.json',{cache:'no-cache'});if(!response.ok)throw new Error('No se pudo obtener el banco de palabras.');const data=await response.json();const errors=validationErrors(data);if(errors.length)throw new Error('El banco no supera la validación: '+errors.slice(0,3).join(' · '));words=data.words;const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}
+async function load(){try{const response=await fetch('./data/pilot.json',{cache:'no-cache'});if(!response.ok)throw new Error('No se pudo obtener el banco de palabras.');const data=await response.json();const errors=validationErrors(data);if(errors.length)throw new Error('El banco no supera la validación: '+errors.slice(0,3).join(' · '));words=data.words;studyDeck=shuffleStudyWords(words);const report=coverage(words);if(RULES.some(r=>report[r.id]===0))throw new Error('El piloto no cubre todas las normas.');setUp();}catch(error){app.innerHTML=`<div class="fatal"><h1>No ha sido posible iniciar la práctica</h1><p>${esc(error.message)}</p><button class="button-secondary" onclick="location.reload()">Reintentar</button></div>`;app.setAttribute('aria-busy','false');}}
 load();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));

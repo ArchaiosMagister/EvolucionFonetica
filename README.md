@@ -38,9 +38,13 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 **Comprobaciones:** `tests/focus-practice.test.mjs` valida el filtrado de las 20 categorías, el bloqueo entre fases, la separación de las normas fijas, los grupos, las inserciones, las respuestas extra, las apariciones múltiples (`lupum`, dos aberturas), y la preservación del repaso general. Se han ejercitado los recorridos completos en Chromium con una simulación DOM a 320, 375, 768 y 1280 píxeles; esto no sustituye a una prueba en iOS físico.
 
+## Barajado de tarjetas de estudio (12/11/2026)
+
+Al abrir **Estudiar**, las fichas disponibles aparecen en orden aleatorio, no alfabético. El orden de la tanda permanece estable al pulsar «Mostrar más», consultar una tarjeta o regresar al listado; la navegación anterior/siguiente utiliza exactamente ese orden. En el buscador, cuando se escribe una consulta, se mantiene la prioridad de coincidencias exactas; el botón **«Barajar tarjetas»** permite mezclar también los resultados de esa consulta. El catálogo por normas y subtipos utiliza igualmente el barajado. No se modifican el banco, las explicaciones, los filtros ni la corrección de **Practicar**. El nuevo comportamiento se incluye en la caché offline.
+
 ## Modo Estudiar (consulta sin corrección)
 
-La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas, no sortea palabras y no modifica la lógica de evaluación.
+La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas ni modifica la lógica de evaluación: solo baraja el orden de presentación de las fichas.
 
 - **Buscador bidireccional:** localiza las fichas anotadas disponibles por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
 - **Catálogo de normas:** presenta exactamente las 20 categorías oficiales, sus definiciones y ejemplos tal como figuran en `src/rules.mjs`. Indica las fichas del banco que contienen cada norma, incluso si requieren otras transformaciones para llegar al castellano. Las normas fijas se consultan dentro de las fichas, no como categoría número 21.
