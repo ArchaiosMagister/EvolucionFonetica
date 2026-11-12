@@ -92,7 +92,18 @@ export function coverage(words) {
 export function newCardState(word, focusRule = null) {
  if(focusRule !== null && !isSelectableRule(focusRule))throw new Error('Norma focal no válida.');
  if(focusRule !== null && !availableFocusedWords([word],focusRule).length)throw new Error('La palabra no contiene la norma focal.');
- return {word,focusRule,phase:1,solved:new Set(),attempts:0,mistakes:0};
+ return {word,focusRule,phase:1,solved:new Set(),attempts:0,analysisAttempts:0,mistakes:0,
+  revealed:false,revealPhase:null,revealReason:null};
+}
+// Una respuesta revelada nunca se marca como acertada ni añade normas a solved.
+export function revealCard(state,reason='manual') {
+ if(![1,2].includes(state.phase))return false;
+ if(!['manual','limit'].includes(reason))throw new Error('Motivo de revelación inválido.');
+ state.revealed=true;
+ state.revealPhase=state.phase;
+ state.revealReason=reason;
+ state.phase=3;
+ return true;
 }
 export function checkResult(state, answer) {
   if(state.phase!==1) return false;
@@ -118,6 +129,9 @@ export function checkAllChanges(state, guesses) {
  if (state.phase !== 2) return {complete:false,correct:0,remaining:targets.length,results:[],message:'Primero debes acertar el resultado castellano.'};
  if (!Array.isArray(guesses)) return {complete:false,correct:0,remaining:targets.length,results:[],message:'Lista de respuestas inválida.'};
  if (!targets.length) return {complete:false,correct:0,remaining:0,results:[],message:'La palabra no contiene la norma elegida.'};
+ // Una comprobación sin norma elegida no consume uno de los tres intentos.
+ // La interfaz decide si mostrar la solución tras tres comprobaciones fallidas.
+ if(guesses.some(guess=>guess.rule))state.analysisAttempts++;
  const found=new Set(), used=new Set();
  const results=guesses.map((guess,index)=>{
   const id=guess.id??String(index);
