@@ -20,7 +20,7 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 ## Fuentes y ampliaciones
 
-- `data/pilot.json`: banco piloto anotado. 51 fichas con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
+- `data/pilot.json`: banco piloto anotado. 52 fichas con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
 - `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
 - `src/engine.mjs`: filtrado por inclusión total, corrección y validación de rangos; los fragmentos solapados son legítimos.
 - `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.
@@ -30,9 +30,11 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 **Importante:** el Excel original no se modifica ni se incorpora íntegramente al repositorio; se utiliza para preparar lotes pequeños con anotaciones revisadas. Para ampliar el banco, añadir registros con nuevos ID y rangos Unicode correctos, mantener todos los fenómenos exigibles y ejecutar `npm test`. La publicación automática sólo se realiza cuando el trabajo de GitHub Actions aprueba las pruebas.
 
+**Revisión específica:** `miraculum → milagro` incorporada con el subtipo -CUL- → -G- y seis cambios anotados. La explicación está documentada en `docs/REVISION.md`.
+
 ## Limitaciones del piloto
 
 - Cada palabra presenta los cambios indicados por las normas didácticas del corpus, no una reconstrucción histórico-fonética exhaustiva de cada etapa del latín al romance.
-- Todas las categorías tienen al menos un ejemplo piloto; algunos **subtipos** de palatalización, simplificación, grafías griegas y -CUL- → -G- quedan pendientes de incorporación segura.
+- Todas las categorías tienen al menos un ejemplo piloto; algunos **subtipos** de palatalización, simplificación, grafías griegas quedan pendientes de incorporación segura; los subtipos -CUL- → -J- y -CUL- → -G- ya están representados.
 - No hay servidor, cuentas de alumnado ni estadísticas persistentes; el resumen pertenece a la sesión actual.
 - La interfaz está preparada para pantallas táctiles; las pruebas automáticas de lógica no equivalen a certificación manual en cada dispositivo físico.

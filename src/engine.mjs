@@ -41,6 +41,7 @@ export function validationErrors(dataset) {
     const changes=new Set();
     for(const item of word.changes??[]) {
       if(!known.has(item.rule))errors.push(`${word.id}: norma desconocida ${item.rule}`);
+      if(item.rule==='CUL' && !RULES.find(r=>r.id==='CUL').subtypes.includes(item.subtype))errors.push(`${word.id}: subtipo -CUL- desconocido o ausente`);
       if(!item.id||changes.has(item.id))errors.push(`${word.id}: cambio repetido`);
       changes.add(item.id);
       if(!item.note || typeof item.output !== 'string')errors.push(`${word.id}: falta explicación o resultado`);

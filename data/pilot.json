@@ -1480,75 +1480,6 @@
       "explanation": "Se añade e- ante s- seguida de consonante y el grupo -mn- desarrolla ñ."
     },
     {
-      "id": "xl-592",
-      "latin": "scholam",
-      "answers": [
-        "escuela"
-      ],
-      "source": {
-        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
-        "sheet": "Banco",
-        "row": 592,
-        "lot": 7,
-        "classification": "PATRIMONIAL",
-        "legacyRules": [
-          "DIPT",
-          "GRIE",
-          "PRÓT"
-        ],
-        "sourceUrl": null
-      },
-      "status": "reviewed-pilot",
-      "changes": [
-        {
-          "rule": "GRIE",
-          "output": "c",
-          "note": "La grafía grecolatina ch se adapta a c.",
-          "subtype": "ch > c/q",
-          "spans": [
-            [
-              1,
-              3
-            ]
-          ],
-          "id": "t1"
-        },
-        {
-          "rule": "PROT",
-          "output": "e",
-          "note": "Se añade una e- inicial ante s + consonante.",
-          "anchor": 0,
-          "spans": [],
-          "id": "t2"
-        },
-        {
-          "rule": "DIPT",
-          "output": "ue",
-          "note": "La ŏ tónica diptonga en ue.",
-          "spans": [
-            [
-              3,
-              4
-            ]
-          ],
-          "id": "t3"
-        },
-        {
-          "id": "t4",
-          "rule": "FIX_M",
-          "spans": [
-            [
-              6,
-              7
-            ]
-          ],
-          "output": "∅",
-          "note": "La -m final del acusativo desaparece (norma fija)."
-        }
-      ],
-      "explanation": "Schŏlam > escuela: prótesis e- ante /sk/ inicial y ŏ tónica > ue. El grupo grecolatino sch se adapta como esc-."
-    },
-    {
       "id": "xl-277",
       "latin": "scutum",
       "answers": [
@@ -2247,6 +2178,75 @@
       "explanation": "Fŏcum > fuego: ŏ tónica > ue y -c- intervocálica > -g-; la f- se conserva ante ue."
     },
     {
+      "id": "xl-592",
+      "latin": "scholam",
+      "answers": [
+        "escuela"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 592,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT",
+          "GRIE",
+          "PRÓT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "GRIE",
+          "output": "c",
+          "note": "La grafía grecolatina ch se adapta a c.",
+          "subtype": "ch > c/q",
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- inicial ante s + consonante.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t2"
+        },
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga en ue.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Schŏlam > escuela: prótesis e- ante /sk/ inicial y ŏ tónica > ue. El grupo grecolatino sch se adapta como esc-."
+    },
+    {
       "id": "xl-605",
       "latin": "marmorem",
       "answers": [
@@ -2638,6 +2638,119 @@
         }
       ],
       "explanation": "Inter > entre: metátesis de la r final hacia la sílaba precedente."
+    },
+    {
+      "id": "xl-727",
+      "latin": "miraculum",
+      "answers": [
+        "milagro"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 727,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT",
+          "SÍNC",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "id": "t1",
+          "rule": "SONOR",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "g",
+          "note": "La c intervocálica se sonoriza en g antes de la pérdida de la vocal postónica.",
+          "stages": [
+            "miraculum > *miragulum*"
+          ]
+        },
+        {
+          "id": "t2",
+          "rule": "SINC",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "Se pierde la u postónica interna del grupo -cul-.",
+          "stages": [
+            "*miragulum* > *miraglum*"
+          ]
+        },
+        {
+          "id": "t3",
+          "rule": "CUL",
+          "subtype": "-CUL- > -G-",
+          "spans": [
+            [
+              4,
+              7
+            ]
+          ],
+          "output": "g (la l se conserva y cambia de posición)",
+          "note": "Categoría didáctica oficial: el grupo -cul- da lugar al resultado con g; la l no desaparece, sino que participa en la metátesis posterior.",
+          "stages": [
+            "-cul- > -gul- > -gl- > -gr- (con intercambio de r y l)"
+          ]
+        },
+        {
+          "id": "t4",
+          "rule": "METAT",
+          "spans": [
+            [
+              2,
+              3
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "l … r",
+          "note": "La r y la l intercambian sus posiciones (metátesis recíproca): miraglo > milagro.",
+          "stages": [
+            "miraglo > milagro"
+          ]
+        },
+        {
+          "id": "t5",
+          "rule": "ABER",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "o",
+          "note": "La u final de -um se abre a o."
+        },
+        {
+          "id": "t6",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "miraculum > *miragulum* (c > g, sonorización) > *miraglum* (síncopa de u postónica) > miraglo (u final > o y pérdida de -m) > milagro (metátesis recíproca r/l). La norma oficial clasifica el conjunto como subtipo -CUL- > -G-: no debe interpretarse como desaparición de l. La bibliografía también lo describe como evolución semiculta."
     },
     {
       "id": "xl-794",

@@ -1,16 +1,28 @@
-# Registro filológico pendiente de revisión
+# Revisión filológica y decisiones
 
-## Criterio confirmado por el docente (12 de noviembre de 2026)
+## Incorporada: miraculum → milagro (12 de noviembre de 2026)
 
-**Abertura final en -um → -o: APROBADO.** La -u- pasa a -o- mediante la norma seleccionable «Abertura» y la -m final se pierde mediante la norma fija independiente «Pérdida fija de -m final». Ambas deben anotarse por separado en el mismo registro, con sus posiciones de origen; por ello, una ficha terminada en -um solo es elegible cuando «Abertura» esté seleccionada, además de cualesquiera otras normas seleccionables que exija. El criterio se incorpora a la validación automática para nuevos lotes.
+**Ficha `xl-727` (Excel, Banco, fila 727, lote 8).** Se incorpora como ficha jugable y ejemplo del subtipo oficial **-CUL- → -G-**. La anotación conserva los cinco fenómenos seleccionables de la evolución completa:
+
+- **Sonorización:** c intervocálica → g (posición 5 en la palabra latina): *miraculum > *miragulum*.
+- **Síncopa:** pérdida de u postónica del grupo -cul- (posición 6): *miragulum > *miraglum*.
+- **Evolución de -CUL-:** fragmento original `cul` (posiciones 5–7), subtipo oficial «-CUL- → -G-». El cambio no implica pérdida de l: se conserva y cambia de lugar.
+- **Metátesis recíproca:** intercambian posición la r (posición 3) y la l (posición 7): *miraglo > milagro*.
+- **Abertura:** u final → o (posición 8).
+- **Norma fija:** pérdida de -m del acusativo (posición 9); no se cuenta como apócope.
+
+**Secuencia didáctica:** *miraculum > miragulum > miraglum > miraglo > milagro* (las dos primeras formas intermedias son reconstrucciones). No se añade «Disimilación», porque la explicación verificada es la metátesis recíproca. En bibliografía especializada se describe *milagro* como evolución **semiculta**; mantenemos la clasificación original «PATRIMONIAL» del Excel como dato de procedencia, sin presentar esa etiqueta como consenso académico. Para el ejercicio prevalece la categoría escolar oficial de -CUL- → -G-.
+
+Fuentes de contraste: [Fernández Martín (2019), *Didacticae*, Universitat de Barcelona](https://revistes.ub.edu/index.php/didacticae/article/download/21966/pdf) (ficha de soluciones, p. 119); [DiCCA-XV, Universitat de Barcelona](https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/13869) (forma antigua *miraglo*); [CVC Instituto Cervantes](https://cvc.cervantes.es/ensenanza/biblioteca_ele/publicaciones_centros/PDF/manchester_2008/04_bistuer.pdf) (caracterización semiculta).
+
+## Criterio confirmado: abertura de -um → -o
+
+La -u final se abre a -o mediante la norma seleccionable «Abertura»; la -m final se pierde como norma fija, independiente. Los dos fragmentos se anotan por separado.
 
 ## Cuestiones pendientes
 
-Estas cuestiones **no se resuelven silenciosamente**. Hasta decidirlas, los ejemplos afectados no forman parte de la práctica o sólo se utilizan con el alcance indicado.
-
 | Entrada | Situación | Propuesta provisional |
 |---|---|---|
-| **miraculum → milagro** | La norma oficial presenta «-CUL- → -G-» mediante metátesis; el lote del Excel marca metátesis, síncopa y sonorización, y advierte expresamente que no es «-CUL- → -J-». | Mantener el subtipo «-CUL- → -G-» definido pero sin ficha jugable. Solicitar al docente una segmentación de etapas y decidir si sustituye o acompaña a otras etiquetas antes de incorporarlo. |
 | **spiritum → espíritu** | Es un ejemplo oficial de prótesis, pero el Excel lo clasifica como **EXCLUIDA** por conservación culta de -rit-. | Mantenerlo en las explicaciones oficiales, no como ficha patrimonial seleccionable hasta que el docente confirme que acepta su uso didáctico. |
 | **plumbum → plomo** | El ejemplo oficial lo incluye entre las simplificaciones, mientras el Excel indica **EXCLUIDA**. | No incorporarlo como ficha jugable sin revisión de la forma y cadena explicativa. |
 | **lyra(m) → lira** | La norma oficial documenta y → i, pero el Excel clasifica la entrada como **NO PATRIMONIAL** por helenismo. | Conservar el ejemplo en el catálogo oficial, dejarlo fuera del sorteo patrimonial inicial. |

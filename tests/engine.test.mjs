@@ -111,3 +111,30 @@ test('La ampliación de un lote no altera los filtros ni el banco anterior',()=>
  assert.deepEqual(after,orig);
  assert.equal(JSON.stringify(words),baseline);
 });
+
+test('miraculum → milagro tiene subtipo -CUL- → -G- y anotación completa y posicional',()=>{
+ const mir=word(727);
+ assert.equal(mir.latin,'miraculum');
+ assert.equal(mir.answers[0],'milagro');
+ assert.deepEqual(mir.changes.map(t=>t.rule),['SONOR','SINC','CUL','METAT','ABER','FIX_M']);
+ assert.deepEqual(mir.changes.find(t=>t.rule==='CUL').spans,[[4,7]]);
+ assert.equal(mir.changes.find(t=>t.rule==='CUL').subtype,'-CUL- > -G-');
+ const mal=structuredClone(mir);mal.changes.find(t=>t.rule==='CUL').subtype='desconocido';
+ assert.ok(validationErrors({version:1,words:[mal]}).some(e=>e.includes('subtipo -CUL- desconocido')));
+ assert.deepEqual(mir.changes.find(t=>t.rule==='SONOR').spans,[[4,5]]);
+ assert.deepEqual(mir.changes.find(t=>t.rule==='SINC').spans,[[5,6]]);
+ assert.deepEqual(mir.changes.find(t=>t.rule==='METAT').spans,[[2,3],[6,7]]);
+ assert.deepEqual(mir.changes.find(t=>t.rule==='ABER').spans,[[7,8]]);
+ assert.deepEqual(mir.changes.find(t=>t.rule==='FIX_M').spans,[[8,9]]);
+ assert.equal(gradeChange(mir,{rule:'CUL',spans:[[4,7]]}).correct,true);
+ assert.equal(gradeChange(mir,{rule:'CUL',spans:[[4,6]]}).correct,false);
+ assert.equal(gradeChange(mir,{rule:'METAT',spans:[[2,3]]}).correct,false);
+ assert.equal(gradeChange(mir,{rule:'METAT',spans:[[2,3],[6,7]]}).correct,true);
+ const allowed=new Set(['CUL','SONOR','SINC','METAT','ABER']);
+ assert.deepEqual(requiredRules(mir).sort(),[...allowed].sort());
+ assert.equal(availableWords([mir],allowed).length,1);
+ for(const rule of allowed){const incomplete=new Set(allowed);incomplete.delete(rule);assert.equal(availableWords([mir],incomplete).length,0,`Debe exigir ${rule}`);}
+ const state=newCardState(mir);assert.equal(checkResult(state,'milagro'),true);
+ for(const item of mir.changes)assert.equal(applyChange(state,{rule:item.rule,spans:item.spans}).correct,true);
+ assert.equal(state.phase,3);
+});
