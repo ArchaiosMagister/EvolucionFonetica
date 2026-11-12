@@ -1,0 +1,3001 @@
+{
+  "version": 1,
+  "source": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+  "words": [
+    {
+      "id": "xl-26",
+      "latin": "aucam",
+      "answers": [
+        "oca"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 26,
+        "lot": 1,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP"
+        ],
+        "sourceUrl": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "o",
+          "note": "au se reduce a o.",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "aucam > oca: monoptongación au > o; se pierde -m final."
+    },
+    {
+      "id": "xl-35",
+      "latin": "cadere",
+      "answers": [
+        "caer"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 35,
+        "lot": 1,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SÍNC"
+        ],
+        "sourceUrl": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Desaparece la d intervocálica.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Cae la e final del infinitivo.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "cadere > caer: pérdida de la -d- intervocálica. Se emplea «síncopa» en el sentido amplio de pérdida interior indicado en Normas."
+    },
+    {
+      "id": "xl-40",
+      "latin": "cælum",
+      "answers": [
+        "cielo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 40,
+        "lot": 1,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT",
+          "MONOP"
+        ],
+        "sourceUrl": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "e",
+          "note": "ae > e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "DIPT",
+          "output": "ie",
+          "note": "La e resultante diptonga en ie.",
+          "stages": [
+            "ae > e > ie"
+          ],
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "cælum > cielo: ae tónica se monoptonga en e y luego diptonga en ie."
+    },
+    {
+      "id": "xl-52",
+      "latin": "catenam",
+      "answers": [
+        "cadena"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 52,
+        "lot": 2,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.apuntes-selectividad.com/latin/evolucion-del-latin-al-castellano/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La t intervocálica sonoriza en d.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "catenam > cadena: -t- intervocálica sonoriza en -d-. La -m final del acusativo desaparece."
+    },
+    {
+      "id": "xl-61",
+      "latin": "clavem",
+      "answers": [
+        "llave"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 61,
+        "lot": 2,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": "https://www.apuntes-selectividad.com/latin/evolucion-fonetica-del-latin-al-castellano-ejemplos/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "El grupo cl- inicial evoluciona a ll.",
+          "subtype": "cl- > ll-",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "clavem > llave: cl- inicial > ll- por palatalización. -m final cae; v intervocálica se conserva con reajustes fonológicos normales."
+    },
+    {
+      "id": "xl-64",
+      "latin": "comitem",
+      "answers": [
+        "conde"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 64,
+        "lot": 2,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASMIL",
+          "SÍNC",
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.apuntes-selectividad.com/latin/evolucion-del-latin-al-castellano/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASMIL",
+          "output": "n",
+          "note": "La nasal se acomoda a la dental siguiente (m > n).",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Síncopa de la vocal postónica i.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La t intervocálica pasa a d.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "comitem > conde: pérdida de vocal -i- postónica, -t- > -d- y acomodación de la nasal -m- a n ante la dental sonora (com'de > conde)."
+    },
+    {
+      "id": "xl-75",
+      "latin": "crucem",
+      "answers": [
+        "cruz"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 75,
+        "lot": 2,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "APÓC",
+          "PALAT"
+        ],
+        "sourceUrl": "https://academialatin.com/teoria-evolucion-de-palabras-latinas-al-espanol/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "z",
+          "note": "Palatalización histórica de c ante e, seguida de evolución a z.",
+          "subtype": "c ante e > z",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Pérdida de la vocal e final.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "crucem > cruz: -c- ante e palataliza y evoluciona a sibilante (z actual); la -e final desaparece tras consonante. La -m del acusativo se pierde con anterioridad."
+    },
+    {
+      "id": "xl-82",
+      "latin": "cuppam",
+      "answers": [
+        "copa"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 82,
+        "lot": 2,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "SIMPL"
+        ],
+        "sourceUrl": "https://mediateca.educa.madrid.org/video/y697o5xtrtvoux2e"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La u se abre en o.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SIMPL",
+          "output": "p",
+          "note": "La geminada pp se simplifica.",
+          "subtype": "-pp- > -p-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "cuppam > copa: simplificación de la geminada -pp- > -p- y apertura de ŭ > o en el préstamo latino/vulgar. Conviene diferenciar esta base de cupam > cuba."
+    },
+    {
+      "id": "xl-105",
+      "latin": "fabam",
+      "answers": [
+        "haba"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 105,
+        "lot": 3,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR"
+        ],
+        "sourceUrl": "https://iessapostol.educarex.es/latin/fonetica_pau.html"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- inicial se aspira y acaba representándose mediante h.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "fabam > haba: f- inicial pasó por aspiración h-, luego enmudecida. La consonante -b- del étimo se conserva."
+    },
+    {
+      "id": "xl-111",
+      "latin": "farinam",
+      "answers": [
+        "harina"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 111,
+        "lot": 3,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR"
+        ],
+        "sourceUrl": "https://iessapostol.educarex.es/latin/fonetica_pau.html"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "La f- inicial se aspira y acaba representándose mediante h.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "farinam > harina: f- inicial se aspira y pasa a h- gráfica; las consonantes y el vocalismo radical se mantienen."
+    },
+    {
+      "id": "xl-114",
+      "latin": "femĭnam",
+      "answers": [
+        "hembra"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 114,
+        "lot": 3,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "MIN MBR"
+        ],
+        "sourceUrl": "https://iessapostol.educarex.es/latin/fonetica_pau.html"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "f- inicial > h-.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "-min- pierde su vocal interior y desarrolla -mbr-.",
+          "stages": [
+            "-min- > -mn- > -mbr-"
+          ],
+          "spans": [
+            [
+              2,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "femĭnam > hembra: f- > h-; la secuencia -min- pierde su vocal átona y, mediante -mn- > -mbr-, llega a hembra. El resultado completo se codifica con la norma específica N19."
+    },
+    {
+      "id": "xl-122",
+      "latin": "filium",
+      "answers": [
+        "hijo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 122,
+        "lot": 3,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ASPIR",
+          "PALAT"
+        ],
+        "sourceUrl": "https://www.apuntes-selectividad.com/latin/evolucion-fonetica-del-latin-al-castellano-de-cultismos-a-palabras-patrimoniales/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ASPIR",
+          "output": "h",
+          "note": "f- inicial > h-.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "j",
+          "note": "El grupo li ante vocal da j.",
+          "subtype": "-li- + vocal > -j-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "filium > hijo: la secuencia -li- + vocal palataliza y pasa al resultado j; f- inicial > h-. La -um final se integra como -o."
+    },
+    {
+      "id": "xl-143",
+      "latin": "germanum",
+      "answers": [
+        "hermano"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 143,
+        "lot": 3,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "AFÉR"
+        ],
+        "sourceUrl": "https://s821eb5c17568d0c8.jimcontent.com/download/version/1330643059/module/5974389676/name/EVOLUCI%C3%93N%20FON%C3%89TICA%20DEL%20CASTELLANO.pdf"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "AFER",
+          "output": "",
+          "note": "Desaparece la g- inicial; la h resultante es ortográfica, no aspiración de f-.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "germanum > hermano: pérdida de g- inicial ante e en la evolución popular; la h- moderna es ortográfica y no indica aspiración de f-. Se etiqueta la pérdida inicial como aféresis, con la precisión de que el fenómeno parte de g- palatalizada."
+    },
+    {
+      "id": "xl-150",
+      "latin": "homĭnem",
+      "answers": [
+        "hombre"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 150,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MIN MBR"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MIN_MBR",
+          "output": "mbr",
+          "note": "La vocal postónica desaparece y -min- se reorganiza en -mbr-.",
+          "stages": [
+            "-min- > -mn- > -mbr-"
+          ],
+          "spans": [
+            [
+              2,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "homĭnem > hombre: la secuencia postónica -min- se reduce y reorganiza como -mbr-; se marca la regla específica N19, sin duplicarla con síncopa."
+    },
+    {
+      "id": "xl-161",
+      "latin": "iurare",
+      "answers": [
+        "jurar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 161,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "j",
+          "note": "La i semiconsonántica inicial se representa con j.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "La -e final del infinitivo latino desaparece.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "iurare > jurar: la i- semiconsonántica latina se representa con j- en castellano; el infinitivo -are > -ar sigue el desarrollo morfológico habitual."
+    },
+    {
+      "id": "xl-184",
+      "latin": "lupum",
+      "answers": [
+        "lobo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 184,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "SONOR"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La ŭ de la raíz se abre en o.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "b",
+          "note": "p intervocálica > b.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "lŭpum (> lupum) > lobo: ŭ tónica > o y -p- intervocálica > -b-; -um final > -o."
+    },
+    {
+      "id": "xl-190",
+      "latin": "maiorem",
+      "answers": [
+        "mayor"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 190,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "y",
+          "note": "La i semiconsonántica se escribe y.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "La -e final se pierde.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "maiorem > mayor: la i intervocálica tiene valor consonántico /j/, escrito y en romance; -orem se reduce a -or, sin necesidad de postular diptongación."
+    },
+    {
+      "id": "xl-191",
+      "latin": "maium",
+      "answers": [
+        "mayo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 191,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "y",
+          "note": "La i intervocálica pasa a y.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "maium > mayo: la i semiconsonántica se refleja con y; se mantiene el resultado romance del nombre del mes."
+    },
+    {
+      "id": "xl-203",
+      "latin": "mensem",
+      "answers": [
+        "mes"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 203,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "APÓC",
+          "SIMPL"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "-ns- se simplifica en -s-.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Desaparece la -e final castellana.",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "mensem > mes: -ns- se simplifica a -s- y cae la -e final de la forma romance."
+    },
+    {
+      "id": "xl-210",
+      "latin": "multum",
+      "answers": [
+        "mucho"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 210,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "ch",
+          "note": "El grupo -lt- palataliza a -ch-.",
+          "subtype": "-lt- > -ch-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "multum > mucho: el grupo -lt- ante vocal da la africada palatal ch; la u tónica se conserva."
+    },
+    {
+      "id": "xl-215",
+      "latin": "noctem",
+      "answers": [
+        "noche"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 215,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "ch",
+          "note": "El grupo -ct- palataliza a -ch-.",
+          "subtype": "-ct- > -ch-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "noctem > noche: -ct- > -ch- por palatalización; no hay cambio vocálico de tipo N01."
+    },
+    {
+      "id": "xl-220",
+      "latin": "ocŭlum",
+      "answers": [
+        "ojo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 220,
+        "lot": 4,
+        "classification": "ocŭlum es singular; el plural corresponde a ocŭlos.",
+        "legacyRules": [
+          "SÍNC",
+          "CUL JG"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Se pierde la ŭ postónica del grupo -cŭl-.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "CUL",
+          "output": "j",
+          "note": "El grupo -cŭl- termina dando j.",
+          "subtype": "-CUL- > -J-",
+          "stages": [
+            "-cŭl- > -cl- > -j-"
+          ],
+          "spans": [
+            [
+              1,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "ocŭlum > ojo: ŭ postónica de -cŭl- se sincopa y -cl- > j. Se corrige «ojos» (plural) a «ojo» (singular) para respetar el étimo."
+    },
+    {
+      "id": "xl-245",
+      "latin": "pœnam",
+      "answers": [
+        "pena"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 245,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "MONOP"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "MONOP",
+          "output": "e",
+          "note": "El diptongo oe se reduce a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "pœnam > pena: el diptongo latino oe se monoptonga en e; no hay ĕ tónica originaria que diptongue."
+    },
+    {
+      "id": "xl-248",
+      "latin": "pŏrtam",
+      "answers": [
+        "puerta"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 248,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga en ue.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "pŏrtam > puerta: ŏ tónica > ue; se conserva -rt-."
+    },
+    {
+      "id": "xl-257",
+      "latin": "radium",
+      "answers": [
+        "rayo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 257,
+        "lot": 4,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": "https://www.ub.edu/gradia/help.php"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "y",
+          "note": "-di- ante vocal evoluciona a y.",
+          "subtype": "-di- + vocal > -y-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "radium > rayo: -di- más vocal > y; la terminación -um > -o."
+    },
+    {
+      "id": "xl-274",
+      "latin": "scamnum",
+      "answers": [
+        "escaño"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 274,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT",
+          "PRÓT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- ante s + consonante.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ñ",
+          "note": "El grupo mn da ñ.",
+          "subtype": "-mn- > -ñ-",
+          "spans": [
+            [
+              3,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Se añade e- ante s- seguida de consonante y el grupo -mn- desarrolla ñ."
+    },
+    {
+      "id": "xl-592",
+      "latin": "scholam",
+      "answers": [
+        "escuela"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 592,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT",
+          "GRIE",
+          "PRÓT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "GRIE",
+          "output": "c",
+          "note": "La grafía grecolatina ch se adapta a c.",
+          "subtype": "ch > c/q",
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- inicial ante s + consonante.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t2"
+        },
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga en ue.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Schŏlam > escuela: prótesis e- ante /sk/ inicial y ŏ tónica > ue. El grupo grecolatino sch se adapta como esc-."
+    },
+    {
+      "id": "xl-277",
+      "latin": "scutum",
+      "answers": [
+        "escudo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 277,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PRÓT",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- protética.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "d",
+          "note": "La t intervocálica pasa a d.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Prótesis e- ante sc-; -t- intervocálica > -d-."
+    },
+    {
+      "id": "xl-298",
+      "latin": "spartum",
+      "answers": [
+        "esparto"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 298,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PRÓT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- al comienzo.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Se añade e- ante el grupo inicial sp-."
+    },
+    {
+      "id": "xl-300",
+      "latin": "spatium",
+      "answers": [
+        "espacio"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 300,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT",
+          "PRÓT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- inicial.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ci",
+          "note": "El grupo -ti- ante vocal pasa a -ci-.",
+          "subtype": "-ti- + vocal > -ci-",
+          "spans": [
+            [
+              3,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Se añade e- ante sp- y -ti- ante vocal pasa al sonido representado por c: espacio."
+    },
+    {
+      "id": "xl-302",
+      "latin": "spicam",
+      "answers": [
+        "espiga"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 302,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PRÓT",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade una e- ante sp-.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "g",
+          "note": "La c intervocálica sonoriza en g.",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Prótesis e- ante sp- y sonorización -c- > -g-."
+    },
+    {
+      "id": "xl-320",
+      "latin": "tĕrram",
+      "answers": [
+        "tierra"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 320,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "DIPT",
+          "output": "ie",
+          "note": "La ĕ tónica diptonga en ie.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "La ĕ tónica de tĕrram diptonga en ie."
+    },
+    {
+      "id": "xl-342",
+      "latin": "vittam",
+      "answers": [
+        "veta"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 342,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La i breve tónica pasa a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SIMPL",
+          "output": "t",
+          "note": "La geminada tt se simplifica.",
+          "subtype": "-tt- > -t-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Ĭ tónica > e y la geminada -tt- se simplifica en -t-: vittam > veta."
+    },
+    {
+      "id": "xl-354",
+      "latin": "buccam",
+      "answers": [
+        "boca"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 354,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La ŭ se abre en o.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SIMPL",
+          "output": "c",
+          "note": "Las dos c se reducen a una.",
+          "subtype": "-cc- > -c-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Bŭccam > boca: ŭ > o y simplificación de la geminada -cc- en -c-."
+    },
+    {
+      "id": "xl-359",
+      "latin": "cibum",
+      "answers": [
+        "cebo"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 359,
+        "lot": 5,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La ĭ tónica se abre a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Cĭbum > cebo: ĭ tónica se abre en e; la -b- se conserva."
+    },
+    {
+      "id": "xl-502",
+      "latin": "rupturam",
+      "answers": [
+        "rotura"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 502,
+        "lot": 6,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La ŭ tónica se abre a o.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "ASMIL",
+          "output": "tt",
+          "note": "Según el modelo oficial, pt se asimila a tt.",
+          "stages": [
+            "pt > tt > t"
+          ],
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SIMPL",
+          "output": "t",
+          "note": "El grupo -pt- se simplifica a -t-.",
+          "subtype": "-pt- > -t-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Rŭpturam > rotura: ŭ > o y -pt- > -t-. «Ruptura» es la variante culta conservadora."
+    },
+    {
+      "id": "xl-533",
+      "latin": "iocum",
+      "answers": [
+        "juego"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 533,
+        "lot": 6,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "CONS",
+          "DIPT",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "CONS",
+          "output": "j",
+          "note": "La i inicial semiconsonántica pasa a j.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga en ue.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "rule": "SONOR",
+          "output": "g",
+          "note": "La c intervocálica se sonoriza.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t5",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Iŏcum > juego: i inicial consonántica > j, ŏ tónica > ue y -c- intervocálica > -g-."
+    },
+    {
+      "id": "xl-567",
+      "latin": "focum",
+      "answers": [
+        "fuego"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 567,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DIPT",
+          "SONOR"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "DIPT",
+          "output": "ue",
+          "note": "La ŏ tónica diptonga en ue.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SONOR",
+          "output": "g",
+          "note": "La c intervocálica pasa a g.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Fŏcum > fuego: ŏ tónica > ue y -c- intervocálica > -g-; la f- se conserva ante ue."
+    },
+    {
+      "id": "xl-605",
+      "latin": "marmorem",
+      "answers": [
+        "mármol"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 605,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "APÓC",
+          "DISIMIL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "DISIMIL",
+          "output": "r…l",
+          "note": "Las dos vibrantes se diferencian: r…r > r…l.",
+          "spans": [
+            [
+              2,
+              3
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "Cae la e final.",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Marmŏrem > mármol: disimilación de r...r en r...l y pérdida de -e final."
+    },
+    {
+      "id": "xl-606",
+      "latin": "roborem",
+      "answers": [
+        "roble"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 606,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "DISIMIL",
+          "SÍNC"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "DISIMIL",
+          "output": "r…l",
+          "note": "La segunda r disimila en l.",
+          "spans": [
+            [
+              0,
+              1
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "SINC",
+          "output": "",
+          "note": "Se pierde la o postónica.",
+          "subtype": "síncopa",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Robŏrem > roble: pérdida de vocal postónica y disimilación de la segunda vibrante en l."
+    },
+    {
+      "id": "xl-614",
+      "latin": "stellam",
+      "answers": [
+        "estrella"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 614,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "EPÉNT",
+          "PRÓT"
+        ],
+        "sourceUrl": "https://histetim.blogs.uv.es/cortex-cerebral/"
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PROT",
+          "output": "e",
+          "note": "Se añade e- ante st-.",
+          "anchor": 0,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "EPENT",
+          "output": "r",
+          "note": "Se introduce r entre t y e.",
+          "anchor": 2,
+          "spans": [],
+          "id": "t2"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "El grupo geminado -ll- desarrolla ll palatal.",
+          "subtype": "-ll- > -ll-",
+          "spans": [
+            [
+              3,
+              5
+            ]
+          ],
+          "id": "t3"
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Stellam > estrella: e- protética ante st- inicial; inserción de -r- por influjo de la líquida de la raíz, sin convertirla en ley general."
+    },
+    {
+      "id": "xl-616",
+      "latin": "tonare",
+      "answers": [
+        "tronar"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 616,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "EPÉNT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "EPENT",
+          "output": "r",
+          "note": "Se introduce r tras la t inicial.",
+          "anchor": 1,
+          "spans": [],
+          "id": "t1"
+        },
+        {
+          "rule": "APOC",
+          "output": "",
+          "note": "La -e del infinitivo -are desaparece.",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Tonare > tronar: se introduce r en el inicio del verbo (to-nar > tro-nar); no hay diptongación de o, porque no era la vocal tónica."
+    },
+    {
+      "id": "xl-633",
+      "latin": "chartam",
+      "answers": [
+        "carta"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 633,
+        "lot": 7,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "GRIE"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "GRIE",
+          "output": "c",
+          "note": "La grafía griega ch se adapta como c.",
+          "subtype": "ch > c/q",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Charta > carta: voz antigua procedente del latín charta (a su vez del griego); el grupo ch representa /k/ y se escribe c. No hay diptongación ni sonorización."
+    },
+    {
+      "id": "xl-722",
+      "latin": "crustam",
+      "answers": [
+        "costra"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 722,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "METÁT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "o",
+          "note": "La ŭ se abre a o.",
+          "spans": [
+            [
+              2,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "METAT",
+          "output": "-tr-",
+          "note": "La r del grupo inicial cr- pasa al interior, detrás de t.",
+          "spans": [
+            [
+              1,
+              2
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              6,
+              7
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Crustam > costra: ŭ > o y metátesis de la vibrante desde cr- a -tr-; plural castellano costras."
+    },
+    {
+      "id": "xl-726",
+      "latin": "inter",
+      "answers": [
+        "entre"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 726,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "METÁT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "METAT",
+          "output": "re",
+          "note": "La vibrante r final se desplaza ante la última e.",
+          "spans": [
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              5
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La i de la primera sílaba pasa a e.",
+          "spans": [
+            [
+              0,
+              1
+            ]
+          ],
+          "id": "t2"
+        }
+      ],
+      "explanation": "Inter > entre: metátesis de la r final hacia la sílaba precedente."
+    },
+    {
+      "id": "xl-794",
+      "latin": "thesaurum",
+      "answers": [
+        "tesoro"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 794,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "GRIE",
+          "MONOP"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "GRIE",
+          "output": "t",
+          "note": "La grafía griega th se adapta a t.",
+          "subtype": "th > t",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "MONOP",
+          "output": "o",
+          "note": "au se reduce a o.",
+          "spans": [
+            [
+              4,
+              6
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              7,
+              8
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              8,
+              9
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Thesaurum > tesoro: th griega transmitida por el latín > t y au > o; voz antigua de uso popular, frente a derivados cultos en tesaur-."
+    },
+    {
+      "id": "xl-804",
+      "latin": "annum",
+      "answers": [
+        "año"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 804,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "ñ",
+          "note": "La geminada -nn- da ñ.",
+          "subtype": "-nn- > -ñ-",
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              3,
+              4
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Annum > año: palatalización de -nn- latina a ñ."
+    },
+    {
+      "id": "xl-842",
+      "latin": "lignum",
+      "answers": [
+        "leño"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 842,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "ABER",
+          "PALAT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "ABER",
+          "output": "e",
+          "note": "La ĭ pasa a e.",
+          "spans": [
+            [
+              1,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "rule": "PALAT",
+          "output": "ñ",
+          "note": "El grupo gn da ñ.",
+          "subtype": "-gn- > -ñ-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t2"
+        },
+        {
+          "id": "t3",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t4",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Lignum > leño: ĭ > e y palatalización de -gn- > ñ."
+    },
+    {
+      "id": "xl-851",
+      "latin": "plagam",
+      "answers": [
+        "llaga"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 851,
+        "lot": 8,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "PALAT"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "PALAT",
+          "output": "ll",
+          "note": "El grupo inicial pl- pasa a ll-",
+          "subtype": "pl- > ll-",
+          "spans": [
+            [
+              0,
+              2
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Plagam > llaga: grupo inicial pl- > ll- castellana; la -g- latina se mantiene."
+    },
+    {
+      "id": "xl-915",
+      "latin": "mensam",
+      "answers": [
+        "mesa"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 915,
+        "lot": 9,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "SIMPL"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "SIMPL",
+          "output": "s",
+          "note": "El grupo -ns- se simplifica en -s-.",
+          "subtype": "-ns- > -s-",
+          "spans": [
+            [
+              2,
+              4
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Mensam > mesa: simplificación -ns- > s."
+    },
+    {
+      "id": "xl-1029",
+      "latin": "saltum",
+      "answers": [
+        "soto"
+      ],
+      "source": {
+        "file": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+        "sheet": "Banco",
+        "row": 1029,
+        "lot": 10,
+        "classification": "PATRIMONIAL",
+        "legacyRules": [
+          "VOC"
+        ],
+        "sourceUrl": null
+      },
+      "status": "reviewed-pilot",
+      "changes": [
+        {
+          "rule": "VOC",
+          "output": "o",
+          "note": "El grupo al se vocaliza y acaba en o.",
+          "stages": [
+            "al > au > o"
+          ],
+          "spans": [
+            [
+              1,
+              3
+            ]
+          ],
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "rule": "ABER",
+          "spans": [
+            [
+              4,
+              5
+            ]
+          ],
+          "output": "o",
+          "note": "La u de la terminación -um se abre a o."
+        },
+        {
+          "id": "t3",
+          "rule": "FIX_M",
+          "spans": [
+            [
+              5,
+              6
+            ]
+          ],
+          "output": "∅",
+          "note": "La -m final del acusativo desaparece (norma fija)."
+        }
+      ],
+      "explanation": "Saltum > soto: vocalización y posterior monoptongación del grupo -alt- (al > au > o); no se marca sonorización de -t-."
+    }
+  ]
+}

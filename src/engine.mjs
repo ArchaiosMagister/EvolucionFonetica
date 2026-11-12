@@ -1,0 +1,78 @@
+import { RULES, FIXED_RULE } from './rules.mjs';
+export const chars = text => [...text.normalize('NFC')];
+export const normAnswer = text => String(text ?? '').normalize('NFC').trim().replace(/\s+/gu,' ').toLocaleLowerCase('es');
+export const resultMatches = (word, answer) => word.answers.some(value => normAnswer(value) === normAnswer(answer));
+export const requiredRules = word => [...new Set(word.changes.filter(x => x.rule !== FIXED_RULE.id).map(x => x.rule))];
+export const availableWords = (words, selected) => words.filter(w => {
+  const needed = requiredRules(w);
+  return needed.length > 0 && needed.every(id => selected.has(id));
+});
+export function chooseWords(words, selected, count, rng = Math.random) {
+  const pool = [...availableWords(words,selected)];
+  for (let i=pool.length-1;i>0;i--) { const j=Math.floor(rng()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  return pool.slice(0,Math.min(Math.max(0,Math.floor(count)),pool.length));
+}
+const sameRanges = (a,b) => JSON.stringify([...a].sort((x,y)=>x[0]-y[0]||x[1]-y[1])) === JSON.stringify([...b].sort((x,y)=>x[0]-y[0]||x[1]-y[1]));
+export function changeMatches(guess, actual) {
+  return guess.rule === actual.rule && (guess.anchor ?? null) === (actual.anchor ?? null) && sameRanges(guess.spans ?? [],actual.spans ?? []);
+}
+export function gradeChange(word, guess, solvedIds = new Set()) {
+  const matched = word.changes.find(item => !solvedIds.has(item.id) && changeMatches(guess,item));
+  if (matched) return {correct:true, id:matched.id, note:matched.note};
+  const repeated=word.changes.some(item=>solvedIds.has(item.id)&&changeMatches(guess,item));
+  return {correct:false, repeated, note:repeated?'Ese cambio ya está identificado.':'Revisa el fragmento y la norma. No se revela la solución.'};
+}
+export function isComplete(word, solvedIds){return word.changes.every(t=>solvedIds.has(t.id));}
+export function validationErrors(dataset) {
+  const errors=[], known=new Set([...RULES.map(r=>r.id),FIXED_RULE.id]);
+  if (dataset?.version !== 1 || !Array.isArray(dataset.words)) return ['Formato o versión de banco incorrectos.'];
+  const ids=new Set(), forms=new Set();
+  for(const word of dataset.words) {
+    if(!word.id || ids.has(word.id))errors.push(`ID duplicado/vacío: ${word.id}`);
+    ids.add(word.id);
+    const letters=chars(word.latin ?? '');
+    if (!letters.length || !Array.isArray(word.answers)||!word.answers.length||word.answers.some(x=>!normAnswer(x)))errors.push(`${word.id}: faltan forma o respuestas`);
+    const formKey=word.latin?.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
+    if(forms.has(formKey))errors.push(`${word.id}: forma latina repetida en el piloto`);
+    forms.add(formKey);
+    if(!word.source?.row || !word.source?.lot)errors.push(`${word.id}: falta la referencia de origen`);
+    if(word.status!=='reviewed-pilot') errors.push(`${word.id}: sin control filológico del lote`);
+    if (!Array.isArray(word.changes)||!word.changes.length)errors.push(`${word.id}: sin cambios`);
+    const changes=new Set();
+    for(const item of word.changes??[]) {
+      if(!known.has(item.rule))errors.push(`${word.id}: norma desconocida ${item.rule}`);
+      if(!item.id||changes.has(item.id))errors.push(`${word.id}: cambio repetido`);
+      changes.add(item.id);
+      if(!item.note || typeof item.output !== 'string')errors.push(`${word.id}: falta explicación o resultado`);
+      if (!Array.isArray(item.spans) || (!item.spans.length && !Number.isInteger(item.anchor)))errors.push(`${word.id}/${item.id}: sin fragmento ni inserción`);
+      for(const span of item.spans??[]) {
+        if(!Array.isArray(span)||span.length!==2||!span.every(Number.isInteger)||span[0]<0||span[1]>letters.length||span[0]>=span[1])errors.push(`${word.id}/${item.id}: intervalo inválido`);
+      }
+      if(item.anchor!==undefined && (!Number.isInteger(item.anchor)||item.anchor<0||item.anchor>letters.length))errors.push(`${word.id}/${item.id}: inserción inválida`);
+      if(item.rule===FIXED_RULE.id && (item.spans.length!==1 || item.spans[0][0]!==letters.length-1 || letters.at(-1)?.toLowerCase()!=='m'))errors.push(`${word.id}: -m fija mal ubicada`);
+      if(item.rule===FIXED_RULE.id && item.anchor!==undefined)errors.push(`${word.id}: norma fija no puede ser inserción`);
+    }
+    if(letters.at(-1)?.toLowerCase()==='m' && !word.changes.some(x=>x.rule===FIXED_RULE.id))errors.push(`${word.id}: falta -m fija`);
+    if(letters.at(-1)?.toLowerCase()!=='m' && word.changes.some(x=>x.rule===FIXED_RULE.id))errors.push(`${word.id}: -m fija improcedente`);
+  }
+  return errors;
+}
+export function coverage(words) {
+ const counts=Object.fromEntries(RULES.map(r=>[r.id,0]));
+ for(const word of words)for(const id of requiredRules(word)) counts[id]++;
+ return counts;
+}
+export function newCardState(word) {return {word,phase:1,solved:new Set(),attempts:0,mistakes:0};}
+export function checkResult(state, answer) {
+  if(state.phase!==1) return false;
+  state.attempts++;
+  if(resultMatches(state.word,answer)){state.phase=2;return true;}
+  state.mistakes++;return false;
+}
+export function applyChange(state,guess) {
+ if(state.phase!==2) return {correct:false,note:'Primero debes acertar el resultado castellano.'};
+ const outcome=gradeChange(state.word,guess,state.solved);
+ if(outcome.correct){state.solved.add(outcome.id);if(isComplete(state.word,state.solved))state.phase=3;}
+ else state.mistakes++;
+ return outcome;
+}
