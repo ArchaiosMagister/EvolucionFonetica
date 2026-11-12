@@ -6,7 +6,13 @@ Webapp autónoma para **estudiar y practicar** las **20 normas oficiales de evol
 
 Web publicada: <https://archaiosmagister.github.io/EvolucionFonetica/> (GitHub Pages).
 
-En **Practicar** se puede elegir entre repaso general (filtro estricto de todas las normas necesarias) y **repaso de una sola norma** (filtrado por presencia de esa norma). Después se elige la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+En **Practicar** se puede elegir entre repaso general (filtro estricto de todas las normas necesarias) y **repaso de una sola norma** (filtrado por presencia de esa norma). Después se elige la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta ofrece **hasta tres intentos para el resultado castellano** y, si se acierta, **hasta tres comprobaciones para identificar las normas**. En ambas fases el alumno puede pulsar «No lo sé · Ver solución» sin esperar a fallar; después de tres fallos la solución aparece automáticamente. Siempre puede pasar a la siguiente ficha tras consultar la explicación. Las soluciones mostradas nunca cuentan como aciertos. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
+
+## Desbloqueo de las tarjetas de práctica (12/11/2026)
+
+La práctica nunca bloquea al alumno de manera indefinida. **Decisión didáctica**: tres intentos por fase y botón permanente «No lo sé · Ver solución». No se generan pistas individualizadas por palabra; las fichas emplean las **respuestas y anotaciones ya revisadas**. En la fase del resultado, tres errores muestran directamente toda la evolución; en la fase de normas, tres comprobaciones fallidas revelan las normas sin atribuirlas al alumno. La consulta es voluntaria desde el primer intento.
+
+El resumen final distingue las fichas acertadas a la primera, las completadas tras fallos y las reveladas. Se conserva el progreso de la sesión hasta pasar a la siguiente palabra y los análisis originales del banco; no se inventan reglas. Los avisos muestran texto además de color y una animación breve de fallo, desactivada con `prefers-reduced-motion`. Pruebas: `tests/reveal.test.mjs`, `tests/engine.test.mjs` y `tests/static.test.mjs`.
 
 ## Importación desde GeneradorExamenes (12/11/2026)
 
@@ -30,9 +36,9 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 - **Repaso general (sin cambios):** una palabra es elegible únicamente si **todas** sus normas seleccionables están incluidas entre las marcadas. La caída fija de `-m` sigue siendo independiente de la apócope y se evalúa cuando corresponde.
 - **Repaso de una norma:** se incluyen **todas las palabras que contienen** la norma seleccionada, sin exigir la selección de otras. El límite de tarjetas se ajusta al número disponible, sin alterar el criterio ni duplicar entradas.
-- **Fase 1:** continúa siendo obligatorio acertar el resultado castellano; las respuestas erróneas pueden reintentarse y no se revela la solución. Se ofrece una **pista opcional** con los nombres de las otras normas presentes (no los resultados).
-- **Fase 2:** en guiado se marcan únicamente los grupos y puntos de inserción de la norma elegida; en a ciegas el alumno localiza los tramos por sí mismo. «Comprobar todo» **solo corrige las apariciones de esa norma**, incluidas varias dentro de una misma palabra; los cambios ajenos y la pérdida fija de `-m` no se preguntan ni cuentan como errores. Las tarjetas de respuesta y el botón de corrección conjunta se conservan.
-- **Al finalizar:** la explicación muestra **todos** los cambios de la palabra, señalando cuáles se evaluaron y cuáles se muestran solo como explicación. En el resumen de sesión se indica la norma trabajada.
+- **Fase 1:** el resultado castellano se puede intentar hasta tres veces. Tras tres errores, o con «No lo sé · Ver solución», se presenta el resultado y la evolución completa. La ficha no cuenta como acertada. En repaso focalizado sigue disponible la pista opcional con los nombres de otras normas.
+- **Fase 2:** en guiado se marcan únicamente los grupos y puntos de inserción de la norma elegida; en a ciegas el alumno localiza los tramos. «Comprobar todo» **solo corrige las apariciones de esa norma**, incluidas varias dentro de una misma palabra. Hay hasta tres comprobaciones con al menos una norma elegida. Si ninguna norma está seleccionada, comprobar no consume un intento. Tras tres comprobaciones fallidas, o al pulsar «No lo sé · Ver solución», se revela la explicación; los cambios no identificados **no se contabilizan como aciertos**. Las normas ajenas y la pérdida fija de `-m` siguen sin evaluarse en el repaso focalizado.
+- **Al finalizar:** la explicación muestra **todos** los cambios de la palabra; cuando se ha revelado la solución, aparece una señal de fallo discreta y compatible con movimiento reducido. El resumen distingue **sin errores**, **resueltas tras intentos** y **solución consultada**; las reveladas no se suman a los aciertos.
 - Desde **Estudiar → Catálogo de normas** existe el botón **«Practicar esta norma»**. Respeta el estado de una práctica en curso y solicita confirmación antes de sustituirla por otra sesión.
 - El selector claro/oscuro/OLED, las funciones táctiles, la memoria de sesión al alternar Estudiar/Practicar y los recursos offline permanecen sin cambios.
 
