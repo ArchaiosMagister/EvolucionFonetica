@@ -78,8 +78,8 @@ export function filterWordsByDifficulty(words,assignments,filter='all'){
 }
 
 /**
- * Selección múltiple para Estudiar. Mantiene el orden de entrada (incluido
- * el barajado) y no modifica las fichas ni los filtros únicos de Practicar.
+ * Selección múltiple compartida por Estudiar y Practicar. Mantiene el orden
+ * de entrada (incluido el barajado) y no modifica las fichas ni sus normas.
  * Un conjunto vacío deja la lista vacía hasta volver a elegir niveles.
  */
 export function filterWordsByDifficultyLevels(words,assignments,levels){
