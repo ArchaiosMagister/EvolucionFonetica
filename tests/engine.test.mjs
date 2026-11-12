@@ -27,6 +27,23 @@ test('La -m fija nunca se confunde con apócope',()=>{
  assert.equal(gradeChange(poena,{rule:'APOC',spans:[[poena.latin.length-1,poena.latin.length]]}).correct,false);
  assert.equal(gradeChange(poena,{rule:'FIX_M',spans:[[poena.latin.length-1,poena.latin.length]]}).correct,true);
 });
+test('Criterio aprobado: -um > -o exige abertura final y caída fija de -m',()=>{
+ const endings=words.filter(w=>w.latin.endsWith('um'));
+ assert.ok(endings.length>=10,'El lote debe incluir suficientes terminaciones -um');
+ for(const w of endings) {
+   const length=chars(w.latin).length, end=length-2;
+   const abertura=w.changes.find(t=>t.rule==='ABER' && t.output==='o' && t.spans?.some(([a,b])=>a===end && b===end+1));
+   const perdida=w.changes.find(t=>t.rule==='FIX_M' && t.spans?.some(([a,b])=>a===end+1 && b===end+2));
+   assert.ok(abertura, `${w.latin}: falta abertura de u final`);
+   assert.ok(perdida, `${w.latin}: falta pérdida fija de -m`);
+   assert.ok(requiredRules(w).includes('ABER'));
+   assert.ok(!availableWords([w],new Set()).length);
+ }
+ const incompatible=structuredClone(endings[0]);
+ incompatible.changes=incompatible.changes.filter(t=>!(t.rule==='ABER' && t.spans?.some(([a])=>a===chars(incompatible.latin).length-2)));
+ assert.ok(validationErrors({version:1,words:[incompatible]}).some(e=>e.includes('falta abertura final')));
+});
+
 test('El filtro no devuelve fenómenos no elegidos (incluso en 250 combinaciones)',()=>{
  let seed=8342;const rng=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
  const sets=[new Set(),new Set(RULES.map(x=>x.id)),...RULES.map(x=>new Set([x.id]))];

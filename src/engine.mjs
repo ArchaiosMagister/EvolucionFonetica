@@ -54,6 +54,13 @@ export function validationErrors(dataset) {
     }
     if(letters.at(-1)?.toLowerCase()==='m' && !word.changes.some(x=>x.rule===FIXED_RULE.id))errors.push(`${word.id}: falta -m fija`);
     if(letters.at(-1)?.toLowerCase()!=='m' && word.changes.some(x=>x.rule===FIXED_RULE.id))errors.push(`${word.id}: -m fija improcedente`);
+    // Criterio PAU confirmado: -um > -o exige abertura u > o Y pérdida fija -m.
+    // Se valida como dos transformaciones independientes para evitar omisiones en lotes futuros.
+    if(letters.length>=2 && letters.at(-2)?.toLowerCase()==='u' && letters.at(-1)?.toLowerCase()==='m') {
+      const pos=letters.length-2;
+      if(!word.changes.some(t=>t.rule==='ABER' && t.output==='o' && t.spans?.some(([start,end])=>start===pos&&end===pos+1)))
+        errors.push(`${word.id}: falta abertura final -u- > -o en -um`);
+    }
   }
   return errors;
 }

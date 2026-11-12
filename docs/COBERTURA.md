@@ -27,7 +27,7 @@
 
 ## Criterio de selección
 
-Una ficha sólo se sortea cuando todas sus normas **seleccionables** están incluidas. La -m fija se identifica aunque no esté seleccionada. Los subtipos nunca se confunden con reglas independientes: por ejemplo, la reducción interior de -MIN- queda dentro de su norma específica.
+Una ficha sólo se sortea cuando todas sus normas **seleccionables** están incluidas. La -m fija se identifica aunque no esté seleccionada. **Criterio confirmado:** las fichas acabadas en *-um* requieren también abertura *u → o* como norma seleccionable; el validador exige ambas anotaciones por separado. Los subtipos nunca se confunden con reglas independientes: por ejemplo, la reducción interior de -MIN- queda dentro de su norma específica.
 
 ## Subtipos aún no representados
 
