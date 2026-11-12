@@ -6,7 +6,7 @@ import {availableWords,availableFocusedWords,chooseFromPool,requiredRules} from 
 import {studyWordsForRule,findStudyWords,shuffleStudyWords} from '../src/study.mjs';
 import {
  DIFFICULTY_LEVELS,DIFFICULTY_FILTERS,difficultyScore,proposedDifficultyLevel,
- makeDifficultyData,difficultyErrors,difficultyLabel,filterWordsByDifficulty
+ makeDifficultyData,difficultyErrors,difficultyLabel,filterWordsByDifficulty,filterWordsByDifficultyLevels
 } from '../src/difficulty.mjs';
 const words=JSON.parse(readFileSync(new URL('../data/pilot.json',import.meta.url),'utf8')).words;
 const data=JSON.parse(readFileSync(new URL('../data/difficulty.json',import.meta.url),'utf8'));
@@ -106,4 +106,41 @@ test('Una clasificación dañada, incompleta o incoherente es rechazada',()=>{
  assert.equal(rebuilt.assignments[one].origin,'docente');
  clone.assignments['no-existe']={level:1,origin:'automatico'};
  assert.ok(difficultyErrors(words,clone).some(s=>s.includes('ID ajeno')));
+});
+
+test('Estudiar permite cualquier combinación independiente de niveles, incluso ninguno',()=>{
+ const original=words.map(w=>w.id);
+ const cases=[
+  [1,3],[2,4],[1,4],[1],[3],[1,2,3,4],[]
+ ];
+ for(const chosen of cases){
+  const levels=new Set(chosen);
+  const result=filterWordsByDifficultyLevels(words,records,levels);
+  const expected=words.filter(w=>levels.has(records[w.id].level));
+  assert.deepEqual(result.map(w=>w.id),expected.map(w=>w.id));
+  assert.deepEqual(words.map(w=>w.id),original);
+ }
+ assert.equal(filterWordsByDifficultyLevels(words,records,new Set()).length,0);
+ assert.equal(filterWordsByDifficultyLevels(words,records,new Set([1,3])).length,216);
+ assert.equal(filterWordsByDifficultyLevels(words,records,new Set([2,4])).length,306);
+});
+test('Multiselección funciona tras búsqueda y barajado, conserva orden y normas',()=>{
+ const deck=shuffleStudyWords(words,()=>0.71);
+ const levels=new Set([1,4]);
+ const selected=filterWordsByDifficultyLevels(deck,records,levels);
+ assert.deepEqual(selected.map(w=>w.id),deck.filter(w=>levels.has(records[w.id].level)).map(w=>w.id));
+ assert.equal(selected.length,125);
+ const found=findStudyWords(words,'añojo');
+ assert.ok(filterWordsByDifficultyLevels(found,records,new Set([4])).some(w=>w.latin==='annuculum'));
+ assert.equal(filterWordsByDifficultyLevels(found,records,new Set([1,2])).length,0);
+ for(const rule of RULES){
+  const byRule=studyWordsForRule(words,rule.id);
+  const pick=filterWordsByDifficultyLevels(byRule,records,new Set([2,4]));
+  assert.ok(pick.every(w=>w.changes.some(c=>c.rule===rule.id)));
+  assert.ok(pick.every(w=>[2,4].includes(records[w.id].level)));
+ }
+ assert.throws(()=>filterWordsByDifficultyLevels(words,records,[1,2]),/inválida/);
+ assert.throws(()=>filterWordsByDifficultyLevels(words,records,new Set([0,5])),/inválida/);
+ const broken={...records,[words[0].id]:{level:9}};
+ assert.throws(()=>filterWordsByDifficultyLevels(words,broken,new Set([1])),/clasificación/);
 });
