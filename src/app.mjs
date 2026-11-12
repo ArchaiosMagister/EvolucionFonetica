@@ -25,6 +25,18 @@ let blindSpans=[], pendingStart=null, insertion=null;
 const phaseTitle={1:'Fase 1 · Resultado castellano',2:'Fase 2 · Identifica los cambios',3:'Explicación de la evolución'};
 const currentWord=()=>session?.cards[session.index];
 const progress=()=>session? Math.round((session.index/session.cards.length)*100):0;
+// Indica la vía de transmisión sin presentar una adaptación culta como evolución patrimonial.
+function transmissionNote(w){
+ if(w.source?.transmission==='ADAPTACION_CULTA')return '<p class="transmission-note"><strong>Adaptación culta.</strong> Se estudian correspondencias gráficas, no una evolución patrimonial completa.</p>';
+ if(w.source?.transmission==='REGIONAL_HISTORICA')return '<p class="transmission-note"><strong>Voz regional o histórica.</strong> Su significado y uso pueden ser específicos.</p>';
+ if(w.source?.generatorId)return '<p class="transmission-note">Ficha importada de GeneradorExamenes: anotación posicional comprobada, pendiente de certificación filológica individual.</p>';
+ return '';
+}
+function wordSourceNote(w){
+ return w.source?.generatorId
+  ? `Fuente: GeneradorExamenes · ${esc(w.source.generatorId)} · fila ${esc(w.source.row)}. Estado de origen: APTO_PROPUESTO (preselección didáctica, no certificación filológica).`
+  : `Fuente: Excel docente · Banco, fila ${esc(w.source.row)} · Lote ${esc(w.source.lot)}.`;
+}
 const labelFragment=(word,t)=>t.anchor!==undefined?`Inserción ${t.anchor===0?'antes de '+chars(word.latin)[0]??'':'tras la letra '+chars(word.latin)[t.anchor-1]}`:t.spans.map(([s,e])=>chars(word.latin).slice(s,e).join('')).join(' + ');
 function setupHTML(){
  const pool=eligiblePool();const count=Math.min(requested,pool.length);
@@ -62,7 +74,7 @@ function renderCard(){
  app.innerHTML=`<div class="practice-shell"><div class="topline"><button type="button" class="back-button" data-action="back">← Cambiar normas</button><span class="tiny">Tarjeta ${session.index+1} de ${session.cards.length} · ${session.focusRule?'Una norma: '+esc(ruleName(session.focusRule))+' · ':''}${session.mode==='guided'?'Guiado':'A ciegas'}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${progress()}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso"><div class="progress-value" style="width:${progress()}%"></div></div><article class="panel practice-card"><p class="eyebrow">${phaseTitle[stage]}</p>${stage===1?renderFirst(w):stage===2?renderSecond(w):renderComplete(w)}</article></div>`;
  app.setAttribute('aria-busy','false');
 }
-function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1><p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}${session.focusRule?`<div class="focus-hint-box"><button type="button" class="text-button" data-action="focus-hint" aria-controls="focus-hint" aria-expanded="${focusHintShown}">${focusHintShown?'Ocultar pista':'Pista: otras normas de esta palabra'}</button>${focusHintShown?`<p id="focus-hint" class="helper" role="status">${(()=>{const others=[...new Set(w.changes.filter(t=>t.rule!==session.focusRule&&t.rule!==FIXED_RULE.id).map(t=>ruleName(t.rule)))];const fixed=w.changes.some(t=>t.rule===FIXED_RULE.id);return esc([...(others.length?others:['No hay otras normas seleccionables']),...(fixed?['Pérdida fija de -m final']:[])].join(' · '));})()}</p>`:''}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
+function renderFirst(w){return `<h1 class="latin-word" lang="la">${esc(w.latin)}</h1>${transmissionNote(w)}<p class="prompt">¿Cuál es el resultado de esta palabra latina en castellano?</p><form class="question-form" id="result-form"><label for="castellano">Resultado castellano</label><input id="castellano" class="answer-input" type="text" value="${esc(resultDraft)}" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="answer-actions"><button class="button-primary full" type="submit">Comprobar respuesta →</button></div>${feedback?`<div class="feedback ${feedback.startsWith('Incorrect')?'error':'success'}" role="status">${esc(feedback)}</div>`:''}${session.focusRule?`<div class="focus-hint-box"><button type="button" class="text-button" data-action="focus-hint" aria-controls="focus-hint" aria-expanded="${focusHintShown}">${focusHintShown?'Ocultar pista':'Pista: otras normas de esta palabra'}</button>${focusHintShown?`<p id="focus-hint" class="helper" role="status">${(()=>{const others=[...new Set(w.changes.filter(t=>t.rule!==session.focusRule&&t.rule!==FIXED_RULE.id).map(t=>ruleName(t.rule)))];const fixed=w.changes.some(t=>t.rule===FIXED_RULE.id);return esc([...(others.length?others:['No hay otras normas seleccionables']),...(fixed?['Pérdida fija de -m final']:[])].join(' · '));})()}</p>`:''}</div>`:''}<p class="helper">Debes acertar antes de identificar los fenómenos. La solución no se revela automáticamente.</p></form>`;}
 function renderGuidedWord(word){
  const targets=assessedChanges(word,session.focusRule);
  const set=new Set(targets.flatMap(x=>x.spans.flatMap(([s,e])=>Array.from({length:e-s},(_,j)=>s+j))));
@@ -111,7 +123,7 @@ function renderSecond(w){
    : 'Marca la primera y la última letra de un grupo y pulsa «Añadir cambio». Puedes seleccionar varios grupos separados. Usa + para indicar un sonido añadido.';
  const builder=guided?renderGuidedWord(w):`<div class="analysis-builder"><h3>1 · Selecciona las letras</h3><p>Pulsa dos letras para señalar un tramo; repite para añadir otro tramo del mismo fenómeno. También puedes usar + para una inserción. Desliza la palabra horizontalmente si no cabe.</p>
  ${blindWord(w)}<div class="builder-actions"><button type="button" class="button-primary" data-action="add-selection" ${!blindSpans.length && insertion===null?'disabled':''}>Añadir cambio +</button><button type="button" class="button-secondary" data-action="clear-selection">Borrar selección</button></div></div>`;
- return `<h2 class="latin-word" style="font-size:clamp(36px,7vw,63px)" lang="la">${esc(w.latin)}</h2>
+ return `<h2 class="latin-word" style="font-size:clamp(36px,7vw,63px)" lang="la">${esc(w.latin)}</h2>${transmissionNote(w)}
   <p class="prompt">Resultado correcto: <strong>${esc(w.answers[0])}</strong>. ${session.focusRule?'Localiza todas las apariciones de la norma que estás practicando.':'Identifica los fenómenos y asócialos con sus letras o puntos de inserción.'}</p>
   ${session.focusRule?`<p class="focus-session-note"><strong>Repaso: ${esc(ruleName(session.focusRule))}.</strong> Solo se evalúan sus ${targets.length} ${targets.length===1?'transformación':'transformaciones'} en esta palabra. Las demás normas, incluida la pérdida fija de -m si procede, se explicarán al completar la tarjeta.</p>`:''}
   <p class="hint-box"><strong>${guided?'Modo guiado':'Modo a ciegas'}.</strong> ${esc(description)}<br>Las respuestas se guardan y sólo se corrigen al pulsar <strong>«Comprobar todo»</strong>.</p>
@@ -124,11 +136,11 @@ function renderSecond(w){
   </div>`;
 }
 function renderComplete(w){
- return `<div class="completion"><div class="success-banner" role="status"><span class="success-check" aria-hidden="true">✓</span><strong>¡Todas las normas correctas!</strong></div><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div><h3>Explicación completa de la evolución</h3>
+ return `<div class="completion"><div class="success-banner" role="status"><span class="success-check" aria-hidden="true">✓</span><strong>¡Todas las normas correctas!</strong></div><p class="card-kicker" style="text-align:center">Tarjeta completada · ${cardState.mistakes===0?'Sin errores':'Con '+cardState.mistakes+' errores'}</p><div class="completed-word" lang="la">${esc(w.latin)} <span class="result-arrow" aria-hidden="true">→</span> ${esc(w.answers[0])}</div>${transmissionNote(w)}<h3>Explicación completa de la evolución</h3>
  ${session.focusRule?`<p class="focus-session-note"><strong>Norma practicada: ${esc(ruleName(session.focusRule))}.</strong> Identificaste ${assessedChanges(w,session.focusRule).length} ${assessedChanges(w,session.focusRule).length===1?'cambio':'cambios'}. Los demás se explican a continuación sin evaluarlos.</p>`:''}
  ${w.changes.map(t=>`<div class="change-detail ${session.focusRule&&t.rule===session.focusRule?'focus-change-detail':''}">${session.focusRule?`<span class="change-eval-status">${t.rule===session.focusRule?'✓ Norma practicada':'Solo explicación'}</span>`:''}<span class="change-tag ${t.rule==='FIX_M'?'fixed-tag':''}">${esc(ruleName(t.rule))}${t.subtype?' · '+esc(t.subtype):''}</span><strong>${esc(labelFragment(w,t))} → ${esc(t.output||'∅')}</strong><p>${esc(t.note)}</p>${t.stages?`<p>Etapas: ${esc(t.stages.join(' · '))}</p>`:''}</div>`).join('')}
  ${w.changes.some(t=>t.rule==='FIX_M')?'<p class="review-note">Normas fijas: según el criterio didáctico oficial, las formas nominales se estudian desde el acusativo. La -m final del acusativo se pierde; no es la apócope seleccionable.</p>':''}
- <p class="review-note">Fuente: Excel docente · Banco, fila ${w.source.row} · Lote ${w.source.lot}. Se respeta la terminología de las normas PAU.</p>
+ <p class="review-note">${wordSourceNote(w)} Se respeta la terminología de las normas PAU.</p>
  <button class="button-primary full" data-action="next">${session.index+1===session.cards.length?'Ver resumen':'Siguiente palabra →'}</button></div>`;
 }
 // Celebración breve, sin dependencias ni bloqueo de la navegación. Se ejecuta
@@ -233,7 +245,7 @@ function studyWord(){
  const fixed=w.changes.some(c=>c.rule===FIXED_RULE.id);
  const stages=Array.isArray(t.stages)&&t.stages.length ? `<p class="study-stages"><strong>Etapas documentadas:</strong> ${t.stages.map(esc).join(' · ')}</p>`:'';
  return `<div class="study-shell study-detail-shell"><div class="study-detail-nav"><button type="button" class="back-button" data-study-back="${study.origin}">← ${study.origin==='rule'?'Volver a la norma':'Volver al buscador'}</button><span class="tiny">Consulta libre · Sin puntuación</span></div>
- <article class="panel study-word-card"><p class="eyebrow">Ficha filológica · Banco revisado</p><div class="study-word-pair"><h1 lang="la">${esc(w.latin)}</h1><span aria-hidden="true">→</span><h2>${esc(w.answers.join(' / '))}</h2></div>
+ <article class="panel study-word-card"><p class="eyebrow">${w.source?.generatorId?'Ficha importada · GeneradorExamenes':'Ficha filológica · Banco revisado'}</p><div class="study-word-pair"><h1 lang="la">${esc(w.latin)}</h1><span aria-hidden="true">→</span><h2>${esc(w.answers.join(' / '))}</h2></div>${transmissionNote(w)}
  <p class="study-word-intro">Pulsa cada fenómeno para ver qué letras o grupos intervienen. Los cambios se muestran según las anotaciones didácticas verificadas, sin reconstruir etapas que no figuren en el banco.</p>
  <div class="study-change-tabs" role="group" aria-label="Fenómenos de ${esc(w.latin)}">${w.changes.map((change,i)=>`<button type="button" class="study-change-tab ${i===study.changeIndex?'is-active':''}" data-study-change="${i}" aria-pressed="${i===study.changeIndex}"><span class="study-change-index">${i+1}</span><span>${esc(ruleName(change.rule))}${change.subtype?`<small>${esc(change.subtype)}</small>`:''}</span></button>`).join('')}</div>
  <div class="study-change-detail" aria-live="polite"><p class="eyebrow">Cambio ${study.changeIndex+1} de ${w.changes.length}</p>${studyVisual(w,t)}
@@ -244,7 +256,7 @@ function studyWord(){
  <div class="study-step-nav"><button type="button" class="button-secondary" data-study-step="-1" ${study.changeIndex===0?'disabled':''}>← Cambio anterior</button><button type="button" class="button-secondary" data-study-step="1" ${study.changeIndex===w.changes.length-1?'disabled':''}>Siguiente cambio →</button></div>
  <section class="study-word-summary"><h3>Explicación de la evolución</h3><p>${esc(w.explanation||'La ficha recoge las transformaciones anotadas en el banco.')}</p>
  ${fixed?'<p class="study-note">Normas fijas: los sustantivos y adjetivos se estudian a partir del acusativo según el criterio didáctico oficial. La -m final desaparece, pero no se contabiliza como apócope seleccionable.</p>':''}
- <p class="study-source">Procedencia: Excel docente · Banco, fila ${esc(w.source.row)} · Lote ${esc(w.source.lot)}.</p></section>
+ <p class="study-source">${wordSourceNote(w)}</p></section>
  ${contextIndex>=0&&study.contextIds.length>1?`<div class="study-word-navigation"><button class="button-secondary" type="button" data-study-neighbor="-1" ${contextIndex===0?'disabled':''}>← Palabra anterior</button><span class="tiny">${contextIndex+1} de ${study.contextIds.length}</span><button class="button-secondary" type="button" data-study-neighbor="1" ${contextIndex===study.contextIds.length-1?'disabled':''}>Siguiente palabra →</button></div>`:''}
  </article></div>`;
 }

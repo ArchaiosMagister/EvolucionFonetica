@@ -8,6 +8,22 @@ Web publicada: <https://archaiosmagister.github.io/EvolucionFonetica/> (GitHub P
 
 En **Practicar** se puede elegir entre repaso general (filtro estricto de todas las normas necesarias) y **repaso de una sola norma** (filtrado por presencia de esa norma). Después se elige la modalidad (guiada o a ciegas) y el número de tarjetas. Cada tarjeta obliga a acertar el resultado castellano antes de relacionar las transformaciones con posiciones exactas, grupos, tramos discontiguos o lugares de inserción. La **-m final de acusativo** se trabaja como norma fija, nunca como «apócope» seleccionable.
 
+## Importación desde GeneradorExamenes (12/11/2026)
+
+**522 fichas jugables:** las 282 anteriores se conservan sin modificación y se incorporan 240 entradas nuevas de `ArchaiosMagister/GeneradorExamenes/data/fonetica/banco_examenes.json`, cotejadas contra la fuente de **655** fichas `APTO_PROPUESTO`.
+
+- **273 coincidencias** entre ambos repositorios (sin duplicar); **382 entradas nuevas** en el origen.
+- De las 382, **240** admiten una segmentación ortográfica completa y **unívoca** con las 20 normas; se incluyen con sus posiciones y la etiqueta original de transmisión. La pérdida fija de `-m` y la abertura de `-u-` en `-um` se anotan por separado.
+- **142** entradas tienen fenómenos que no se pueden segmentar sin juicio filológico o su reconstrucción no coincide exactamente con el resultado; se conservan en la cola, fuera del sorteo.
+- Existen **4 diferencias de clasificación** en palabras coincidentes; están documentadas como conflictos, sin sobrescribir la ficha existente. No se alteró `GeneradorExamenes`.
+- El estado `APTO_PROPUESTO` **no implica certificación filológica**. La importación automática verifica la correspondencia textual y el lugar de los grupos, no toda la historia de transmisión. Las adaptaciones cultas se etiquetan explícitamente para no confundirlas con palabras patrimoniales.
+- `data/imports/generador-655.json`: copia íntegra y trazable del banco fuente en la revisión consultada; no es un segundo banco jugable.
+- `data/imports/revision-generador.json`: cola de 142 entradas pendientes y 4 conflictos, para decisiones docentes posteriores.
+- `tools/import-generador.mjs`: normalización de ligaduras, cotejo sin duplicados, segmentación conservadora y extracción de conflictos; `tools/sync-generador.mjs` permite reproducir la importación con una copia actualizada.
+- `tests/import-generador*.test.mjs`: pruebas de trazabilidad, preservación del banco anterior, filtrado general/focalizado y corrección completa de las 240 fichas.
+
+Consultar `docs/IMPORTACION_GENERADOR.md` para el inventario, las decisiones y los criterios. La revisión editorial se realiza por lotes y las entradas pendientes no se sortean.
+
 ## Repasar una sola norma
 
 En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas oficiales**. El desplegable muestra cuántas palabras del banco revisado contienen cada categoría. Si escoge una sola norma, aparecen también palabras que incluyen otros fenómenos: por ejemplo, `focum → fuego` es elegible para diptongación aunque también tenga sonorización, abertura y caída fija de `-m`. No se añaden fichas dudosas ni se modifica el banco.
@@ -26,7 +42,7 @@ En **Practicar → Una sola norma**, el alumno selecciona una de las **20 normas
 
 La portada conserva **Practicar** y añade **Estudiar** como secciones independientes. Cambiar de sección no borra una sesión de práctica en curso: sus selecciones y respuestas quedan en memoria mientras la pestaña siga abierta. El modo Estudiar no asigna notas, no sortea palabras y no modifica la lógica de evaluación.
 
-- **Buscador bidireccional:** localiza las 282 fichas revisadas por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
+- **Buscador bidireccional:** localiza las fichas anotadas disponibles por forma latina o resultado castellano, con coincidencias parciales y tolerancia a mayúsculas, ligaduras `æ/ae`, `œ/oe`, cantidades vocálicas y tildes **solo en la búsqueda**. La corrección estricta del modo Practicar no cambia. La lista se pagina sin perder resultados.
 - **Catálogo de normas:** presenta exactamente las 20 categorías oficiales, sus definiciones y ejemplos tal como figuran en `src/rules.mjs`. Indica las fichas del banco que contienen cada norma, incluso si requieren otras transformaciones para llegar al castellano. Las normas fijas se consultan dentro de las fichas, no como categoría número 21.
 - **Subtipos documentados:** cuando el banco incluye subtipos, pueden filtrarse desde el catálogo (p. ej. `-ct- > -ch-`, `-CUL- > -J-` y `-CUL- > -G-`). Nunca se deducen ejemplos nuevos a partir de una regla.
 - **Tarjetas filológicas interactivas:** resultado visible, botones para recorrer cada transformación, letras/grupos originales resaltados según posiciones Unicode de la ficha, puntos de inserción `＋`, tramos discontinuos, nota de la transformación, etapas intermedias **solo cuando están anotadas**, definición oficial, resumen del banco y referencia a fila y lote del Excel. Navegación entre fichas de la consulta sin volver a buscar.
@@ -49,7 +65,7 @@ No hay paquetes de producción ni compilación. JavaScript nativo, HTML y CSS co
 
 ## Fuentes y ampliaciones
 
-- `data/pilot.json`: banco acumulado anotado (282 fichas: 52 iniciales, 100 del segundo lote, 100 del tercero y 30 del cuarto) con referencia a fila y lote del archivo `banco_evolucion_fonetica_con_filtro_didactico.xlsx`.
+- `data/pilot.json`: banco acumulado anotado (522 fichas: 282 procedentes del Excel y 240 añadidas desde GeneradorExamenes) con trazabilidad por fuente. Los 282 registros anteriores permanecen íntegros.
 - `src/rules.mjs`: exactamente las 20 categorías oficiales; incluye subtipos de -CUL- > -J- y -CUL- > -G-.
 - `src/engine.mjs`: filtrado estricto y focalizado por norma, corrección y validación de rangos; los fragmentos solapados son legítimos.
 - `src/app.mjs`: interfaz, selección táctil, inserciones y navegación.

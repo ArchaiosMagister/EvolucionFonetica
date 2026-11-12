@@ -156,3 +156,7 @@
 .focus-hint-box .helper{margin:6px 0 0}
 
 .study-start-practice{margin-top:12px;display:inline-flex;align-items:center;justify-content:center;min-height:48px}
+
+/* Avisos filológicos no intrusivos en ejercicios y fichas importadas. */
+.transmission-note{max-width:650px;margin:6px auto 16px;padding:9px 13px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.55;text-align:center}
+.transmission-note strong{color:var(--ink)}

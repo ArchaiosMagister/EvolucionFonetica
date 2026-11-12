@@ -17,7 +17,7 @@ const guess=t=>({id:t.id,rule:t.rule,spans:t.spans,anchor:t.anchor,targetId:t.id
 
 test('Lote de escasas: exactamente 30 entradas nuevas y 282 en total, 252 anteriores intactas',()=>{
  assert.equal(manifest.previousCount,252);assert.equal(manifest.newCount,30);
- assert.equal(manifest.totalCount,282);assert.equal(db.words.length,282);
+ assert.equal(manifest.totalCount,282);assert.ok(db.words.length>=282);
  assert.equal(hash(existing),manifest.previousWordsSha256);
  assert.deepEqual(added.map(w=>w.id),manifest.ids);
  assert.deepEqual(added.map(w=>w.source.row),manifest.rows);
@@ -43,7 +43,7 @@ test('Todo el lote procede de filas patrimoniales docentes con nota y trazabilid
 });
 
 test('Prioridad real en normas poco frecuentes y sin falsos incrementos de las agotadas',()=>{
- const old=coverage(existing),now=coverage(db.words);
+ const old=coverage(existing),now=coverage(db.words.slice(0,manifest.totalCount));
  assert.equal(RULES.length,20);
  for(const id of ['EPENT','VOC','GRIE','CONS','MIN_MBR','METAT','CUL','SIMPL'])
   assert.ok(now[id]>old[id],`No ha mejorado ${id}`);
@@ -62,7 +62,7 @@ test('Prioridad real en normas poco frecuentes y sin falsos incrementos de las a
 
 test('Todas las normas exigibles participan en el filtro estricto y el focal sigue evaluando solo la elegida',()=>{
  const all=new Set(RULES.map(x=>x.id));
- assert.equal(availableWords(db.words,all).length,282);
+ assert.equal(availableWords(db.words.slice(0,manifest.totalCount),all).length,282);
  for(const w of added){
   const ids=requiredRules(w);assert.ok(ids.length>0);
   assert.equal(availableWords([w],new Set(ids)).length,1,w.latin);

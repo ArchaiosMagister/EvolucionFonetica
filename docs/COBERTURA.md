@@ -1,3 +1,9 @@
+# Banco acumulado: 522 fichas jugables
+
+Se conservan las **282 fichas** de los cuatro lotes anteriores y se incorporan **240 fichas directamente cotejadas** con el banco `GeneradorExamenes` (655 registros de origen, 273 coincidentes, 382 nuevos: 240 anotados y 142 pendientes). Las **4 discrepancias de clasificación** de los registros coincidentes quedan sin modificar hasta decisión docente. Los informes históricos que siguen recogen la cobertura de 282 fichas antes de la importación.
+
+**Advertencia didáctica:** `APTO_PROPUESTO` es preselección didáctica y no certificación histórica. Las 240 fichas importadas se han podido segmentar de forma ortográfica unívoca; las adaptaciones cultas se identifican expresamente y no se presentan como evoluciones patrimoniales completas. Véase [IMPORTACION_GENERADOR.md](IMPORTACION_GENERADOR.md).
+
 # Cobertura acumulada (282 fichas)
 
 El banco reúne **52 fichas iniciales, 100 del segundo lote, 100 del tercero y 30 del lote prioritario de normas escasas**. Las 20 normas están representadas en el conjunto. Véanse [LOTE_100.md](LOTE_100.md) y [LOTE_100_TERCERO.md](LOTE_100_TERCERO.md) para las fichas, filas de procedencia, subtipos y cobertura total.
