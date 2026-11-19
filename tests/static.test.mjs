@@ -56,7 +56,8 @@ test('Repaso focalizado ofrece selector de 20 leyes, sin ocultar Estudiar ni cam
  assert.match(engine,/function checkAllChanges/);
  assert.match(css,/\.focus-session-note/);
  assert.match(css,/\.scope-choice/);
- assert.match(text('sw.js'),/evolutio-latin-u-20261112/);
+ assert.match(text('sw.js'),/const VERSION='evolutio-latin-u-\\d{8}[^']*';/);
+ assert.match(text('sw.js'),/key.startsWith\(CACHE_PREFIX\)/);
 });
 
 test('Estudiar usa botones accesibles para seleccionar niveles independientes',()=>{
